@@ -1,7 +1,7 @@
 Fxp BibScan for Njuko
 =====================
 
-The application BibScan for Njuko allow you to scan and check the bibs or print the bib labels,
+The application BibScan for [Njuko](https://njuko.com) allow you to scan and check the bibs or print the bib labels,
 one to one or in mass.
 
 **Features include:**
@@ -49,7 +49,15 @@ Deployment
 
 ## Deploy the Progressive Web Application
 
-This PWA is deployed on the Github Pages services, and the API proxy is deplaoyed on the AWS API Gateway.
+This PWA is deployed on the Github Pages services, and the API proxy is deployed on the AWS API Gateway.
+
+Because the API of Njuko use the usecure protocol `HTTP`, a secured API proxy must be created to call the API in the
+Progressive Web Application (read the [Why HTTPS Matters](https://developers.google.com/web/fundamentals/security/encrypt-in-transit/why-https)
+page).
+
+> **Note:**
+>
+> When the APIs of Njuko will available directly in HTTPS, the API proxy will no longer be needed.
 
 ### 1. Deploy the API Proxy
 
