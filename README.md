@@ -84,14 +84,15 @@ This PWA is deployed on the Github Pages services, and the API proxy is deplaoye
 
 1. Change the GIT url in the `bin/deploy` (linux/macos) or `bin/deploy.bat` (windows) file with your own
    Github repository
-2. Change the API url in the `.env.production` file with your own url of the API Proxy
+2. Change the API url and APP domain in the `.env.production` file with your own url of the API Proxy
+   and the custom Github Pages
 3. Create a CNAME in the DNS zone of your domain registrar with the domain of the Github User/Organization
    and your custom domain (format: `<username-or-organization>.github.io.`)
 4. Run the command `yarn install`
 5. Run the command `bin/deploy` (linux/macos) or `bin/deploy.bat` (windows)
 6. In the setting page of the your Github repository, and the Github Pages section:
   - Select the `gh-pages branch` for the Source field
-  - Add your custom domain in the Custom domain field
+  - Add your custom domain in the Custom domain field (already added by the deployment)
   - Check the Enforce HTTPS field
 7. Enjoy!
 

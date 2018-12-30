@@ -7,6 +7,17 @@
  * file that was distributed with this source code.
  */
 
+const CreateFileWebpack = require('create-file-webpack');
+const webpackPlugin = [];
+
+if ('production' === process.env.NODE_ENV && process.env.VUE_APP_APP_DOMAIN) {
+  webpackPlugin.push(new CreateFileWebpack({
+    path: './dist',
+    fileName: 'CNAME',
+    content: process.env.VUE_APP_APP_DOMAIN,
+  }));
+}
+
 module.exports = {
   devServer: {
     disableHostCheck: true,
@@ -18,6 +29,10 @@ module.exports = {
 
   pwa: {
     themeColor: '#00a58c',
+  },
+
+  configureWebpack: {
+    plugins: webpackPlugin,
   },
 
   baseUrl: undefined,
