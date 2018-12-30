@@ -17,7 +17,7 @@ module.exports = {
   },
 
   pwa: {
-    themeColor: '#000000',
+    themeColor: '#00a58c',
   },
 
   baseUrl: undefined,
