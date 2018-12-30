@@ -14,7 +14,7 @@ import Vue from 'vue';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-const apiClient = new Api();
+const apiClient = new Api(process.env.VUE_APP_API_URL);
 
 Vue.use(VueApi, apiClient);
 
