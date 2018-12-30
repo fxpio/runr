@@ -1,0 +1,153 @@
+/*
+ * This file is part of the BibScan for Njuko package.
+ *
+ * (c) François Pluchino <francois.pluchino@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+$bib-label-padding-base: 1%;
+$bib-label-padding-wrapper: 2%;
+
+.bib-label {
+  position: relative;
+  width: 89mm;
+  height: 28mm;
+  margin: 1em auto;
+  font-family: 'Roboto', sans-serif;
+  font-size: 12pt;
+  line-height: 12pt;
+  border: 1px solid #000;
+  background-color: #fff;
+  color: #000;
+
+  &,
+  * {
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  > * {
+    position: absolute;
+  }
+
+  .bl-competition {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 50%;
+    padding: $bib-label-padding-wrapper $bib-label-padding-base $bib-label-padding-wrapper $bib-label-padding-wrapper;
+    font-family: 'Roboto-Condensed', sans-serif;
+    font-weight: bold;
+    font-size: 7.5em;
+    line-height: 78%;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .bl-competition-unit {
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    right: 46%;
+    padding: $bib-label-padding-base;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 0.6em;
+    line-height: 0.8em;
+    letter-spacing: 1pt;
+    writing-mode: vertical-lr;
+    transform: rotateZ(180deg);
+    transform-origin: initial;
+  }
+
+  .bl-firstname,
+  .bl-bib-number,
+  .bl-phone-urgency,
+  .bl-phone-urgency-label {
+    left: 54%;
+    right: 0;
+    padding: $bib-label-padding-base $bib-label-padding-wrapper $bib-label-padding-base $bib-label-padding-base;
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  .bl-firstname,
+  .bl-phone-urgency,
+  .bl-phone-urgency-label {
+    font-family: 'Roboto-Condensed', sans-serif;
+  }
+
+  .bl-firstname,
+  .bl-bib-number {
+    font-weight: bold;
+  }
+
+  .bl-firstname {
+    top: 0;
+    bottom: 53%;
+    padding-top: $bib-label-padding-wrapper;
+    font-size: 1.3em;
+    line-height: 1em;
+    word-wrap: break-word;
+  }
+
+  .bl-bib-number {
+    top: 47%;
+    bottom: 30%;
+    font-size: 1.1em;
+    line-height: 1em;
+    white-space: nowrap;
+  }
+
+  .bl-phone-urgency,
+  .bl-phone-urgency-label {
+    font-weight: normal;
+    font-size: 0.7em;
+    line-height: 0.8em;
+    white-space: nowrap;
+  }
+
+  .bl-phone-urgency-label {
+    top: 70%;
+    bottom: 18%;
+    padding-bottom: 0;
+  }
+
+  .bl-phone-urgency {
+    top: 82%;
+    bottom: 0;
+    padding-bottom: $bib-label-padding-wrapper;
+  }
+}
+
+@media print {
+  @page {
+    margin: 0;
+    padding: 0;
+    border: none;
+  }
+
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    border: none;
+    width: 100%;
+    height: 100%;
+  }
+
+  .bib-label {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    border: none;
+    page-break-inside: avoid;
+    page-break-after: always;
+    background-color: transparent;
+  }
+}

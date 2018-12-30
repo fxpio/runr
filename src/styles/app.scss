@@ -1,0 +1,21 @@
+/*
+ * This file is part of the BibScan for Njuko package.
+ *
+ * (c) François Pluchino <francois.pluchino@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+$roboto-font-path: '~roboto-fontface/fonts';
+$material-design-icons-font-path: '~material-design-icons-iconfont/dist/fonts/';
+
+@import '~roboto-fontface/css/roboto/sass/roboto-fontface-regular.scss';
+@import '~roboto-fontface/css/roboto/sass/roboto-fontface-bold.scss';
+@import '~roboto-fontface/css/roboto-condensed/sass/roboto-condensed-fontface-regular.scss';
+@import '~roboto-fontface/css/roboto-condensed/sass/roboto-condensed-fontface-bold.scss';
+@import '~material-design-icons-iconfont/src/material-design-icons.scss';
+
+@import 'transitions.scss';
+@import 'drawer.scss';
+@import 'toolbar.scss';
