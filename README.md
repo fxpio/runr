@@ -11,6 +11,11 @@ one to one or in mass.
 - Search or scan the QR code of bib and print his label
 - Import in mass the list of bib numbers and print their labels
 
+> **Note:**
+>
+> This application was created to meet the needs of the organizers of the
+> [Course du bord de Saône](https://courseduborddesaone.fr).
+
 Installation
 ------------
 
