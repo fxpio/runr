@@ -9,7 +9,11 @@ file that was distributed with this source code.
 
 <template>
   <v-toolbar dark color="primary" app clipped-left>
-    <v-toolbar-side-icon @click.stop="$store.commit('drawer/toggle')"></v-toolbar-side-icon>
+    <v-toolbar-side-icon v-if="!showPreviousButton" @click.stop="$store.commit('drawer/toggle')"></v-toolbar-side-icon>
+
+    <v-btn icon class="hidden-xs-only" v-if="showPreviousButton" @click.stop="$routerBack.back">
+      <v-icon>arrow_back</v-icon>
+    </v-btn>
 
     <v-menu>
       <v-toolbar-title slot="activator">
@@ -36,3 +40,36 @@ file that was distributed with this source code.
     </v-menu>
   </v-toolbar>
 </template>
+
+<script lang="ts">
+  import {Component, Vue} from 'vue-property-decorator';
+
+  /**
+   * @author François Pluchino <francois.pluchino@gmail.com>
+   */
+  @Component({
+    components: {},
+  })
+  export default class Toolbar extends Vue {
+    public showPreviousButton: boolean = false;
+
+    /* tslint:disable:ban-types */
+    private unSyncRouterHook?: Function;
+
+    public created(): void {
+      const self = this;
+
+      this.showPreviousButton = !this.$routerBack.isRoot();
+
+      this.unSyncRouterHook = this.$router.afterEach(() => {
+        self.showPreviousButton = !self.$routerBack.isRoot();
+      });
+    }
+
+    public destroy(): void {
+      if (this.unSyncRouterHook) {
+        this.unSyncRouterHook();
+      }
+    }
+  }
+</script>

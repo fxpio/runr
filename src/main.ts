@@ -10,6 +10,7 @@
 import 'babel-polyfill';
 import '@/registerHooks';
 import ApiInterceptors from '@/api/ApiInterceptors';
+import {useVueRouterBackPlugin} from '@/plugins/vueRouterBack';
 import RouterGuards from '@/routers/RouterGuards';
 import {RootState} from '@/stores/RootState';
 import Vue from 'vue';
@@ -30,6 +31,7 @@ import '@/styles/app.scss';
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
 Vue.config.productionTip = false;
+useVueRouterBackPlugin(router);
 
 const store = createStore<RootState>(router, i18n, apiClient, dbClient);
 
