@@ -48,7 +48,7 @@ file that was distributed with this source code.
 
               <div>
                 <v-btn color="accent" depressed raised ripple @click="ping">{{$t('add')}}</v-btn>
-                <v-btn flat ripple active-class="" :to="{name: 'editions'}">{{$t('cancel')}}</v-btn>
+                <v-btn flat ripple active-class="" @click.stop="$routerBack.back">{{$t('cancel')}}</v-btn>
               </div>
             </v-form>
           </v-card-text>
