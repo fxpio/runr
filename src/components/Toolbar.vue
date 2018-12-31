@@ -9,9 +9,9 @@ file that was distributed with this source code.
 
 <template>
   <v-toolbar dark color="primary" app clipped-left>
-    <v-toolbar-side-icon v-if="!showPreviousButton" @click.stop="$store.commit('drawer/toggle')"></v-toolbar-side-icon>
+    <v-toolbar-side-icon v-if="!showPreviousButton" @click="navButtonLongPress" key="menu-btn"></v-toolbar-side-icon>
 
-    <v-btn icon class="hidden-xs-only" v-if="showPreviousButton" @click.stop="$routerBack.back">
+    <v-btn icon v-else v-longpress="{long: navButtonLongPress, short: navButtonShortPress}" key="previous-btn">
       <v-icon>arrow_back</v-icon>
     </v-btn>
 
@@ -70,6 +70,14 @@ file that was distributed with this source code.
       if (this.unSyncRouterHook) {
         this.unSyncRouterHook();
       }
+    }
+
+    public navButtonLongPress(): void {
+      this.$store.commit('drawer/toggle');
+    }
+
+    public navButtonShortPress(): void {
+      this.$routerBack.back();
     }
   }
 </script>
