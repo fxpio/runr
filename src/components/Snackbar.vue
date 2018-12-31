@@ -34,7 +34,7 @@ file that was distributed with this source code.
 
     public showCloseButton: boolean = true;
 
-    public async created(): Promise<void> {
+    public created(): void {
       this.$store.watch((state: RootState) => state.snackbar.config, (config: SnackConfig|null) => {
         if (config) {
           this.show = true;
