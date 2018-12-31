@@ -27,7 +27,7 @@ file that was distributed with this source code.
   @Component({
     components: {},
   })
-  export default class Error404 extends Vue {
+  export default class NotFound extends Vue {
     public metaInfo(): MetaInfo {
       return {
         title: this.$i18n.t('error.404-page-not-found') as string,

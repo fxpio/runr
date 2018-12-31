@@ -48,9 +48,9 @@ export default new Router({
     },
     {
       path: '*',
-      name: 'error-404',
+      name: 'not-found',
       components: {
-        default: () => import('@/views/Error404.vue'),
+        default: () => import('@/views/NotFound.vue'),
         toolbar: () => import('@/components/Toolbar.vue'),
       },
     },
