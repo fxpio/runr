@@ -9,15 +9,17 @@ file that was distributed with this source code.
 
 <template>
   <v-toolbar dark color="primary" app clipped-left>
-    <v-toolbar-side-icon v-if="!showPreviousButton" @click="navButtonLongPress" key="menu-btn"></v-toolbar-side-icon>
+    <v-scale-transition mode="out-in">
+      <v-toolbar-side-icon v-if="!showPreviousButton" @click="navButtonLongPress" key="menu-btn"></v-toolbar-side-icon>
 
-    <v-btn icon v-else v-longpress="{long: navButtonLongPress, short: navButtonShortPress}" key="previous-btn">
-      <v-icon>arrow_back</v-icon>
-    </v-btn>
+      <v-btn icon v-else v-longpress="{long: navButtonLongPress, short: navButtonShortPress}" key="previous-btn">
+        <v-icon>arrow_back</v-icon>
+      </v-btn>
+    </v-scale-transition>
 
     <v-menu>
       <v-toolbar-title slot="activator">
-        <span>{{ $store.state.edition.current ? $store.state.edition.current.name : $t('app.name') }}</span>
+        <span>{{ toolbarTitle }}</span>
         <v-icon dark>arrow_drop_down</v-icon>
       </v-toolbar-title>
 
@@ -31,7 +33,9 @@ file that was distributed with this source code.
             <v-list-tile-title v-text="edition.name"></v-list-tile-title>
           </v-list-tile-content>
           <v-list-tile-action>
-            <v-icon v-if="$store.getters['edition/isSelected'](edition.id)" color="pink">star</v-icon>
+            <v-scale-transition>
+              <v-icon v-if="$store.getters['edition/isSelected'](edition.id)" color="pink">star</v-icon>
+            </v-scale-transition>
           </v-list-tile-action>
         </v-list-tile>
 
@@ -70,6 +74,12 @@ file that was distributed with this source code.
       if (this.unSyncRouterHook) {
         this.unSyncRouterHook();
       }
+    }
+
+    public get toolbarTitle(): string {
+      const current = this.$store.state.edition.current;
+
+      return current ? current.name : this.$i18n.t('app.name') as string;
     }
 
     public navButtonLongPress(): void {

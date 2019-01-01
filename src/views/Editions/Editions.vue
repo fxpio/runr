@@ -38,7 +38,9 @@ file that was distributed with this source code.
               @click="$store.dispatch('edition/select', edition.id)"
             >
               <v-list-tile-action>
-                <v-icon v-if="$store.getters['edition/isSelected'](edition.id)" color="pink">star</v-icon>
+                <v-scale-transition>
+                  <v-icon v-if="$store.getters['edition/isSelected'](edition.id)" color="pink">star</v-icon>
+                </v-scale-transition>
               </v-list-tile-action>
 
               <v-list-tile-content>
