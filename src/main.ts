@@ -16,7 +16,6 @@ import RouterGuards from '@/routers/RouterGuards';
 import {RootState} from '@/stores/RootState';
 import Vue from 'vue';
 import '@/plugins/veeValidate';
-import '@/plugins/vueEventBus';
 import '@/plugins/vueMeta';
 import '@/plugins/vuetify';
 import i18n from '@/plugins/vueI18n';
