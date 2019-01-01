@@ -10,9 +10,9 @@ file that was distributed with this source code.
 <template>
   <v-toolbar dark color="primary" app clipped-left>
     <v-scale-transition mode="out-in">
-      <v-toolbar-side-icon v-if="!showPreviousButton" @click="navButtonLongPress" key="menu-btn"></v-toolbar-side-icon>
+      <v-toolbar-side-icon v-if="!showPreviousButton" @click="drawerButtonAction" key="menu-btn"></v-toolbar-side-icon>
 
-      <v-btn icon v-else v-longpress="{long: navButtonLongPress, short: navButtonShortPress}" key="previous-btn">
+      <v-btn icon v-else @click="previousButtonAction" @long-click="drawerButtonAction" key="previous-btn">
         <v-icon>arrow_back</v-icon>
       </v-btn>
     </v-scale-transition>
@@ -70,9 +70,10 @@ file that was distributed with this source code.
       });
     }
 
-    public destroy(): void {
+    public beforeDestroy(): void {
       if (this.unSyncRouterHook) {
         this.unSyncRouterHook();
+        this.unSyncRouterHook = undefined;
       }
     }
 
@@ -82,11 +83,11 @@ file that was distributed with this source code.
       return current ? current.name : this.$i18n.t('app.name') as string;
     }
 
-    public navButtonLongPress(): void {
+    public drawerButtonAction(): void {
       this.$store.commit('drawer/toggle');
     }
 
-    public navButtonShortPress(): void {
+    public previousButtonAction(): void {
       this.$routerBack.back();
     }
   }

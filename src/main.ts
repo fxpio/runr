@@ -10,7 +10,6 @@
 import 'babel-polyfill';
 import '@/registerHooks';
 import ApiInterceptors from '@/api/ApiInterceptors';
-import longPress from '@/directives/longPress';
 import {useVueRouterBackPlugin} from '@/plugins/vueRouterBack';
 import RouterGuards from '@/routers/RouterGuards';
 import {RootState} from '@/stores/RootState';
@@ -18,6 +17,7 @@ import Vue from 'vue';
 import '@/plugins/veeValidate';
 import '@/plugins/vueMeta';
 import '@/plugins/vuetify';
+import '@/plugins/vueLongClick';
 import i18n from '@/plugins/vueI18n';
 import apiClient from '@/plugins/vueApi';
 import dbClient from '@/plugins/vueDb';
@@ -32,7 +32,6 @@ import '@/styles/app.scss';
  */
 Vue.config.productionTip = false;
 useVueRouterBackPlugin(router);
-longPress(Vue, {duration: 1000});
 
 const store = createStore<RootState>(router, i18n, apiClient, dbClient);
 
