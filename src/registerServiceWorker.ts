@@ -8,6 +8,7 @@
  */
 
 /* tslint:disable:no-console */
+import {SnackbarEventMessage} from '@/snackbars/SnackbarEventMessage';
 import {register} from 'register-service-worker';
 
 /**
@@ -29,6 +30,7 @@ if (process.env.NODE_ENV === 'production') {
     },
     updated() {
       console.log('New content is available; please refresh.');
+      self.postMessage(new SnackbarEventMessage('sw.app.updated', true, true), window.location.origin);
     },
     offline() {
       console.log('No internet connection found. App is running in offline mode.');

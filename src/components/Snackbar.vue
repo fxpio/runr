@@ -15,6 +15,7 @@ file that was distributed with this source code.
 </template>
 
 <script lang="ts">
+  import {SnackbarEventMessage} from '@/snackbars/SnackbarEventMessage';
   import {RootState} from '@/stores/RootState';
   import {SnackConfig} from '@/stores/snackbar/SnackConfig';
   import {Component, Vue} from 'vue-property-decorator';
@@ -42,6 +43,24 @@ file that was distributed with this source code.
           this.color = config.color ? config.color : null;
           this.showCloseButton = true === config.closeButton || undefined === config.closeButton;
           this.$store.commit('snackbar/snack');
+        }
+      });
+    }
+
+    public mounted(): void {
+      window.addEventListener('message', (e: MessageEvent) => {
+        const isMessage = (data: any): data is SnackbarEventMessage => {
+          return (data as SnackbarEventMessage).type === 'snackbar-event-message';
+        };
+
+        if (isMessage(e.data)) {
+          const mess = e.data as SnackbarEventMessage;
+
+          this.$store.commit('snackbar/snack', {
+            message: mess.translatable ? this.$i18n.t(mess.message) : mess.message,
+            color: mess.color,
+            closeButton: mess.closeButton,
+          } as SnackConfig);
         }
       });
     }
