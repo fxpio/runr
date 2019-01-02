@@ -7,7 +7,8 @@
  * file that was distributed with this source code.
  */
 
-import {RootState} from '@/stores/RootState';
+import {EditionModuleState} from '@/stores/edition/EditionModuleState';
+import {I18nModuleState} from '@/stores/i18n/I18nModuleState';
 import Vue from 'vue';
 import Router, {RawLocation, Route} from 'vue-router';
 import {Store} from 'vuex';
@@ -18,11 +19,8 @@ import {Store} from 'vuex';
 export default class RouterGuards {
   /**
    * Add the auth router guard.
-   *
-   * @param {VueRouter}        router
-   * @param {Store<RootState>} store
    */
-  public static addAuthGuard(router: Router, store: Store<RootState>): void {
+  public static addAuthGuard(router: Router, store: Store<EditionModuleState&I18nModuleState>): void {
     router.beforeEach(async (to: Route, from: Route,
                              next: (to?: RawLocation|false|((vm: Vue) => any)|void) => void) => {
       let guard;

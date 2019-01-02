@@ -16,7 +16,7 @@ file that was distributed with this source code.
 
 <script lang="ts">
   import {SnackbarEventMessage} from '@/snackbars/SnackbarEventMessage';
-  import {RootState} from '@/stores/RootState';
+  import {SnackbarModuleState} from '@/stores/snackbar/SnackbarModuleState';
   import {SnackConfig} from '@/stores/snackbar/SnackConfig';
   import {Component, Vue} from 'vue-property-decorator';
 
@@ -36,7 +36,7 @@ file that was distributed with this source code.
     public showCloseButton: boolean = true;
 
     public created(): void {
-      this.$store.watch((state: RootState) => state.snackbar.config, (config: SnackConfig|null) => {
+      this.$store.watch((state: SnackbarModuleState) => state.snackbar.config, (config: SnackConfig|null) => {
         if (config) {
           this.show = true;
           this.message = config.message;

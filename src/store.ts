@@ -10,11 +10,15 @@
 import {Api} from '@/api/Api';
 import {Database} from '@/db/Database';
 import {DrawerModule} from '@/stores/drawer/DrawerModule';
+import {DrawerModuleState} from '@/stores/drawer/DrawerModuleState';
 import {EditionModule} from '@/stores/edition/EditionModule';
+import {EditionModuleState} from '@/stores/edition/EditionModuleState';
 import {I18nModule} from '@/stores/i18n/I18nModule';
+import {I18nModuleState} from '@/stores/i18n/I18nModuleState';
 import {PrinterModule} from '@/stores/printer/PrinterModule';
-import {RootState} from '@/stores/RootState';
+import {PrinterModuleState} from '@/stores/printer/PrinterModuleState';
 import {SnackbarModule} from '@/stores/snackbar/SnackbarModule';
+import {SnackbarModuleState} from '@/stores/snackbar/SnackbarModuleState';
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
 import VueRouter from 'vue-router';
@@ -30,7 +34,11 @@ Vue.use(Vuex);
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export function createStore<R extends RootState>(router: VueRouter, i18n: VueI18n, api: Api, db: Database): Store<R> {
+export function createStore<R extends DrawerModuleState
+                          & EditionModuleState
+                          & I18nModuleState
+                          & PrinterModuleState
+                          & SnackbarModuleState>(router: VueRouter, i18n: VueI18n, api: Api, db: Database): Store<R> {
   return new Vuex.Store<R>({
     state: {} as R,
     modules: {

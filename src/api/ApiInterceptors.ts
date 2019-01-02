@@ -8,7 +8,7 @@
  */
 
 import {Api} from '@/api/Api';
-import {RootState} from '@/stores/RootState';
+import {EditionModuleState} from '@/stores/edition/EditionModuleState';
 import {AxiosRequestConfig} from 'axios';
 import {Store} from 'vuex';
 
@@ -18,11 +18,8 @@ import {Store} from 'vuex';
 export default class ApiInterceptors {
     /**
      * Add the auth interceptor.
-     *
-     * @param {Api}              apiClient
-     * @param {Store<RootState>} store
      */
-    public static addAuthInterceptor(apiClient: Api, store: Store<RootState>): void {
+    public static addAuthInterceptor(apiClient: Api, store: Store<EditionModuleState>): void {
         apiClient.addRequestInterceptor(async (config: AxiosRequestConfig): Promise<AxiosRequestConfig> => {
             await store.dispatch('edition/init');
 
