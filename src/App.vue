@@ -11,44 +11,7 @@ file that was distributed with this source code.
   <v-app v-if="$store.state.edition.initialized">
     <snackbar></snackbar>
 
-    <v-navigation-drawer v-model="drawer" fixed clipped app width="250">
-      <v-list>
-        <template v-for="(item, i) in drawerItems">
-          <v-layout
-                  v-if="item.heading"
-                  :key="i"
-                  row
-                  align-center
-          >
-            <v-flex xs6>
-              <v-subheader v-if="item.heading">
-                {{ $t(item.heading) }}
-              </v-subheader>
-            </v-flex>
-          </v-layout>
-          <v-divider
-                  v-else-if="item.divider"
-                  :key="i"
-                  dark
-                  class="my-3"
-          ></v-divider>
-          <v-list-tile
-                  v-else
-                  :key="i"
-                  :to="item.route"
-          >
-            <v-list-tile-action>
-              <v-icon>{{ item.icon }}</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>
-                {{ $t(item.text) }}
-              </v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </template>
-      </v-list>
-    </v-navigation-drawer>
+    <app-drawer :items="drawerItems"></app-drawer>
 
     <router-view name="toolbar"></router-view>
 
@@ -63,6 +26,7 @@ file that was distributed with this source code.
 </template>
 
 <script lang="ts">
+  import AppDrawer from '@/components/AppDrawer.vue';
   import Snackbar from '@/components/Snackbar.vue';
   import Vue from 'vue';
   import {MetaInfo} from 'vue-meta';
@@ -72,10 +36,12 @@ file that was distributed with this source code.
    * @author François Pluchino <francois.pluchino@gmail.com>
    */
   @Component({
-    components: {Snackbar},
+    components: {AppDrawer, Snackbar},
   })
   export default class App extends Vue {
     public static readonly DEFAULT_TRANSITION: string = 'fade';
+
+    public transitionName: string = App.DEFAULT_TRANSITION;
 
     public drawerItems: object[] = [
       {icon: 'home', text: 'views.home.title', route: {name: 'home'}},
@@ -85,8 +51,6 @@ file that was distributed with this source code.
       {heading: 'menu.configuration'},
       {icon: 'flag', text: 'views.editions.title', route: {name: 'editions'}},
     ];
-
-    public transitionName: string = App.DEFAULT_TRANSITION;
 
     public metaInfo(): MetaInfo {
       return {
@@ -121,14 +85,6 @@ file that was distributed with this source code.
         });
         pl.style.opacity = '0';
       }
-    }
-
-    public get drawer(): boolean {
-      return this.$store.state.drawer.show;
-    }
-
-    public set drawer(value) {
-      this.$store.commit('drawer/toggle', value as boolean);
     }
   }
 </script>
