@@ -19,14 +19,14 @@ file that was distributed with this source code.
               fixed
               bottom
               right
-              v-if="$store.state.edition.all.length > 0"
+              v-if="$store.state.edition.all.length > 0 && !loading"
               @click="routeAdd"
       >
         <v-icon>add</v-icon>
       </v-btn>
     </v-fab-transition>
 
-    <v-layout justify-space-between row fill-height wrap>
+    <v-layout justify-space-between row fill-height wrap v-if="!loading">
       <v-flex xs12>
         <v-subheader>{{ $t('views.editions.title') }}</v-subheader>
 
@@ -46,6 +46,11 @@ file that was distributed with this source code.
               <v-list-tile-content>
                 <v-list-tile-title v-text="edition.name"></v-list-tile-title>
               </v-list-tile-content>
+              <v-list-tile-action>
+                <v-btn small icon flat ripple @click.stop="refresh(edition)" class="d-inline-block">
+                  <v-icon>refresh</v-icon>
+                </v-btn>
+              </v-list-tile-action>
             </v-list-tile>
           </v-list>
         </v-card>
@@ -57,20 +62,28 @@ file that was distributed with this source code.
         </v-layout>
       </v-flex>
     </v-layout>
+    <loading v-if="loading" :fullscreen="false"></loading>
   </v-container>
 </template>
 
 <script lang="ts">
+  import {Credentials} from '@/api/Credentials';
+  import {Edition} from '@/api/services/Edition';
+  import Loading from '@/components/Loading.vue';
+  import {IEdition} from '@/db/tables/IEdition';
+  import {AjaxContent} from '@/mixins/AjaxContent';
+  import {Util} from '@/stores/edition/Util';
+  import {mixins} from 'vue-class-component';
   import {MetaInfo} from 'vue-meta';
-  import {Component, Vue} from 'vue-property-decorator';
+  import {Component} from 'vue-property-decorator';
 
   /**
    * @author François Pluchino <francois.pluchino@gmail.com>
    */
   @Component({
-    components: {},
+    components: {Loading},
   })
-  export default class Editions extends Vue {
+  export default class Editions extends mixins(AjaxContent) {
     public metaInfo(): MetaInfo {
       return {
         title: this.$i18n.t('views.editions.title') as string,
@@ -79,6 +92,18 @@ file that was distributed with this source code.
 
     public routeAdd(): void {
       this.$router.push({name: 'edition-add'});
+    }
+
+    public async refresh(edition: IEdition): Promise<void> {
+      await this.fetchData(async (): Promise<IEdition> => {
+        const credentials = {identifier: String(edition.id), apiKey: edition.apiKey} as Credentials;
+        const res = await this.$api.get<Edition>(Edition).ping(credentials, this.previousRequest);
+        const uEdition = Util.convertEdition(res.edition, credentials.apiKey);
+
+        await this.$store.dispatch('edition/put', uEdition);
+
+        return uEdition;
+      });
     }
   }
 </script>
