@@ -45,7 +45,7 @@ export class Util {
         return state.current;
     }
 
-    public static convertEdition(edition: EditionResponse): IEdition {
+    public static convertEdition(edition: EditionResponse, apiKey: string): IEdition {
         const dCompetitions: ICompetition[] = [];
 
         for (const comp of edition.competitions) {
@@ -60,6 +60,7 @@ export class Util {
             name: edition.name,
             currency: edition.currency,
             competitions: dCompetitions,
+            apiKey: apiKey,
         } as IEdition;
     }
 }

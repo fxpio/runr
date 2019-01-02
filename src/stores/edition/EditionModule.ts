@@ -183,7 +183,7 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
 
                     const redirect = self.router.currentRoute.query.redirect as string;
                     const res = await self.api.get<Edition>(Edition).ping(credentials, self.previousRequest);
-                    const edition = Util.convertEdition(res.edition);
+                    const edition = Util.convertEdition(res.edition, credentials.apiKey);
                     self.previousRequest = undefined;
                     await self.db.editions.put(edition);
                     commit('ADD_EDITION', edition);
