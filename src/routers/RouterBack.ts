@@ -7,6 +7,7 @@
  * file that was distributed with this source code.
  */
 
+import {RouterBackOptions} from '@/routers/RouterBackOptions';
 import VueRouter, {Route} from 'vue-router';
 
 /**
@@ -15,13 +16,14 @@ import VueRouter, {Route} from 'vue-router';
 export class RouterBack {
     private readonly router: VueRouter;
 
-    private readonly isStandalone: boolean;
+    private readonly useBackAction: boolean;
 
     private rootPath: string|null = null;
 
-    constructor(router: VueRouter) {
-        this.router = router;
-        this.isStandalone = ('matchMedia' in window && window.matchMedia('(display-mode: standalone)').matches);
+    constructor(options: RouterBackOptions) {
+        this.router = options.router;
+        this.useBackAction = options.forceHistory
+                            || ('matchMedia' in window && window.matchMedia('(display-mode: standalone)').matches);
     }
 
     public isRoot(): boolean {
@@ -34,7 +36,7 @@ export class RouterBack {
     }
 
     public back(): void {
-        if (this.isStandalone) {
+        if (this.useBackAction) {
             this.router.back();
 
             return;

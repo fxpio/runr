@@ -8,8 +8,8 @@
  */
 
 import {RouterBack} from '@/routers/RouterBack';
+import {RouterBackOptions} from '@/routers/RouterBackOptions';
 import _Vue, {PluginObject} from 'vue';
-import {VueRouter} from 'vue-router/types/router';
 
 /**
  * Router back vue plugin.
@@ -17,9 +17,9 @@ import {VueRouter} from 'vue-router/types/router';
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
 class VueRouterBack {
-    public static get plugin(): PluginObject<VueRouter> {
+    public static get plugin(): PluginObject<RouterBackOptions> {
         return {
-            install: (Vue: typeof _Vue, options?: VueRouter): void => {
+            install: (Vue: typeof _Vue, options?: RouterBackOptions): void => {
                 if (options) {
                     Vue.prototype.$routerBack = new RouterBack(options);
                 }

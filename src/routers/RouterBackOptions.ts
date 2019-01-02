@@ -7,14 +7,12 @@
  * file that was distributed with this source code.
  */
 
-import {RouterBackOptions} from '@/routers/RouterBackOptions';
-import VueRouterBack from '@/routers/VueRouterBack';
-import Vue from 'vue';
+import VueRouter from 'vue-router';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-
-export function useVueRouterBackPlugin(options: RouterBackOptions): void {
-    Vue.use(VueRouterBack, options);
+export interface RouterBackOptions {
+    router: VueRouter;
+    forceHistory?: boolean;
 }

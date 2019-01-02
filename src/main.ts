@@ -31,7 +31,7 @@ import '@/styles/app.scss';
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
 Vue.config.productionTip = false;
-useVueRouterBackPlugin(router);
+useVueRouterBackPlugin({router, forceHistory: true});
 
 const store = createStore<RootState>(router, i18n, apiClient, dbClient);
 
