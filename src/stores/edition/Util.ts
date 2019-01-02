@@ -60,7 +60,7 @@ export class Util {
             name: edition.name,
             currency: edition.currency,
             competitions: dCompetitions,
-            apiKey: apiKey,
+            apiKey,
         } as IEdition;
     }
 }
