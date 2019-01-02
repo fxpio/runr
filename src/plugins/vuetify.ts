@@ -8,7 +8,7 @@
  */
 
 import Vue from 'vue';
-import Vuetify from 'vuetify';
+import Vuetify from 'vuetify/lib';
 import vuetifyTranslationFr from '@/translations/vuetify/fr';
 import 'vuetify/src/stylus/app.styl';
 
