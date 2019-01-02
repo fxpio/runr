@@ -171,7 +171,7 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
                 }
             },
 
-            async ping({commit, state, rootState}, credentials: Credentials): Promise<void> {
+            async ping({commit, state}, credentials: Credentials): Promise<void> {
                 commit('PING');
 
                 try {
