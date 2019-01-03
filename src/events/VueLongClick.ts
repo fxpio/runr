@@ -16,14 +16,8 @@ import {createLongClickMixin, LongClickOptions} from '@/mixins/longClick';
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-class VueLongClick {
-    public static get plugin(): PluginObject<LongClickOptions> {
-        return {
-            install: (Vue: typeof _Vue, options?: LongClickOptions): void => {
-                Vue.mixin(createLongClickMixin(options));
-            },
-        };
-    }
-}
-
-export default VueLongClick.plugin;
+export default {
+    install: (Vue: typeof _Vue, options?: LongClickOptions): void => {
+        Vue.mixin(createLongClickMixin(options));
+    },
+} as PluginObject<LongClickOptions>;

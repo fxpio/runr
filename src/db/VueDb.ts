@@ -15,14 +15,8 @@ import _Vue, {PluginObject} from 'vue';
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-class VueDb {
-    public static get plugin(): PluginObject<Database> {
-        return {
-            install: (Vue: typeof _Vue, options?: Database): void => {
-                Vue.prototype.$db = options;
-            },
-        };
-    }
-}
-
-export default VueDb.plugin;
+export default {
+    install: (Vue: typeof _Vue, options?: Database): void => {
+        Vue.prototype.$db = options;
+    },
+} as PluginObject<Database>;

@@ -15,14 +15,8 @@ import _Vue, {PluginObject} from 'vue';
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-class VueApi {
-    public static get plugin(): PluginObject<Api> {
-        return {
-            install: (Vue: typeof _Vue, options?: Api): void => {
-                Vue.prototype.$api = options;
-            },
-        };
-    }
-}
-
-export default VueApi.plugin;
+export default {
+    install: (Vue: typeof _Vue, options?: Api): void => {
+        Vue.prototype.$api = options;
+    },
+} as PluginObject<Api>;
