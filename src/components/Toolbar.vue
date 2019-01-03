@@ -8,7 +8,7 @@ file that was distributed with this source code.
 -->
 
 <template>
-  <v-toolbar dark color="primary" app clipped-left>
+  <v-toolbar dark :color="$store.state.darkMode.enabled ? null : 'primary'" app clipped-left>
     <v-scale-transition mode="out-in">
       <v-toolbar-side-icon v-if="!showPreviousButton" @click="drawerButtonAction" key="menu-btn"></v-toolbar-side-icon>
 

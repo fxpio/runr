@@ -13,7 +13,6 @@ file that was distributed with this source code.
       <v-btn
               color="accent"
               key="add"
-              dark
               ripple
               fab
               fixed
@@ -46,6 +45,7 @@ file that was distributed with this source code.
               <v-list-tile-content>
                 <v-list-tile-title v-text="edition.name"></v-list-tile-title>
               </v-list-tile-content>
+
               <v-list-tile-action>
                 <v-btn small icon flat ripple @click.stop="refresh(edition)" class="d-inline-block">
                   <v-icon>refresh</v-icon>
@@ -62,6 +62,7 @@ file that was distributed with this source code.
         </v-layout>
       </v-flex>
     </v-layout>
+
     <loading v-if="loading" :fullscreen="false"></loading>
   </v-container>
 </template>

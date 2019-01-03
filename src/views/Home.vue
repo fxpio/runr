@@ -10,8 +10,8 @@ file that was distributed with this source code.
 <template>
   <v-container fluid fill-height>
     <v-layout column align-center justify-center>
-      <v-icon size="14em" color="accent">directions_run</v-icon>
-      <h1 class="pb-4 accent--text">{{ $t('app.name') }}</h1>
+      <v-icon size="14em" :color="$store.state.darkMode.enabled ? null : 'accent'">directions_run</v-icon>
+      <h1 :class="appNameClass()">{{ $t('app.name') }}</h1>
       <h3>{{ $t('app.description') }}</h3>
       <v-btn color="accent" ripple class="mt-3" v-if="$store.state.edition.all.length === 0" :to="{name: 'edition-add'}">{{ $t('views.editions.add-first') }}</v-btn>
     </v-layout>
@@ -33,6 +33,10 @@ export default class Home extends Vue {
       return {
         title: this.$i18n.t('views.home.title') as string,
       };
+    }
+
+    public appNameClass(): string {
+      return 'pb-4 ' + (this.$store.state.darkMode.enabled ? '' : 'accent--text');
     }
   }
 </script>
