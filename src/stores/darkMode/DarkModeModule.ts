@@ -20,10 +20,10 @@ export class DarkModeModule<R extends DarkModeModuleState> implements Module<Dar
     }
 
     public get state(): DarkModeState {
+        const darkMode: string|null = localStorage.getItem('darkMode:enabled');
+
         return {
-            enabled: null === localStorage.getItem('darkMode:enabled')
-                ? false
-                : 'true' === (localStorage.getItem('darkMode:enabled')),
+            enabled: null === darkMode ? false : 'true' === darkMode,
         };
     }
 
@@ -31,7 +31,7 @@ export class DarkModeModule<R extends DarkModeModuleState> implements Module<Dar
         return {
             toggle(state: DarkModeState, enabled?: boolean): void {
                 state.enabled = undefined === enabled ? !state.enabled : enabled;
-                localStorage.setItem('DarkMode:show', state.enabled ? 'true' : 'false');
+                localStorage.setItem('darkMode:enabled', state.enabled ? 'true' : 'false');
             },
         };
     }
