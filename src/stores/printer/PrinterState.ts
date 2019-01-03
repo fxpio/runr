@@ -11,5 +11,5 @@
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
 export interface PrinterState {
-    closeAfterPrint: boolean|null;
+    closeAfterPrint: boolean;
 }
