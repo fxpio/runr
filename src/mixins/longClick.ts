@@ -16,7 +16,7 @@ import Vue, {ComponentOptions} from 'vue';
  */
 export const createLongClickMixin = (options?: LongClickOptions): ComponentOptions<Vue> => {
     options = options || {};
-    options.duration = options.duration || 1000;
+    options.duration = options.duration || 400;
 
     return {
         mounted(): void {
