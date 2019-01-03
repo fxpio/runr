@@ -8,7 +8,7 @@ file that was distributed with this source code.
 -->
 
 <template>
-  <v-container fluid fill-height>
+  <v-container fill-height>
     <v-fab-transition>
       <v-btn
               color="accent"

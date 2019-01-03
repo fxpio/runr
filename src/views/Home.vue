@@ -8,7 +8,7 @@ file that was distributed with this source code.
 -->
 
 <template>
-  <v-container fluid fill-height>
+  <v-container fill-height>
     <v-layout column align-center justify-center>
       <v-icon size="14em" :color="$store.state.darkMode.enabled ? null : 'accent'">directions_run</v-icon>
       <h1 :class="appNameClass()">{{ $t('app.name') }}</h1>
