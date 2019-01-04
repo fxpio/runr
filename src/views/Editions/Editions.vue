@@ -25,61 +25,63 @@ file that was distributed with this source code.
       </v-btn>
     </v-fab-transition>
 
-    <v-layout justify-space-between row fill-height wrap v-if="!loading">
-      <v-flex xs12>
-        <v-subheader>{{ $t('views.editions.title') }}</v-subheader>
+    <v-fade-transition mode="out-in">
+      <v-layout justify-space-between row fill-height wrap v-if="!loading">
+        <v-flex xs12>
+          <v-subheader>{{ $t('views.editions.title') }}</v-subheader>
 
-        <v-card v-if="$store.state.edition.all.length > 0">
-          <v-list two-line>
-            <swipe-item
-              v-for="edition in $store.state.edition.all"
-              :key="edition.id"
-              @actions-left-opened="refresh(edition)"
-            >
-              <v-btn slot="action-left" class="btn-actions" block depressed color="success"
-                     @click.stop=""
-              >{{ $t('refresh') }}</v-btn>
-
-              <v-btn slot="action-right" class="btn-actions" block depressed color="error"
-                     @click="confirmDeleteEdition(edition)"
-              >{{ $t('delete') }}</v-btn>
-
-              <v-list-tile
-                @click="$store.dispatch('edition/select', edition.id)"
+          <v-card v-if="$store.state.edition.all.length > 0">
+            <v-list two-line>
+              <swipe-item
+                v-for="edition in $store.state.edition.all"
+                :key="edition.id"
+                @actions-left-opened="refresh(edition)"
               >
-                <v-list-tile-action>
-                  <v-scale-transition>
-                    <v-icon v-if="$store.getters['edition/isSelected'](edition.id)" color="pink">star</v-icon>
-                  </v-scale-transition>
-                </v-list-tile-action>
+                <v-btn slot="action-left" class="btn-actions" block depressed color="success"
+                       @click.stop=""
+                >{{ $t('refresh') }}</v-btn>
 
-                <v-list-tile-content>
-                  <v-list-tile-title v-text="edition.name"></v-list-tile-title>
-                </v-list-tile-content>
+                <v-btn slot="action-right" class="btn-actions" block depressed color="error"
+                       @click="confirmDeleteEdition(edition)"
+                >{{ $t('delete') }}</v-btn>
 
-                <v-list-tile-action>
-                  <v-btn small icon flat ripple @click.stop="refresh(edition)" class="d-inline-block">
-                    <v-icon>refresh</v-icon>
-                  </v-btn>
+                <v-list-tile
+                  @click="$store.dispatch('edition/select', edition.id)"
+                >
+                  <v-list-tile-action>
+                    <v-scale-transition>
+                      <v-icon v-if="$store.getters['edition/isSelected'](edition.id)" color="pink">star</v-icon>
+                    </v-scale-transition>
+                  </v-list-tile-action>
 
-                  <v-btn small icon flat ripple @click.stop="deleteEdition(edition, $event)" class="d-inline-block">
-                    <v-icon color="red">delete</v-icon>
-                  </v-btn>
-                </v-list-tile-action>
-              </v-list-tile>
-            </swipe-item>
-          </v-list>
-        </v-card>
+                  <v-list-tile-content>
+                    <v-list-tile-title v-text="edition.name"></v-list-tile-title>
+                  </v-list-tile-content>
 
-        <v-layout column align-center justify-center v-else>
-          <v-icon size="14em" color="accent">flag</v-icon>
-          <h2 class="pb-4 grey--text">{{ $t('views.editions.no-items') }}</h2>
-          <v-btn color="accent" ripple class="mt-3" :to="{name: 'edition-add'}">{{ $t('views.editions.add-first') }}</v-btn>
-        </v-layout>
-      </v-flex>
-    </v-layout>
+                  <v-list-tile-action>
+                    <v-btn small icon flat ripple @click.stop="refresh(edition)" class="d-inline-block">
+                      <v-icon>refresh</v-icon>
+                    </v-btn>
 
-    <loading v-if="loading" :fullscreen="false"></loading>
+                    <v-btn small icon flat ripple @click.stop="deleteEdition(edition, $event)" class="d-inline-block">
+                      <v-icon color="red">delete</v-icon>
+                    </v-btn>
+                  </v-list-tile-action>
+                </v-list-tile>
+              </swipe-item>
+            </v-list>
+          </v-card>
+
+          <v-layout column align-center justify-center v-else>
+            <v-icon size="14em" color="accent">flag</v-icon>
+            <h2 class="pb-4 grey--text">{{ $t('views.editions.no-items') }}</h2>
+            <v-btn color="accent" ripple class="mt-3" :to="{name: 'edition-add'}">{{ $t('views.editions.add-first') }}</v-btn>
+          </v-layout>
+        </v-flex>
+      </v-layout>
+
+      <loading v-if="loading" :fullscreen="false"></loading>
+    </v-fade-transition>
   </v-container>
 </template>
 
