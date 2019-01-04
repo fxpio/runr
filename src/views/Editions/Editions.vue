@@ -34,7 +34,12 @@ file that was distributed with this source code.
             <swipe-item
               v-for="edition in $store.state.edition.all"
               :key="edition.id"
+              @actions-left-opened="refresh(edition)"
             >
+              <v-btn slot="action-left" class="btn-actions" block depressed color="success"
+                     @click.stop=""
+              >{{ $t('refresh') }}</v-btn>
+
               <v-btn slot="action-right" class="btn-actions" block depressed color="error"
                      @click="confirmDeleteEdition(edition)"
               >{{ $t('delete') }}</v-btn>
