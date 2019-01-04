@@ -46,10 +46,28 @@ file that was distributed with this source code.
 
       [key: string]: any;
 
+      public opened: boolean = false;
+
+      public openedLeft: boolean = false;
+
+      public openedRight: boolean = false;
+
+      public drag: boolean = false;
+
+      public dragLeft: boolean = false;
+
+      public dragRight: boolean = false;
+
       public get classes(): Record<string, boolean> {
           return {
               'swipe-item': true,
               'swipe-item--disabled': this.disabled,
+              'action-opened': this.opened,
+              'left-action-opened': this.openedLeft,
+              'right-action-opened': this.openedRight,
+              'drag': this.drag,
+              'drag-left': this.dragLeft,
+              'drag-right': this.dragRight,
               ...this.themeClasses,
           };
       }
@@ -87,32 +105,22 @@ file that was distributed with this source code.
       }
 
       public closeTransitionEndHandler(): void {
-          if (!this.$el.classList.contains('action-opened')) {
-              this.$el.classList.remove('left-action-opened', 'right-action-opened');
+          if (!this.opened) {
+              this.openedLeft = false;
+              this.openedRight = false;
           }
 
-          if (!this.$el.classList.contains('drag')) {
-              this.$el.classList.remove('drag-left', 'drag-right');
+          if (!this.drag) {
+              this.dragLeft = false;
+              this.dragRight = false;
           }
 
           (this.contentEl as HTMLElement).removeEventListener('transitionend', this.closeTransitionEndHandler);
       }
 
-      public isOpen(): boolean {
-          return this.$el.classList.contains('action-opened');
-      }
-
-      public isLeftActionOpen(): boolean {
-          return this.$el.classList.contains('left-action-opened');
-      }
-
-      public isRightActionOpen(): boolean {
-          return this.$el.classList.contains('right-action-opened');
-      }
-
       public closeAction(): void {
           const el = (this.contentEl as HTMLElement);
-          this.$el.classList.remove('action-opened');
+          this.opened = false;
           el.style.transform = '';
           el.addEventListener('transitionend', this.closeTransitionEndHandler);
       }
@@ -120,27 +128,29 @@ file that was distributed with this source code.
       public openLeftAction(): void {
           const max = (this.leftActionsEl as HTMLElement).offsetWidth;
 
-          if (this.isOpen()) {
+          if (this.opened) {
               this.closeAction();
           }
 
-          this.$el.classList.add('action-opened', 'left-action-opened');
+          this.opened = true;
+          this.openedLeft = true;
           (this.contentEl as HTMLElement).style.transform = 'translateX(' + Math.round(max) + 'px)';
       }
 
       public openRightAction(): void {
           const max = (this.rightActionsEl as HTMLElement).offsetWidth;
 
-          if (this.isOpen()) {
+          if (this.opened) {
               this.closeAction();
           }
 
-          this.$el.classList.add('action-opened', 'right-action-opened');
+          this.opened = true;
+          this.openedRight = true;
           (this.contentEl as HTMLElement).style.transform = 'translateX(' + Math.round(-max) + 'px)';
       }
 
       public toggleLeftAction(): void {
-          if (this.isOpen()) {
+          if (this.opened) {
               this.closeAction();
           } else {
               this.openLeftAction();
@@ -148,7 +158,7 @@ file that was distributed with this source code.
       }
 
       public toggleRightAction(): void {
-          if (this.isOpen()) {
+          if (this.opened) {
               this.closeAction();
           } else {
               this.openRightAction();
@@ -167,23 +177,17 @@ file that was distributed with this source code.
           const elActRight = this.rightActionsEl as HTMLElement;
 
           // drag start
-          if (!this.maxDrag) {
+          if (!this.drag) {
               if (Math.abs(e.deltaX as number) <= Math.abs(e.deltaY as number)) {
                   return;
               }
 
-              let direction = Hammer.DIRECTION_LEFT === e.direction ? 'right' : 'left';
+              (el.style as any)['user-select'] = 'none';
+              this.drag = true;
+              this.dragLeft = this.openedLeft;
+              this.dragRight = this.openedRight;
               this.dragStartPosition = getTargetPosition(el);
               this.maxDrag = new MaxDragAction(elActLeft.offsetWidth, elActRight.offsetWidth);
-
-              if (this.isLeftActionOpen()) {
-                  direction = 'left';
-              } else if (this.isRightActionOpen()) {
-                  direction = 'right';
-              }
-
-              this.$el.classList.add('drag', 'drag-' + direction);
-              (el.style as any)['user-select'] = 'none';
           }
 
           // drag
@@ -200,33 +204,32 @@ file that was distributed with this source code.
           const elActLeft = this.leftActionsEl as HTMLElement;
           const elActRight = this.rightActionsEl as HTMLElement;
           const lastPosition = getTargetPosition(el);
-          const opened = this.isOpen();
 
           e.preventDefault();
-          this.$el.classList.remove('drag');
           (el.style as any)['user-select'] = '';
+          this.drag = false;
           delete this.maxDrag;
           delete this.dragStartPosition;
 
           const width = lastPosition > 0 ? elActLeft.offsetWidth : elActRight.offsetWidth;
-          const movement = Math.abs((opened ? -width : 0) + Math.abs(lastPosition));
+          const movement = Math.abs((this.opened ? -width : 0) + Math.abs(lastPosition));
           const openActionName = 'open' + (lastPosition > 0 ? 'Left' : 'Right') + 'Action';
 
           if ((movement / width) > 0.3) {
-              if (opened) {
+              if (this.opened) {
                   this.closeAction();
               } else {
                   this[openActionName]();
               }
           } else {
               if (Math.abs(e.velocityX) >= 0.5) {
-                  if (opened) {
+                  if (this.opened) {
                       this.closeAction();
                   } else {
                       this[openActionName]();
                   }
               } else {
-                  if (opened) {
+                  if (this.opened) {
                       this[openActionName]();
                   } else {
                       this.closeAction();
