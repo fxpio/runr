@@ -50,6 +50,7 @@ file that was distributed with this source code.
       {divider: true},
       {heading: 'menu.configuration'},
       {icon: 'flag', text: 'views.editions.title', route: {name: 'editions'}},
+      {icon: 'settings', text: 'views.settings.title', route: {name: 'settings'}},
     ];
 
     public metaInfo(): MetaInfo {

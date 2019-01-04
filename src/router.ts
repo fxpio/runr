@@ -47,6 +47,14 @@ export default new Router({
       },
     },
     {
+      path: '/settings',
+      name: 'settings',
+      components: {
+        default: () => import(/* webpackChunkName: "settings" */ '@/views/Settings.vue'),
+        toolbar: () => import(/* webpackChunkName: "settings" */'@/components/Toolbar.vue'),
+      },
+    },
+    {
       path: '*',
       name: 'not-found',
       components: {
