@@ -116,6 +116,19 @@ file that was distributed with this source code.
           }
 
           (this.contentEl as HTMLElement).removeEventListener('transitionend', this.closeTransitionEndHandler);
+          this.$emit('actions-closed');
+      }
+
+      public openTransitionEndHandler(): void {
+          if (this.openedLeft) {
+              this.$emit('actions-left-opened');
+          }
+
+          if (this.openedRight) {
+              this.$emit('actions-right-opened');
+          }
+
+          this.$emit('actions-opened');
       }
 
       public closeAction(): void {
@@ -126,7 +139,9 @@ file that was distributed with this source code.
       }
 
       public openLeftAction(): void {
+          const el = (this.contentEl as HTMLElement);
           const max = (this.leftActionsEl as HTMLElement).offsetWidth;
+          const lastPosition = getTargetPosition(el);
 
           if (this.opened) {
               this.closeAction();
@@ -134,11 +149,20 @@ file that was distributed with this source code.
 
           this.opened = true;
           this.openedLeft = true;
-          (this.contentEl as HTMLElement).style.transform = 'translateX(' + Math.round(max) + 'px)';
+
+          if (Math.abs(lastPosition) >= max) {
+              this.openTransitionEndHandler();
+          } else {
+              el.addEventListener('transitionend', this.openTransitionEndHandler);
+          }
+
+          el.style.transform = 'translateX(' + Math.round(max) + 'px)';
       }
 
       public openRightAction(): void {
+          const el = (this.contentEl as HTMLElement);
           const max = (this.rightActionsEl as HTMLElement).offsetWidth;
+          const lastPosition = getTargetPosition(el);
 
           if (this.opened) {
               this.closeAction();
@@ -146,7 +170,14 @@ file that was distributed with this source code.
 
           this.opened = true;
           this.openedRight = true;
-          (this.contentEl as HTMLElement).style.transform = 'translateX(' + Math.round(-max) + 'px)';
+
+          if (Math.abs(lastPosition) >= max) {
+              this.openTransitionEndHandler();
+          } else {
+              el.addEventListener('transitionend', this.openTransitionEndHandler);
+          }
+
+          el.style.transform = 'translateX(' + Math.round(-max) + 'px)';
       }
 
       public toggleLeftAction(): void {
