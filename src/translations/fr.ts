@@ -16,6 +16,7 @@ export default {
     'sw.app.updated': 'Une nouvelle version de l\'application est disponible. Relancez l\'application pour l\'utiliser',
     'close': 'Fermer',
     'cancel': 'Annuler',
+    'delete': 'Supprimer',
     'add': 'Ajouter',
     'add.edition': 'Ajouter une édition',
     'menu.label': 'Etiquettes',

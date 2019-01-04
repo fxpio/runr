@@ -31,27 +31,38 @@ file that was distributed with this source code.
 
         <v-card v-if="$store.state.edition.all.length > 0">
           <v-list two-line>
-            <v-list-tile
+            <swipe-item
               v-for="edition in $store.state.edition.all"
               :key="edition.id"
-              @click="$store.dispatch('edition/select', edition.id)"
             >
-              <v-list-tile-action>
-                <v-scale-transition>
-                  <v-icon v-if="$store.getters['edition/isSelected'](edition.id)" color="pink">star</v-icon>
-                </v-scale-transition>
-              </v-list-tile-action>
+              <v-btn slot="action-right" class="btn-actions" block depressed color="error"
+                     @click="confirmDeleteEdition(edition)"
+              >{{ $t('delete') }}</v-btn>
 
-              <v-list-tile-content>
-                <v-list-tile-title v-text="edition.name"></v-list-tile-title>
-              </v-list-tile-content>
+              <v-list-tile
+                @click="$store.dispatch('edition/select', edition.id)"
+              >
+                <v-list-tile-action>
+                  <v-scale-transition>
+                    <v-icon v-if="$store.getters['edition/isSelected'](edition.id)" color="pink">star</v-icon>
+                  </v-scale-transition>
+                </v-list-tile-action>
 
-              <v-list-tile-action>
-                <v-btn small icon flat ripple @click.stop="refresh(edition)" class="d-inline-block">
-                  <v-icon>refresh</v-icon>
-                </v-btn>
-              </v-list-tile-action>
-            </v-list-tile>
+                <v-list-tile-content>
+                  <v-list-tile-title v-text="edition.name"></v-list-tile-title>
+                </v-list-tile-content>
+
+                <v-list-tile-action>
+                  <v-btn small icon flat ripple @click.stop="refresh(edition)" class="d-inline-block">
+                    <v-icon>refresh</v-icon>
+                  </v-btn>
+
+                  <v-btn small icon flat ripple @click.stop="deleteEdition(edition, $event)" class="d-inline-block">
+                    <v-icon color="red">delete</v-icon>
+                  </v-btn>
+                </v-list-tile-action>
+              </v-list-tile>
+            </swipe-item>
           </v-list>
         </v-card>
 
@@ -71,9 +82,11 @@ file that was distributed with this source code.
   import {Credentials} from '@/api/Credentials';
   import {Edition} from '@/api/services/Edition';
   import Loading from '@/components/Loading.vue';
+  import SwipeItem from '@/components/SwipeItem.vue';
   import {IEdition} from '@/db/tables/IEdition';
   import {AjaxContent} from '@/mixins/AjaxContent';
   import {Util} from '@/stores/edition/Util';
+  import {getParent} from '@/utils/element';
   import {mixins} from 'vue-class-component';
   import {MetaInfo} from 'vue-meta';
   import {Component} from 'vue-property-decorator';
@@ -82,7 +95,7 @@ file that was distributed with this source code.
    * @author François Pluchino <francois.pluchino@gmail.com>
    */
   @Component({
-    components: {Loading},
+    components: {SwipeItem, Loading},
   })
   export default class Editions extends mixins(AjaxContent) {
     public metaInfo(): MetaInfo {
@@ -105,6 +118,20 @@ file that was distributed with this source code.
 
         return uEdition;
       });
+    }
+
+    public deleteEdition(edition: IEdition, e: Event): void {
+      const $parent = getParent<SwipeItem>(e.target as HTMLElement, SwipeItem);
+
+      if ($parent) {
+        $parent.toggleRightAction();
+      }
+    }
+
+    public async confirmDeleteEdition(edition: IEdition): Promise<void> {
+      this.loading = true;
+      await this.$store.dispatch('edition/delete', edition.id);
+      this.loading = false;
     }
   }
 </script>
