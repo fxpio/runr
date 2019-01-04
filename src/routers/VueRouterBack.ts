@@ -16,16 +16,10 @@ import _Vue, {PluginObject} from 'vue';
  *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-class VueRouterBack {
-    public static get plugin(): PluginObject<RouterBackOptions> {
-        return {
-            install: (Vue: typeof _Vue, options?: RouterBackOptions): void => {
-                if (options) {
-                    Vue.prototype.$routerBack = new RouterBack(options);
-                }
-            },
-        };
-    }
-}
-
-export default VueRouterBack.plugin;
+export default {
+    install: (Vue: typeof _Vue, options?: RouterBackOptions): void => {
+        if (options) {
+            Vue.prototype.$routerBack = new RouterBack(options);
+        }
+    },
+} as PluginObject<RouterBackOptions>;
