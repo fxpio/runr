@@ -1,0 +1,75 @@
+/*
+ * This file is part of the BibScan for Njuko package.
+ *
+ * (c) François Pluchino <francois.pluchino@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+@import '../mixins/theme.scss';
+@import '../variables.scss';
+@import '../theme.scss';
+@import '../mixins/utils.scss';
+
+.swipe-item {
+  display: flex;
+  position: relative;
+  overflow-x: hidden;
+
+  .swipe-item-actions {
+    .btn-actions {
+      height: 100%;
+      margin: 0;
+      border-radius: 0;
+    }
+  }
+}
+
+.swipe-item-content {
+  flex-grow: 1;
+  z-index: 1;
+  width: 100%;
+  transition: background $primary-transition, transform $primary-transition;
+
+  .swipe-item.drag & {
+    transition: background $primary-transition;
+  }
+}
+
+.swipe-item-actions {
+  position: absolute;
+  height: 100%;
+  display: flex;
+  transition: background $primary-transition;
+
+  &.left {
+    left: 0;
+
+    .swipe-item.right-action-opened &,
+    .swipe-item.drag-right & {
+      display: none;
+    }
+  }
+
+  &.right {
+    right: 0;
+
+    .swipe-item.left-action-opened &,
+    .swipe-item.drag-left & {
+      display: none;
+    }
+  }
+}
+
+@include theme-light('swipe-item') {
+  .swipe-item-content {
+    background-color: map-deep-get($material-light, 'cards');
+  }
+}
+
+@include theme-dark('swipe-item') {
+  .swipe-item-content {
+    background-color: map-deep-get($material-dark, 'cards');
+  }
+}
