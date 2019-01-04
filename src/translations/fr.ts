@@ -17,6 +17,7 @@ export default {
     'close': 'Fermer',
     'cancel': 'Annuler',
     'delete': 'Supprimer',
+    'refresh': 'Actualiser',
     'add': 'Ajouter',
     'add.edition': 'Ajouter une édition',
     'menu.label': 'Etiquettes',

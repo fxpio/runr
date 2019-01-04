@@ -17,6 +17,7 @@ export default {
     'close': 'Close',
     'cancel': 'Cancel',
     'delete': 'Delete',
+    'refresh': 'Refresh',
     'add': 'Add',
     'add.edition': 'Add an edition',
     'menu.label': 'Label',
