@@ -10,6 +10,7 @@
 /* tslint:disable:no-empty-interface */
 
 import {ApiService, ApiServiceConstructor} from '@/api/ApiService';
+import {Competition} from '@/api/services/Competition';
 import {Edition} from '@/api/services/Edition';
 import {ApiServiceNotFoundError} from '@/errors/ApiServiceNotFoundError';
 import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse} from 'axios';
@@ -20,6 +21,7 @@ import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse} from 'axios';
 export class Api {
     public static serviceConstructors: ApiServiceConstructor[] = [
         Edition,
+        Competition,
     ];
 
     private readonly axios: AxiosInstance;

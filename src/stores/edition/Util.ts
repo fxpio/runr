@@ -7,8 +7,11 @@
  * file that was distributed with this source code.
  */
 
+import {CompetitionResponse} from '@/api/models/responses/CompetitionResponse';
 import {EditionResponse} from '@/api/models/responses/EditionResponse';
 import {ICompetition} from '@/db/tables/ICompetition';
+import {ICompetitionSimple} from '@/db/tables/ICompetitionSimple';
+import {ICompetitionSport} from '@/db/tables/ICompetitionSport';
 import {IEdition} from '@/db/tables/IEdition';
 import {EditionState} from '@/stores/edition/EditionState';
 import {Commit} from 'vuex';
@@ -46,13 +49,13 @@ export class Util {
     }
 
     public static convertEdition(edition: EditionResponse, apiKey: string): IEdition {
-        const dCompetitions: ICompetition[] = [];
+        const dCompetitions: ICompetitionSimple[] = [];
 
         for (const comp of edition.competitions) {
             dCompetitions.push({
                 id: Number(comp.id),
                 name: comp.name,
-            } as ICompetition);
+            } as ICompetitionSimple);
         }
 
         return {
@@ -62,5 +65,29 @@ export class Util {
             competitions: dCompetitions,
             apiKey,
         } as IEdition;
+    }
+
+    public static convertCompetitions(competitions: CompetitionResponse[], editionId: number): ICompetition[] {
+        const dCompetitions: ICompetition[] = [];
+
+        for (const comp of competitions) {
+            dCompetitions.push({
+                editionId,
+                id: Number(comp.id),
+                name: comp.name,
+                openRegistrationDate: comp.openRegistrationDate,
+                closeRegistrationDate: comp.closeRegistrationDate,
+                registrationsModificationLimit: comp.registrationsModificationLimit,
+                startBirthDate: comp.startBirthDate,
+                endBirthDate: comp.endBirthDate,
+                participantLimit: comp.participantLimit,
+                sportsAndDistances: comp.sportsAndDistances as ICompetitionSport[],
+                heightlevels: comp.heightlevels,
+                competitionType: comp.competitionType,
+                startDate: comp.startDate,
+            } as ICompetition);
+        }
+
+        return dCompetitions;
     }
 }

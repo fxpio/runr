@@ -7,6 +7,7 @@
  * file that was distributed with this source code.
  */
 
+import {ICompetition} from '@/db/tables/ICompetition';
 import {IEdition} from '@/db/tables/IEdition';
 import Dexie from 'dexie';
 
@@ -16,11 +17,19 @@ import Dexie from 'dexie';
 export class Database extends Dexie {
     public editions!: Dexie.Table<IEdition, number>;
 
+    public competitions!: Dexie.Table<ICompetition, number>;
+
     constructor() {
         super('Database');
 
         this.version(1).stores({
             editions: 'id, name, currency, apiKey, competitions, distance, distanceUnit',
+        });
+
+        this.version(2).stores({
+            competitions: 'id, editionId, name, openRegistrationDate, closeRegistrationDate, ' +
+                'registrationsModificationLimit, startBirthDate, endBirthDate, participantLimit, ' +
+                'sportsAndDistances, heightlevels, competitionType, startDate',
         });
     }
 }

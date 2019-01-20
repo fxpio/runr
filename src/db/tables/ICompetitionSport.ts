@@ -7,15 +7,11 @@
  * file that was distributed with this source code.
  */
 
-import {ICompetitionSimple} from '@/db/tables/ICompetitionSimple';
-
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface IEdition {
-    id: number;
+export interface ICompetitionSport {
     name: string;
-    currency: string;
-    apiKey: string;
-    competitions: ICompetitionSimple[];
+    distance: string;
+    unit: string;
 }

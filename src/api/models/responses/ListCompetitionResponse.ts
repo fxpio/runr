@@ -7,15 +7,13 @@
  * file that was distributed with this source code.
  */
 
-import {ICompetitionSimple} from '@/db/tables/ICompetitionSimple';
+import {CompetitionResponse} from '@/api/models/responses/CompetitionResponse';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface IEdition {
+export interface ListCompetitionResponse {
     id: number;
     name: string;
-    currency: string;
-    apiKey: string;
-    competitions: ICompetitionSimple[];
+    competitions: CompetitionResponse[];
 }

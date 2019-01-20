@@ -10,8 +10,10 @@
 import {Api} from '@/api/Api';
 import {Canceler} from '@/api/Canceler';
 import {Credentials} from '@/api/Credentials';
+import {Competition} from '@/api/services/Competition';
 import {Edition} from '@/api/services/Edition';
 import {Database} from '@/db/Database';
+import {ICompetition} from '@/db/tables/ICompetition';
 import {IEdition} from '@/db/tables/IEdition';
 import {EditionModuleState} from '@/stores/edition/EditionModuleState';
 import {EditionState} from '@/stores/edition/EditionState';
@@ -157,12 +159,17 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
                 commit('SELECT_CURRENT', null);
             },
 
+            async putCompetitions({commit, state}, competitions: ICompetition[]): Promise<void> {
+                await self.db.competitions.bulkPut(competitions);
+            },
+
             async put({commit, state}, edition: IEdition): Promise<void> {
                 await self.db.editions.put(edition);
                 commit('ADD_EDITION', edition);
             },
 
             async delete({commit, state}, id: number): Promise<void> {
+                await self.db.competitions.where('editionId').equals(id).delete();
                 await self.db.editions.where('id').equals(id).delete();
                 commit('REMOVE_EDITION', id);
 
@@ -183,8 +190,13 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
 
                     const redirect = self.router.currentRoute.query.redirect as string;
                     const res = await self.api.get<Edition>(Edition).ping(credentials, self.previousRequest);
+                    self.previousRequest = new Canceler();
+                    const resCompetitions = await self.api.get<Competition>(Competition).list(credentials,
+                        self.previousRequest);
                     const edition = Util.convertEdition(res.edition, credentials.apiKey);
+                    const competitions = Util.convertCompetitions(resCompetitions.competitions, edition.id);
                     self.previousRequest = undefined;
+                    await self.db.competitions.bulkPut(competitions);
                     await self.db.editions.put(edition);
                     commit('ADD_EDITION', edition);
                     commit('SELECT_CURRENT', edition);

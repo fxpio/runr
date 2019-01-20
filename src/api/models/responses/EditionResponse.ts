@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import {CompetitionResponse} from '@/api/models/responses/CompetitionResponse';
+import {CompetitionSimpleResponse} from '@/api/models/responses/CompetitionSimpleResponse';
 import {UserResponse} from '@/api/models/responses/UserResponse';
 
 /**
@@ -17,6 +17,6 @@ export interface EditionResponse {
     id: number;
     name: string;
     currency: string;
-    competitions: CompetitionResponse[];
+    competitions: CompetitionSimpleResponse[];
     users: UserResponse[];
 }
