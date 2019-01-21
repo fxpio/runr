@@ -7,15 +7,14 @@
  * file that was distributed with this source code.
  */
 
+import {ICompetitionSimple} from '@/db/tables/ICompetitionSimple';
 import {ICompetitionSport} from '@/db/tables/ICompetitionSport';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface ICompetition {
-    id: number;
+export interface ICompetition extends ICompetitionSimple {
     editionId: number;
-    name: string;
     openRegistrationDate: string;
     closeRegistrationDate: string;
     registrationsModificationLimit: string;

@@ -7,14 +7,13 @@
  * file that was distributed with this source code.
  */
 
+import {CompetitionSimpleResponse} from '@/api/models/responses/CompetitionSimpleResponse';
 import {CompetitionSportResponse} from '@/api/models/responses/CompetitionSportResponse';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface CompetitionResponse {
-    id: number;
-    name: string;
+export interface CompetitionResponse extends CompetitionSimpleResponse {
     openRegistrationDate: string;
     closeRegistrationDate: string;
     registrationsModificationLimit: string;
