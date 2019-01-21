@@ -10,7 +10,6 @@
 import {Api} from '@/api/Api';
 import {Canceler} from '@/api/Canceler';
 import {Credentials} from '@/api/Credentials';
-import {Competition} from '@/api/services/Competition';
 import {Edition} from '@/api/services/Edition';
 import {Database} from '@/db/Database';
 import {ICompetition} from '@/db/tables/ICompetition';
@@ -191,7 +190,7 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
                     const redirect = self.router.currentRoute.query.redirect as string;
                     const res = await self.api.get<Edition>(Edition).ping(credentials, self.previousRequest);
                     self.previousRequest = new Canceler();
-                    const resCompetitions = await self.api.get<Competition>(Competition).list(credentials,
+                    const resCompetitions = await self.api.get<Edition>(Edition).listCompetitions(credentials,
                         self.previousRequest);
                     const edition = Util.convertEdition(res.edition, credentials.apiKey);
                     const competitions = Util.convertCompetitions(resCompetitions.competitions, edition.id);

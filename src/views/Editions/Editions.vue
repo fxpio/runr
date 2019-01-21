@@ -88,7 +88,6 @@ file that was distributed with this source code.
 <script lang="ts">
   import {Canceler} from '@/api/Canceler';
   import {Credentials} from '@/api/Credentials';
-  import {Competition} from '@/api/services/Competition';
   import {Edition} from '@/api/services/Edition';
   import Loading from '@/components/Loading.vue';
   import SwipeItem from '@/components/SwipeItem.vue';
@@ -122,7 +121,7 @@ file that was distributed with this source code.
         const credentials = {identifier: String(edition.id), apiKey: edition.apiKey} as Credentials;
         const res = await this.$api.get<Edition>(Edition).ping(credentials, this.previousRequest);
         this.previousRequest = new Canceler();
-        const resCompetitions = await this.$api.get<Competition>(Competition).list(credentials, this.previousRequest);
+        const resCompetitions = await this.$api.get<Edition>(Edition).listCompetitions(credentials, this.previousRequest);
         const uEdition = Util.convertEdition(res.edition, credentials.apiKey);
         const uCompetitions = Util.convertCompetitions(resCompetitions.competitions, edition.id);
 

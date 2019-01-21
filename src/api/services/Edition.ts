@@ -10,6 +10,7 @@
 import {BaseService} from '@/api/BaseService';
 import {Canceler} from '@/api/Canceler';
 import {Credentials} from '@/api/Credentials';
+import {ListCompetitionResponse} from '@/api/models/responses/ListCompetitionResponse';
 import {PingEditionResponse} from '@/api/models/responses/PingEditionResponse';
 
 /**
@@ -36,5 +37,23 @@ export class Edition extends BaseService {
                 Authorization: credentials.apiKey,
             },
         }, canceler) as PingEditionResponse;
+    }
+
+    /**
+     * Get the competitions of the edition.
+     */
+    public async listCompetitions(credentials?: Credentials, canceler?: Canceler): Promise<ListCompetitionResponse> {
+        const headers: Record<string, any> = {};
+
+        if (credentials) {
+            headers.Edition = credentials.identifier;
+            headers.Authorization = credentials.apiKey;
+        }
+
+        return await this.request<ListCompetitionResponse>({
+            method: 'GET',
+            url: '/api-registrations/competition',
+            headers,
+        }, canceler) as ListCompetitionResponse;
     }
 }
