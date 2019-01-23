@@ -106,7 +106,8 @@ file that was distributed with this source code.
     public async ping(): Promise<void> {
       if (await this.$validator.validateAll()) {
         try {
-          await this.$store.dispatch('edition/ping', new ApiCredentials(this.identifier, this.apiKey));
+          await this.$store.dispatch('edition/ping', new ApiCredentials(String(this.identifier),
+                  String(this.apiKey)));
         } catch (e) {
           this.formAlert = getRequestErrorMessage(this, e);
         }
