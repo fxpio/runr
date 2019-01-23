@@ -10,7 +10,5 @@
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface Credentials {
-    identifier: string;
-    apiKey: string;
+export class Credentials {
 }

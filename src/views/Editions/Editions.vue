@@ -87,7 +87,7 @@ file that was distributed with this source code.
 
 <script lang="ts">
   import {Canceler} from '@/api/Canceler';
-  import {Credentials} from '@/api/Credentials';
+  import {ApiCredentials} from '@/api/credentials/ApiCredentials';
   import {Edition} from '@/api/services/Edition';
   import Loading from '@/components/Loading.vue';
   import SwipeItem from '@/components/SwipeItem.vue';
@@ -118,7 +118,7 @@ file that was distributed with this source code.
 
     public async refresh(edition: IEdition): Promise<void> {
       await this.fetchData(async (): Promise<IEdition> => {
-        const credentials = {identifier: String(edition.id), apiKey: edition.apiKey} as Credentials;
+        const credentials = new ApiCredentials(String(edition.id), edition.apiKey);
         const res = await this.$api.get<Edition>(Edition).ping(credentials, this.previousRequest);
 
         this.previousRequest = new Canceler();

@@ -9,7 +9,7 @@
 
 import {Api} from '@/api/Api';
 import {Canceler} from '@/api/Canceler';
-import {Credentials} from '@/api/Credentials';
+import {ApiCredentials} from '@/api/credentials/ApiCredentials';
 import {Edition} from '@/api/services/Edition';
 import {Database} from '@/db/Database';
 import {ICompetition} from '@/db/tables/ICompetition';
@@ -209,7 +209,7 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
                 }
             },
 
-            async ping({commit, state}, credentials: Credentials): Promise<void> {
+            async ping({commit, state}, credentials: ApiCredentials): Promise<void> {
                 commit('PING');
 
                 try {

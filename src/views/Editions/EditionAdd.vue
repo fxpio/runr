@@ -72,7 +72,7 @@ file that was distributed with this source code.
 </template>
 
 <script lang="ts">
-  import {Credentials} from '@/api/Credentials';
+  import {ApiCredentials} from '@/api/credentials/ApiCredentials';
   import Loading from '@/components/Loading.vue';
   import {getRequestErrorMessage} from '@/utils/error';
   import {MetaInfo} from 'vue-meta';
@@ -106,10 +106,7 @@ file that was distributed with this source code.
     public async ping(): Promise<void> {
       if (await this.$validator.validateAll()) {
         try {
-          await this.$store.dispatch('edition/ping', {
-            identifier: this.identifier,
-            apiKey: this.apiKey,
-          } as Credentials);
+          await this.$store.dispatch('edition/ping', new ApiCredentials(this.identifier, this.apiKey));
         } catch (e) {
           this.formAlert = getRequestErrorMessage(this, e);
         }

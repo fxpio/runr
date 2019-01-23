@@ -9,7 +9,7 @@
 
 import {BaseService} from '@/api/BaseService';
 import {Canceler} from '@/api/Canceler';
-import {Credentials} from '@/api/Credentials';
+import {ApiCredentials} from '@/api/credentials/ApiCredentials';
 import {FieldResponse} from '@/api/models/responses/FieldResponse';
 import {ListCompetitionResponse} from '@/api/models/responses/ListCompetitionResponse';
 import {PingEditionResponse} from '@/api/models/responses/PingEditionResponse';
@@ -28,7 +28,7 @@ export class Edition extends BaseService {
     /**
      * Get the editions of the organization.
      */
-    public async ping(credentials: Credentials,
+    public async ping(credentials: ApiCredentials,
                       canceler?: Canceler): Promise<PingEditionResponse> {
         return await this.request<PingEditionResponse>({
             method: 'GET',
@@ -43,7 +43,7 @@ export class Edition extends BaseService {
     /**
      * Get the competitions of the edition.
      */
-    public async listCompetitions(credentials?: Credentials, canceler?: Canceler): Promise<ListCompetitionResponse> {
+    public async listCompetitions(credentials?: ApiCredentials, canceler?: Canceler): Promise<ListCompetitionResponse> {
         const headers: Record<string, any> = {};
 
         if (credentials) {
@@ -61,7 +61,7 @@ export class Edition extends BaseService {
     /**
      * Get the form fields of the edition.
      */
-    public async listFields(credentials?: Credentials, canceler?: Canceler): Promise<Record<number, FieldResponse>> {
+    public async listFields(credentials?: ApiCredentials, canceler?: Canceler): Promise<Record<number, FieldResponse>> {
         const headers: Record<string, any> = {};
 
         if (credentials) {
