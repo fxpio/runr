@@ -14,6 +14,7 @@ import {Edition} from '@/api/services/Edition';
 import {Database} from '@/db/Database';
 import {ICompetition} from '@/db/tables/ICompetition';
 import {IEdition} from '@/db/tables/IEdition';
+import {IField} from '@/db/tables/IField';
 import {EditionModuleState} from '@/stores/edition/EditionModuleState';
 import {EditionState} from '@/stores/edition/EditionState';
 import {Util} from '@/stores/edition/Util';
@@ -158,6 +159,23 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
                 commit('SELECT_CURRENT', null);
             },
 
+            async putFields({commit, state}, fields: IField[]): Promise<void> {
+                if (fields.length > 0) {
+                    const fieldIds: number[] = [];
+                    for (const field of fields) {
+                        fieldIds.push(field.id);
+                    }
+
+                    await self.db.fields.where('editionId').equals(fields[0].editionId)
+                        .and((field: IField): boolean => {
+                            return -1 === fieldIds.indexOf(field.id);
+                        })
+                        .delete();
+                }
+
+                await self.db.fields.bulkPut(fields);
+            },
+
             async putCompetitions({commit, state}, competitions: ICompetition[]): Promise<void> {
                 await self.db.competitions.bulkPut(competitions);
             },
@@ -168,6 +186,7 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
             },
 
             async delete({commit, state}, id: number): Promise<void> {
+                await self.db.fields.where('editionId').equals(id).delete();
                 await self.db.competitions.where('editionId').equals(id).delete();
                 await self.db.editions.where('id').equals(id).delete();
                 commit('REMOVE_EDITION', id);
@@ -186,15 +205,23 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
                     }
 
                     self.previousRequest = new Canceler();
-
                     const redirect = self.router.currentRoute.query.redirect as string;
                     const res = await self.api.get<Edition>(Edition).ping(credentials, self.previousRequest);
+
                     self.previousRequest = new Canceler();
                     const resCompetitions = await self.api.get<Edition>(Edition).listCompetitions(credentials,
                         self.previousRequest);
+
+                    self.previousRequest = new Canceler();
+                    const resFields = await self.api.get<Edition>(Edition).listFields(credentials,
+                        self.previousRequest);
+
                     const edition = Util.convertEdition(res.edition, credentials.apiKey);
                     const competitions = Util.convertCompetitions(resCompetitions.competitions, edition.id);
+                    const fields = Util.convertFields(resFields, edition.id);
+
                     self.previousRequest = undefined;
+                    await self.db.fields.bulkPut(fields);
                     await self.db.competitions.bulkPut(competitions);
                     await self.db.editions.put(edition);
                     commit('ADD_EDITION', edition);

@@ -120,11 +120,18 @@ file that was distributed with this source code.
       await this.fetchData(async (): Promise<IEdition> => {
         const credentials = {identifier: String(edition.id), apiKey: edition.apiKey} as Credentials;
         const res = await this.$api.get<Edition>(Edition).ping(credentials, this.previousRequest);
+
         this.previousRequest = new Canceler();
         const resCompetitions = await this.$api.get<Edition>(Edition).listCompetitions(credentials, this.previousRequest);
+
+        this.previousRequest = new Canceler();
+        const resFields = await this.$api.get<Edition>(Edition).listFields(credentials, this.previousRequest);
+
         const uEdition = Util.convertEdition(res.edition, credentials.apiKey);
         const uCompetitions = Util.convertCompetitions(resCompetitions.competitions, edition.id);
+        const uFields = Util.convertFields(resFields, edition.id);
 
+        await this.$store.dispatch('edition/putFields', uFields);
         await this.$store.dispatch('edition/putCompetitions', uCompetitions);
         await this.$store.dispatch('edition/put', uEdition);
 

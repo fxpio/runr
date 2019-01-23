@@ -9,10 +9,13 @@
 
 import {CompetitionResponse} from '@/api/models/responses/CompetitionResponse';
 import {EditionResponse} from '@/api/models/responses/EditionResponse';
+import {FieldResponse} from '@/api/models/responses/FieldResponse';
 import {ICompetition} from '@/db/tables/ICompetition';
 import {ICompetitionSimple} from '@/db/tables/ICompetitionSimple';
 import {ICompetitionSport} from '@/db/tables/ICompetitionSport';
 import {IEdition} from '@/db/tables/IEdition';
+import {IField} from '@/db/tables/IField';
+import {IFieldChoice} from '@/db/tables/IFieldChoice';
 import {EditionState} from '@/stores/edition/EditionState';
 import {Commit} from 'vuex';
 
@@ -89,5 +92,27 @@ export class Util {
         }
 
         return dCompetitions;
+    }
+
+    public static convertFields(fields: Record<number, FieldResponse>, editionId: number): IField[] {
+        const dFields: IField[] = [];
+
+        for (const field of Object.values(fields)) {
+            dFields.push({
+                editionId,
+                id: Number(field.id),
+                reportName: field.reportName,
+                isSystem: field.isSystem,
+                isPermissionSlip: field.isPermissionSlip,
+                systemRole: field.systemRole,
+                type: field.type,
+                displayOrder: field.displayOrder,
+                price: field.price,
+                canBeRetrieved: field.canBeRetrieved,
+                choices: field.choices as IFieldChoice[],
+            } as IField);
+        }
+
+        return dFields;
     }
 }

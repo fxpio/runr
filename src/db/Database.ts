@@ -9,6 +9,7 @@
 
 import {ICompetition} from '@/db/tables/ICompetition';
 import {IEdition} from '@/db/tables/IEdition';
+import {IField} from '@/db/tables/IField';
 import Dexie from 'dexie';
 
 /**
@@ -18,6 +19,8 @@ export class Database extends Dexie {
     public editions!: Dexie.Table<IEdition, number>;
 
     public competitions!: Dexie.Table<ICompetition, number>;
+
+    public fields!: Dexie.Table<IField, number>;
 
     constructor() {
         super('Database');
@@ -30,6 +33,11 @@ export class Database extends Dexie {
             competitions: 'id, editionId, name, openRegistrationDate, closeRegistrationDate, ' +
                 'registrationsModificationLimit, startBirthDate, endBirthDate, participantLimit, ' +
                 'sportsAndDistances, heightlevels, competitionType, startDate',
+        });
+
+        this.version(3).stores({
+            fields: 'id, editionId, reportName, isSystem, isPermissionSlip, systemRole, type, ' +
+                'displayOrder, price, canBeRetrieved, choices',
         });
     }
 }

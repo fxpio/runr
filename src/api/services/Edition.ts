@@ -10,6 +10,7 @@
 import {BaseService} from '@/api/BaseService';
 import {Canceler} from '@/api/Canceler';
 import {Credentials} from '@/api/Credentials';
+import {FieldResponse} from '@/api/models/responses/FieldResponse';
 import {ListCompetitionResponse} from '@/api/models/responses/ListCompetitionResponse';
 import {PingEditionResponse} from '@/api/models/responses/PingEditionResponse';
 
@@ -55,5 +56,23 @@ export class Edition extends BaseService {
             url: '/api-registrations/competition',
             headers,
         }, canceler) as ListCompetitionResponse;
+    }
+
+    /**
+     * Get the form fields of the edition.
+     */
+    public async listFields(credentials?: Credentials, canceler?: Canceler): Promise<Record<number, FieldResponse>> {
+        const headers: Record<string, any> = {};
+
+        if (credentials) {
+            headers.Edition = credentials.identifier;
+            headers.Authorization = credentials.apiKey;
+        }
+
+        return await this.request<Record<number, FieldResponse>>({
+            method: 'GET',
+            url: '/api-registrations/fields',
+            headers,
+        }, canceler) as Record<number, FieldResponse>;
     }
 }
