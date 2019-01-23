@@ -47,11 +47,9 @@ yarn run lint
 Deployment
 ----------
 
-## Deploy the Progressive Web Application
+This [Progressive Web Application](https://bibscan.fxp.io) is deployed on the Github Pages services.
 
-This PWA is deployed on the Github Pages services.
-
-### Deployment
+### Deploy the application in your own Github repository
 
 1. Change the GIT url in the `bin/deploy` (linux/macos) or `bin/deploy.bat` (windows) file with your own
    Github repository
