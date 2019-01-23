@@ -49,51 +49,13 @@ Deployment
 
 ## Deploy the Progressive Web Application
 
-This PWA is deployed on the Github Pages services, and the API proxy is deployed on the AWS API Gateway.
+This PWA is deployed on the Github Pages services.
 
-Because the API of Njuko use the usecure protocol `HTTP`, a secured API proxy must be created to call the API in the
-Progressive Web Application (read the [Why HTTPS Matters](https://developers.google.com/web/fundamentals/security/encrypt-in-transit/why-https)
-page).
-
-> **Note:**
->
-> When the APIs of Njuko will available directly in HTTPS, the API proxy will no longer be needed.
-
-### 1. Deploy the API Proxy
-
-1. Change the `Access-Control-Allow-Origin` values in the `proxy/swagger-api-proxy-aws-apigateway.json` file
-   by your own url of the Github Pages
-2. Open the API Gateway service in the AWS Console
-3. Create the API
-  - Protocol: `REST`
-  - New API: choose 'Import from Swagger file' and copy the content of your customized
-    `proxy/swagger-api-proxy-aws-apigateway.json` file
-  - Endpoint type: Edge optimized
-  - Import the API
-4. In resources section of your API Proxy:
-  - Click on the action button and click on the 'Deploy API' button
-  - Select 'New stage' for the Stage deployment field
-  - Name the stage: `prod`
-  - Deploy the stage
-5. Copy the domain in the stage section of your API Proxy (findable in the URL of endpoint):
-   `<id>.execute-api.<region>.amazonaws.com`
-6. Create a CNAME in the DNS zone of your domain registrar with the domain of the API Proxy and your custom domain
-7. In Domain name section, create a new custom domain:
-  - Select the HTTP protocol
-  - Name: your custom domain
-  - Configuration of the endpoint: Optimized
-  - Certificat ACM: select your own certificat for your custom domain
-8. Always in the Domain section, and your domain for the API Proxy, add a mapping:
-  - Path: `/`
-  - Destination: select the API Proxy
-  - Stage: select the prod stage
-
-### 2. Deploy the PWA
+### Deployment
 
 1. Change the GIT url in the `bin/deploy` (linux/macos) or `bin/deploy.bat` (windows) file with your own
    Github repository
-2. Change the API url and APP domain in the `.env.production` file with your own url of the API Proxy
-   and the custom Github Pages
+2. Change the APP domain in the `.env.production` file with your own url of the custom Github Pages
 3. Create a CNAME in the DNS zone of your domain registrar with the domain of the Github User/Organization
    and your custom domain (format: `<username-or-organization>.github.io.`)
 4. Run the command `yarn install`

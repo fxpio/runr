@@ -32,7 +32,7 @@ export class Api {
      * @param {string}                  baseUrl    The base url
      * @param {ApiServiceConstructor[]} [services] The api services
      */
-    constructor(baseUrl: string = 'http://api.njuko.net', services?: ApiServiceConstructor[]) {
+    constructor(baseUrl: string = 'https://api.njuko.net', services?: ApiServiceConstructor[]) {
         this.axios = axios.create({
             baseURL: baseUrl,
             headers: {
