@@ -177,6 +177,19 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
             },
 
             async putCompetitions({commit, state}, competitions: ICompetition[]): Promise<void> {
+                if (competitions.length > 0) {
+                    const competitionIds: number[] = [];
+                    for (const competition of competitions) {
+                        competitionIds.push(competition.id);
+                    }
+
+                    await self.db.competitions.where('editionId').equals(competitions[0].editionId)
+                        .and((competition: ICompetition): boolean => {
+                            return -1 === competitionIds.indexOf(competition.id);
+                        })
+                        .delete();
+                }
+
                 await self.db.competitions.bulkPut(competitions);
             },
 
