@@ -116,6 +116,16 @@ export class AuthModule<R extends AuthModuleState & EditionModuleState> implemen
                     self.storage.setItem('auth:name', credentials.fullName);
                     commit('LOGIN_SUCCESS', credentials);
 
+                    let current = rootState.edition.current;
+
+                    if (!current && uEditions.length > 0) {
+                        current = uEditions[uEditions.length - 1];
+                    }
+
+                    if (current) {
+                        await dispatch('edition/select', current.id, {root: true});
+                    }
+
                     if (typeof redirect === 'string') {
                         self.router.replace(redirect);
                     } else if (false !== redirect) {
@@ -123,10 +133,6 @@ export class AuthModule<R extends AuthModuleState & EditionModuleState> implemen
                     }
 
                     commit('LOGIN_SUCCESS_END');
-
-                    if (!rootState.edition.current && uEditions.length > 0) {
-                        await dispatch('edition/select', uEditions[uEditions.length - 1].id, {root: true});
-                    }
                 } catch (e) {
                     commit('LOGIN_ERROR');
                     self.previousRequest = undefined;

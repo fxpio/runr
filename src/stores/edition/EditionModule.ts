@@ -155,7 +155,7 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
 
             async select({commit, dispatch, state}, edition: IEdition|number|null): Promise<void> {
                 if (typeof edition === 'number') {
-                    edition = await Util.getOne(commit, state, edition, false);
+                    edition = await Util.getOne(commit, state, edition, false, true);
                 }
 
                 try {

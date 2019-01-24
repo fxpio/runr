@@ -26,10 +26,10 @@ import {Commit} from 'vuex';
  */
 export class Util {
     public static async getOne(commit: Commit, state: EditionState, id: number|null,
-                               findFirst: boolean = false): Promise<IEdition|null> {
+                               findFirst: boolean = false, force: boolean = false): Promise<IEdition|null> {
         let current = state.current;
 
-        if (current && id && current.id === id) {
+        if (!force && current && id && current.id === id) {
             return current;
         }
 
@@ -37,7 +37,7 @@ export class Util {
             current = null;
         }
 
-        if (null === current) {
+        if (null === current || force) {
             if (id) {
                 for (const edition of state.all) {
                     if (id === edition.id) {
