@@ -151,9 +151,10 @@ export default class Login extends Vue {
           const email = this.loginWithMyCredentials ? this.email : null;
           const password = this.loginWithMyCredentials ? this.password : null;
           const saveCredentials = this.loginWithMyCredentials ? this.saveCredentials : false;
+          const force = (this.$router.currentRoute.query as any).force;
           let redirect = (this.$router.currentRoute.query as any).redirect;
 
-          if (!redirect) {
+          if ('1' !== force || !redirect) {
             redirect = email && password ? this.$router.resolve({name: 'editions'}).route.fullPath : null;
           }
 

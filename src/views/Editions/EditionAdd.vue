@@ -195,6 +195,7 @@ file that was distributed with this source code.
 
     public async created(): Promise<void> {
       this.email = this.$store.state.auth.email;
+      this.password = this.$store.state.auth.password;
       this.tabActive = this.email ? 1 : 0;
     }
 
