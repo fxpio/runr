@@ -11,6 +11,7 @@
 
 import {ApiService, ApiServiceConstructor} from '@/api/ApiService';
 import {Edition} from '@/api/services/Edition';
+import {Organization} from '@/api/services/Organization';
 import {ApiServiceNotFoundError} from '@/errors/ApiServiceNotFoundError';
 import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse} from 'axios';
 
@@ -19,6 +20,7 @@ import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse} from 'axios';
  */
 export class Api {
     public static serviceConstructors: ApiServiceConstructor[] = [
+        Organization,
         Edition,
     ];
 

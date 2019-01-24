@@ -137,22 +137,39 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
         const self = this;
 
         return {
-            async init({commit, state}): Promise<void> {
+            async init({commit, dispatch, state}): Promise<void> {
                 if (!state.initialized) {
                     commit('SET_EDITIONS', await self.db.editions.orderBy('id').reverse().toArray());
                     const val = self.storage.getItem('edition:selection');
-                    await Util.getOne(commit, state, val ? Number(val) : null, true);
+                    const current = await Util.getOne(commit, state, val ? Number(val) : null, true);
+                    await dispatch('select', current);
                 }
             },
 
-            async refresh({commit, state}): Promise<void> {
+            async refresh({commit, dispatch, state}): Promise<void> {
                 const id = state.current ? state.current.id : null;
                 commit('SET_EDITIONS', await self.db.editions.orderBy('id').reverse().toArray());
-                await Util.getOne(commit, state, id, true);
+                const current = await Util.getOne(commit, state, id, true);
+                await dispatch('select', current);
             },
 
-            async select({commit, state}, id: number): Promise<void> {
-                commit('SELECT_CURRENT', await Util.getOne(commit, state, id, false));
+            async select({commit, dispatch, state}, edition: IEdition|number|null): Promise<void> {
+                if (typeof edition === 'number') {
+                    edition = await Util.getOne(commit, state, edition, false);
+                }
+
+                try {
+                    if (edition && !edition.isLoaded) {
+                        await dispatch('ping', new ApiCredentials(String(edition.id), edition.apiKey, false));
+                        edition = await Util.getOne(commit, state, edition.id, false);
+                    }
+
+                    commit('SELECT_CURRENT', edition);
+                } catch (e) {
+                    const mess = self.router.app.$i18n.t('error.invalid-authorization') as string;
+                    commit('SELECT_CURRENT', null);
+                    commit('snackbar/snack', {message: mess, color: 'error'}, {root: true});
+                }
             },
 
             async unselect({commit}): Promise<void> {
@@ -193,6 +210,14 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
                 await self.db.competitions.bulkPut(competitions);
             },
 
+            async putEditions({commit, dispatch, state}, editions: IEdition[]): Promise<void> {
+                await self.db.editions.bulkPut(editions);
+
+                for (const edition of editions) {
+                    commit('ADD_EDITION', edition);
+                }
+            },
+
             async put({commit, state}, edition: IEdition): Promise<void> {
                 await self.db.editions.put(edition);
                 commit('ADD_EDITION', edition);
@@ -209,7 +234,7 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
                 }
             },
 
-            async ping({commit, state}, credentials: ApiCredentials): Promise<void> {
+            async ping({commit, dispatch, state}, credentials: ApiCredentials): Promise<void> {
                 commit('PING');
 
                 try {
@@ -218,7 +243,10 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
                     }
 
                     self.previousRequest = new Canceler();
-                    const redirect = self.router.currentRoute.query.redirect as string;
+                    const redirect = null !== credentials.redirect
+                        ? credentials.redirect
+                        : self.router.currentRoute.query.redirect as string;
+
                     const res = await self.api.get<Edition>(Edition).ping(credentials, self.previousRequest);
 
                     self.previousRequest = new Canceler();
@@ -234,15 +262,15 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
                     const fields = Util.convertFields(resFields, edition.id);
 
                     self.previousRequest = undefined;
-                    await self.db.fields.bulkPut(fields);
-                    await self.db.competitions.bulkPut(competitions);
-                    await self.db.editions.put(edition);
-                    commit('ADD_EDITION', edition);
-                    commit('SELECT_CURRENT', edition);
+                    await dispatch('putFields', fields);
+                    await dispatch('putCompetitions', competitions);
+                    await dispatch('put', edition);
 
-                    if (redirect) {
+                    if (typeof redirect === 'string') {
+                        commit('SELECT_CURRENT', edition);
                         self.router.push(redirect);
-                    } else {
+                    } else if (false !== redirect) {
+                        commit('SELECT_CURRENT', edition);
                         self.router.push({name: 'editions'});
                     }
 

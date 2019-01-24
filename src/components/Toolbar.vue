@@ -19,8 +19,13 @@ file that was distributed with this source code.
 
     <v-menu>
       <v-toolbar-title slot="activator">
-        <span>{{ toolbarTitle }}</span>
-        <v-icon dark>arrow_drop_down</v-icon>
+        <v-fade-transition mode="out-in">
+          <div v-if="!$store.state.edition.serverPending">
+            <span>{{ toolbarTitle }}</span>
+            <v-icon dark>arrow_drop_down</v-icon>
+          </div>
+          <v-progress-circular indeterminate v-if="$store.state.edition.serverPending"></v-progress-circular>
+        </v-fade-transition>
       </v-toolbar-title>
 
       <v-list>

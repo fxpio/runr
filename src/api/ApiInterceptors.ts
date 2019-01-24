@@ -17,9 +17,9 @@ import {Store} from 'vuex';
  */
 export default class ApiInterceptors {
     /**
-     * Add the auth interceptor.
+     * Add the auth edition interceptor.
      */
-    public static addAuthInterceptor(apiClient: Api, store: Store<EditionModuleState>): void {
+    public static addAuthEditionInterceptor(apiClient: Api, store: Store<EditionModuleState>): void {
         apiClient.addRequestInterceptor(async (config: AxiosRequestConfig): Promise<AxiosRequestConfig> => {
             await store.dispatch('edition/init');
 

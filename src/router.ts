@@ -32,6 +32,7 @@ export default new Router({
     {
       path: '/editions',
       name: 'editions',
+      meta: {requiresAuth: true},
       components: {
         default: () => import(/* webpackChunkName: "editions" */ '@/views/Editions/Editions.vue'),
         toolbar: () => import(/* webpackChunkName: "editions" */'@/components/Toolbar.vue'),
@@ -40,7 +41,7 @@ export default new Router({
     {
       path: '/editions/add',
       name: 'edition-add',
-      meta: {transitionName: 'slide'},
+      meta: {requiresAuth: true, transitionName: 'slide'},
       components: {
         default: () => import(/* webpackChunkName: "editions" */ '@/views/Editions/EditionAdd.vue'),
         toolbar: () => import(/* webpackChunkName: "editions" */'@/components/Toolbar.vue'),
@@ -52,6 +53,14 @@ export default new Router({
       components: {
         default: () => import(/* webpackChunkName: "settings" */ '@/views/Settings.vue'),
         toolbar: () => import(/* webpackChunkName: "settings" */'@/components/Toolbar.vue'),
+      },
+    },
+    {
+      path: '/login',
+      name: 'login',
+      components: {
+        default: () => import(/* webpackChunkName: "login" */ '@/views/Login.vue'),
+        toolbar: () => import(/* webpackChunkName: "login" */'@/components/Toolbar.vue'),
       },
     },
     {

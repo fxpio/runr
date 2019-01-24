@@ -7,6 +7,7 @@
  * file that was distributed with this source code.
  */
 
+import {AuthModuleState} from '@/stores/auth/AuthModuleState';
 import {DarkModeModuleState} from '@/stores/darkMode/DarkModeModuleState';
 import {DrawerModuleState} from '@/stores/drawer/DrawerModuleState';
 import {EditionModuleState} from '@/stores/edition/EditionModuleState';
@@ -19,6 +20,7 @@ import {SnackbarModuleState} from '@/stores/snackbar/SnackbarModuleState';
  */
 export interface RootState extends DarkModeModuleState,
                                    DrawerModuleState,
+                                   AuthModuleState,
                                    EditionModuleState,
                                    I18nModuleState,
                                    PrinterModuleState,

@@ -18,7 +18,7 @@ file that was distributed with this source code.
               fixed
               bottom
               right
-              v-if="$store.state.edition.all.length > 0 && !loading"
+              v-if="$store.state.edition.all.length > 0 && !pending"
               @click="routeAdd"
       >
         <v-icon>add</v-icon>
@@ -26,7 +26,7 @@ file that was distributed with this source code.
     </v-fab-transition>
 
     <v-fade-transition mode="out-in">
-      <v-layout justify-space-between row fill-height wrap v-if="!loading">
+      <v-layout justify-space-between row fill-height wrap v-if="!pending">
         <v-flex xs12>
           <v-subheader>{{ $t('views.editions.title') }}</v-subheader>
 
@@ -80,24 +80,20 @@ file that was distributed with this source code.
         </v-flex>
       </v-layout>
 
-      <loading v-if="loading" :fullscreen="false"></loading>
+      <loading v-if="pending"></loading>
     </v-fade-transition>
   </v-container>
 </template>
 
 <script lang="ts">
-  import {Canceler} from '@/api/Canceler';
   import {ApiCredentials} from '@/api/credentials/ApiCredentials';
-  import {Edition} from '@/api/services/Edition';
   import Loading from '@/components/Loading.vue';
   import SwipeItem from '@/components/SwipeItem.vue';
   import {IEdition} from '@/db/tables/IEdition';
-  import {AjaxContent} from '@/mixins/AjaxContent';
-  import {Util} from '@/stores/edition/Util';
   import {getParent} from '@/utils/element';
-  import {mixins} from 'vue-class-component';
+  import {getRequestErrorMessage} from '@/utils/error';
   import {MetaInfo} from 'vue-meta';
-  import {Component} from 'vue-property-decorator';
+  import {Component, Vue} from 'vue-property-decorator';
 
   /**
    * @author François Pluchino <francois.pluchino@gmail.com>
@@ -105,7 +101,11 @@ file that was distributed with this source code.
   @Component({
     components: {SwipeItem, Loading},
   })
-  export default class Editions extends mixins(AjaxContent) {
+  export default class Editions extends Vue {
+    public get pending(): boolean {
+      return this.$store.state.edition.serverPending;
+    }
+
     public metaInfo(): MetaInfo {
       return {
         title: this.$i18n.t('views.editions.title') as string,
@@ -117,26 +117,12 @@ file that was distributed with this source code.
     }
 
     public async refresh(edition: IEdition): Promise<void> {
-      await this.fetchData(async (): Promise<IEdition> => {
-        const credentials = new ApiCredentials(String(edition.id), edition.apiKey);
-        const res = await this.$api.get<Edition>(Edition).ping(credentials, this.previousRequest);
-
-        this.previousRequest = new Canceler();
-        const resCompetitions = await this.$api.get<Edition>(Edition).listCompetitions(credentials, this.previousRequest);
-
-        this.previousRequest = new Canceler();
-        const resFields = await this.$api.get<Edition>(Edition).listFields(credentials, this.previousRequest);
-
-        const uEdition = Util.convertEdition(res.edition, credentials.apiKey);
-        const uCompetitions = Util.convertCompetitions(resCompetitions.competitions, edition.id);
-        const uFields = Util.convertFields(resFields, edition.id);
-
-        await this.$store.dispatch('edition/putFields', uFields);
-        await this.$store.dispatch('edition/putCompetitions', uCompetitions);
-        await this.$store.dispatch('edition/put', uEdition);
-
-        return uEdition;
-      });
+      try {
+        const credentials = new ApiCredentials(String(edition.id), edition.apiKey, false);
+        await this.$store.dispatch('edition/ping', credentials);
+      } catch (e) {
+        this.$store.commit('snackbar/snack', {message: getRequestErrorMessage(this, e), color: 'error'});
+      }
     }
 
     public deleteEdition(edition: IEdition, e: Event): void {
@@ -148,9 +134,7 @@ file that was distributed with this source code.
     }
 
     public async confirmDeleteEdition(edition: IEdition): Promise<void> {
-      this.loading = true;
       await this.$store.dispatch('edition/delete', edition.id);
-      this.loading = false;
     }
   }
 </script>

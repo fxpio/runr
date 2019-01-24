@@ -44,7 +44,7 @@ file that was distributed with this source code.
     @Prop({type: String, default: 'accent'})
     public progressColor!: string;
 
-    @Prop({type: Boolean, default: true})
+    @Prop({type: Boolean, default: false})
     public fullscreen!: boolean;
   }
 </script>

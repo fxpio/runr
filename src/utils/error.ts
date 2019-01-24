@@ -13,23 +13,20 @@ import Vue from 'vue';
 /**
  *  Get the error message of the request.
  *
- * @param {Vue}   vue The vue instance
- * @param {Error} err The request error
- *
- * @return {string}
- *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export function getRequestErrorMessage(vue: Vue, err: Error): string {
+export function getRequestErrorMessage(vue: Vue, err: Error, isAuth: boolean = false): string {
+    const i18n = null !== vue.$i18n ? vue.$i18n : vue.$root.$i18n;
+
     if ((err as AxiosError).response && ((err as AxiosError).response as AxiosResponse).status) {
         if (((err as AxiosError).response as AxiosResponse)
                 && ((err as AxiosError).response as AxiosResponse).data
                 && ((err as AxiosError).response as AxiosResponse).data.message) {
             return ((err as AxiosError).response as AxiosResponse).data.message;
         } else if (((err as AxiosError).response as AxiosResponse).status === 403) {
-            return vue.$i18n.t('error.invalid-authorization') as string;
+            return i18n.t('error.invalid-' + (isAuth ? 'credentials' : 'authorization')) as string;
         }
     }
 
-    return vue.$i18n.t('error.network') as string;
+    return i18n.t('error.network') as string;
 }

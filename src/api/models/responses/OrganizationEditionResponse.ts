@@ -7,16 +7,21 @@
  * file that was distributed with this source code.
  */
 
-import {ICompetitionSimple} from '@/db/tables/ICompetitionSimple';
+import {CompetitionSimpleResponse} from '@/api/models/responses/CompetitionSimpleResponse';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface IEdition {
+export interface OrganizationEditionResponse {
     id: number;
     name: string;
-    currency?: string;
+    competitions: CompetitionSimpleResponse[];
+    isProd: boolean;
     apiKey: string;
-    competitions: ICompetitionSimple[];
-    isLoaded: boolean;
+    created: string;
+    startDate: string;
+    endDate: string;
+    emailContact: string;
+    phoneContact: string;
+    websiteUrl: string;
 }

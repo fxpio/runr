@@ -8,8 +8,10 @@
  */
 
 import {CompetitionResponse} from '@/api/models/responses/CompetitionResponse';
+import {CompetitionSimpleResponse} from '@/api/models/responses/CompetitionSimpleResponse';
 import {EditionResponse} from '@/api/models/responses/EditionResponse';
 import {FieldResponse} from '@/api/models/responses/FieldResponse';
+import {OrganizationEditionResponse} from '@/api/models/responses/OrganizationEditionResponse';
 import {ICompetition} from '@/db/tables/ICompetition';
 import {ICompetitionSimple} from '@/db/tables/ICompetitionSimple';
 import {ICompetitionSport} from '@/db/tables/ICompetitionSport';
@@ -25,49 +27,72 @@ import {Commit} from 'vuex';
 export class Util {
     public static async getOne(commit: Commit, state: EditionState, id: number|null,
                                findFirst: boolean = false): Promise<IEdition|null> {
-        if (state.current && id && state.current.id === id) {
-            return state.current;
+        let current = state.current;
+
+        if (current && id && current.id === id) {
+            return current;
         }
 
-        if (state.current && id !== state.current.id) {
-            commit('SELECT_CURRENT', null);
+        if (current && id !== current.id) {
+            current = null;
         }
 
-        if (null === state.current) {
+        if (null === current) {
             if (id) {
                 for (const edition of state.all) {
                     if (id === edition.id) {
-                        commit('SELECT_CURRENT', edition);
+                        current = edition;
                         break;
                     }
                 }
             }
 
-            if (null === state.current && findFirst) {
-                commit('SELECT_CURRENT', state.all.length > 0 ? state.all[0] : null);
+            if (null === current && findFirst) {
+                current = state.all.length > 0 ? state.all[0] : null;
             }
         }
 
-        return state.current;
+        return current;
+    }
+
+    public static convertOrganizationEditions(editions: Record<number, OrganizationEditionResponse>): IEdition[] {
+        const dEditions: IEdition[] = [];
+
+        for (const edition of Object.values(editions)) {
+            dEditions.push({
+                id: Number(edition.id),
+                name: edition.name,
+                competitions: Util.convertCompetitionSimples(edition.competitions),
+                apiKey: edition.apiKey,
+                isLoaded: false,
+            });
+        }
+
+        return dEditions;
     }
 
     public static convertEdition(edition: EditionResponse, apiKey: string): IEdition {
+        return {
+            id: Number(edition.id),
+            name: edition.name,
+            currency: edition.currency,
+            competitions: Util.convertCompetitionSimples(edition.competitions),
+            isLoaded: true,
+            apiKey,
+        };
+    }
+
+    public static convertCompetitionSimples(competitions: CompetitionSimpleResponse[]): ICompetitionSimple[] {
         const dCompetitions: ICompetitionSimple[] = [];
 
-        for (const comp of edition.competitions) {
+        for (const comp of competitions) {
             dCompetitions.push({
                 id: Number(comp.id),
                 name: comp.name,
             } as ICompetitionSimple);
         }
 
-        return {
-            id: Number(edition.id),
-            name: edition.name,
-            currency: edition.currency,
-            competitions: dCompetitions,
-            apiKey,
-        } as IEdition;
+        return dCompetitions;
     }
 
     public static convertCompetitions(competitions: CompetitionResponse[], editionId: number): ICompetition[] {

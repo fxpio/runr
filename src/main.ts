@@ -36,11 +36,12 @@ useVueRouterBackPlugin({router, forceHistory: true});
 const store = createStore<RootState>(router, i18n, apiClient, dbClient);
 
 RouterGuards.addAuthGuard(router, store);
-ApiInterceptors.addAuthInterceptor(apiClient, store);
+RouterGuards.addAuthEditionGuard(router, store);
+ApiInterceptors.addAuthEditionInterceptor(apiClient, store);
 
 new Vue({
-  i18n,
-  router,
-  store,
-  render: (h) => h(App),
+    i18n,
+    router,
+    store,
+    render: (h) => h(App),
 }).$mount('#app');

@@ -17,9 +17,12 @@ export class ApiCredentials extends Credentials {
 
     public readonly apiKey: string;
 
-    constructor(identifier: string, apiKey: string) {
+    public readonly redirect: string|false|null;
+
+    constructor(identifier: string, apiKey: string, redirect: string|false|null = null) {
         super();
         this.identifier = identifier;
         this.apiKey = apiKey;
+        this.redirect = redirect;
     }
 }
