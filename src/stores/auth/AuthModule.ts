@@ -140,7 +140,8 @@ export class AuthModule<R extends AuthModuleState & EditionModuleState> implemen
                 }
             },
 
-            logout({commit, state}, redirect?: RawLocation): void {
+            async logout({commit, dispatch, state}, redirect?: RawLocation): Promise<void> {
+                await dispatch('edition/deleteAll', null, {root: true});
                 state.fullName = null;
                 state.email = null;
                 state.password = null;

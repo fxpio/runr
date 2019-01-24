@@ -234,6 +234,14 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
                 }
             },
 
+            async deleteAll({commit}): Promise<void> {
+                await self.db.fields.toCollection().delete();
+                await self.db.competitions.toCollection().delete();
+                await self.db.editions.toCollection().delete();
+                commit('SET_EDITIONS', []);
+                commit('SELECT_CURRENT', null);
+            },
+
             async ping({commit, dispatch, state}, credentials: ApiCredentials): Promise<void> {
                 commit('PING');
 
