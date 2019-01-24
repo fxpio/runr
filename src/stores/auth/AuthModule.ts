@@ -17,7 +17,7 @@ import {AuthModuleState} from '@/stores/auth/AuthModuleState';
 import {AuthState} from '@/stores/auth/AuthState';
 import {EditionModuleState} from '@/stores/edition/EditionModuleState';
 import {Util} from '@/stores/edition/Util';
-import {VueRouter} from 'vue-router/types/router';
+import {RawLocation, VueRouter} from 'vue-router/types/router';
 import {ActionTree, Module, MutationTree} from 'vuex';
 
 /**
@@ -140,16 +140,19 @@ export class AuthModule<R extends AuthModuleState & EditionModuleState> implemen
                 }
             },
 
-            logout({commit, state}): void {
+            logout({commit, state}, redirect?: RawLocation): void {
                 state.fullName = null;
                 state.email = null;
                 state.password = null;
                 self.storage.removeItem('auth:name');
                 self.storage.removeItem('auth:email');
-
                 commit('LOGOUT');
 
-                self.router.replace({name: 'home'});
+                if (!redirect) {
+                    redirect = {name: 'home'};
+                }
+
+                self.router.replace(redirect);
             },
 
             async cancel(): Promise<void> {

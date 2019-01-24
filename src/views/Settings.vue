@@ -11,7 +11,80 @@ file that was distributed with this source code.
   <v-container fill-height>
     <v-layout justify-space-between row fill-height wrap>
       <v-flex xs12 sm10 offset-sm1 md8 offset-md2 xl6 offset-xl3>
-        <v-subheader>{{ $t('views.settings.general') }}</v-subheader>
+        <v-subheader>{{ $t('views.settings.account') }}</v-subheader>
+        <v-card>
+          <v-list two-line>
+            <v-list-tile avatar>
+              <v-list-tile-avatar>
+                <v-icon size="52" :color="$store.state.auth.authenticated ? 'accent' : 'grey'">account_circle</v-icon>
+              </v-list-tile-avatar>
+
+              <v-list-tile-content>
+                <v-list-tile-title>
+                  <span v-if="$store.state.auth.authenticated">{{ $store.state.auth.fullName }}</span>
+                  <span v-if="!$store.state.auth.authenticated">{{ $t('views.settings.no-account') }}</span>
+                </v-list-tile-title>
+
+                <v-list-tile-sub-title v-if="$store.state.auth.authenticated && $store.state.auth.email">
+                  {{ $store.state.auth.email }}
+                </v-list-tile-sub-title>
+              </v-list-tile-content>
+
+              <v-list-tile-action v-if="!$store.state.auth.authenticated">
+                <v-tooltip left>
+                  <v-btn
+                          slot="activator"
+                          outline
+                          small
+                          fab
+                          color="accent"
+                          ripple
+                          icon
+                          @click="login">
+                    <v-icon>person_add</v-icon>
+                  </v-btn>
+                  <span>{{ $t('views.login.title') }}</span>
+                </v-tooltip>
+              </v-list-tile-action>
+
+              <v-list-tile-action v-if="$store.state.auth.authenticated">
+                <v-tooltip left>
+                  <v-btn
+                          slot="activator"
+                          outline
+                          small
+                          fab
+                          color="accent"
+                          ripple
+                          icon
+                          @click="login">
+                    <v-icon>edit</v-icon>
+                  </v-btn>
+                  <span>{{ $t('edit') }}</span>
+                </v-tooltip>
+              </v-list-tile-action>
+
+              <v-list-tile-action v-if="$store.state.auth.authenticated">
+                <v-tooltip left>
+                  <v-btn
+                          slot="activator"
+                          outline
+                          small
+                          fab
+                          color="accent"
+                          ripple
+                          icon
+                          @click="$store.dispatch('auth/logout', $router.currentRoute.fullPath)">
+                    <v-icon>exit_to_app</v-icon>
+                  </v-btn>
+                  <span>{{ $t('logout') }}</span>
+                </v-tooltip>
+              </v-list-tile-action>
+            </v-list-tile>
+          </v-list>
+        </v-card>
+
+        <v-subheader class="mt-4">{{ $t('views.settings.general') }}</v-subheader>
         <v-card>
           <v-list>
             <v-list-tile>
@@ -134,6 +207,10 @@ file that was distributed with this source code.
 
     public set closeAfterPrint(value: boolean) {
       this.$store.commit('printer/toggle', value);
+    }
+
+    public login(): void {
+      this.$router.push({name: 'login', query: {redirect: this.$router.currentRoute.fullPath}});
     }
   }
 

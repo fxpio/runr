@@ -151,7 +151,11 @@ export default class Login extends Vue {
           const email = this.loginWithMyCredentials ? this.email : null;
           const password = this.loginWithMyCredentials ? this.password : null;
           const saveCredentials = this.loginWithMyCredentials ? this.saveCredentials : false;
-          const redirect = email && password ? this.$router.resolve({name: 'editions'}).route.fullPath : null;
+          let redirect = (this.$router.currentRoute.query as any).redirect;
+
+          if (!redirect) {
+            redirect = email && password ? this.$router.resolve({name: 'editions'}).route.fullPath : null;
+          }
 
           await this.$store.dispatch('auth/login', new AuthCredentials(String(this.fullName),
                   email, password, saveCredentials, redirect));
