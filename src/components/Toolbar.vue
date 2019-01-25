@@ -44,7 +44,7 @@ file that was distributed with this source code.
           </v-list-tile-action>
         </v-list-tile>
 
-        <v-list-tile key="add" :to="{name: 'edition-add', query: {redirect: $router.currentRoute.fullPath}}">{{ $t('add.edition') }}</v-list-tile>
+        <v-list-tile key="add" :to="{name: 'editions-add', query: {redirect: $router.currentRoute.fullPath}}">{{ $t('add.edition') }}</v-list-tile>
       </v-list>
     </v-menu>
   </v-toolbar>

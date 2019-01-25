@@ -40,7 +40,7 @@ export default new Router({
     },
     {
       path: '/editions/add',
-      name: 'edition-add',
+      name: 'editions-add',
       meta: {requiresAuth: true, transitionName: 'slide'},
       components: {
         default: () => import(/* webpackChunkName: "editions" */ '@/views/Editions/EditionAdd.vue'),

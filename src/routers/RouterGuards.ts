@@ -57,7 +57,7 @@ export default class RouterGuards {
 
         if (null === store.state.edition.current) {
           guard = {
-            name: 'edition-add',
+            name: 'editions-add',
             params: {
               locale: store.state.i18n.locale,
             },

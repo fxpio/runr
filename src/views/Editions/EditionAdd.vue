@@ -12,7 +12,7 @@ file that was distributed with this source code.
     <v-layout justify-center row>
       <v-fade-transition mode="out-in">
         <v-flex sm10 md8 lg6 xl4 v-if="!pending">
-          <v-subheader>{{ $t('views.edition-add.title') }}</v-subheader>
+          <v-subheader>{{ $t('views.editions-add.title') }}</v-subheader>
 
           <v-card>
             <v-tabs centered icons-and-text v-model="tabActive">
@@ -35,10 +35,10 @@ file that was distributed with this source code.
 
                   <v-form ref="form" @submit.prevent>
                     <v-text-field
-                            :label="$i18n.t('views.edition-add.identifier')"
+                            :label="$i18n.t('views.editions-add.identifier')"
                             v-model="identifier"
                             data-vv-name="identifier"
-                            :data-vv-as="$i18n.t('views.edition-add.identifier')"
+                            :data-vv-as="$i18n.t('views.editions-add.identifier')"
                             v-validate="{rules: {required: 0 === tabActive}}"
                             :error-messages="errors.collect('identifier')"
                             @keyup.enter="pingEdition"
@@ -49,10 +49,10 @@ file that was distributed with this source code.
                     </v-text-field>
 
                     <v-text-field
-                            :label="$i18n.t('views.edition-add.api-key')"
+                            :label="$i18n.t('views.editions-add.api-key')"
                             v-model="apiKey"
                             data-vv-name="apiKey"
-                            :data-vv-as="$i18n.t('views.edition-add.api-key')"
+                            :data-vv-as="$i18n.t('views.editions-add.api-key')"
                             v-validate="{rules: {required: 0 === tabActive}}"
                             :error-messages="errors.collect('apiKey')"
                             :append-icon="showPassword ? 'visibility_off' : 'visibility'"
@@ -77,11 +77,11 @@ file that was distributed with this source code.
 
                 <v-card-text>
                   <v-alert outline type="info" icon="help_outline" class="mt-3" value="true">
-                    <p>{{ $t('views.edition-add.help.into') }}</p>
+                    <p>{{ $t('views.editions-add.help.into') }}</p>
                     <ol>
-                      <li>{{ $t('views.edition-add.help.step-1') }}</li>
-                      <li>{{ $t('views.edition-add.help.step-2') }}</li>
-                      <li>{{ $t('views.edition-add.help.step-3') }}</li>
+                      <li>{{ $t('views.editions-add.help.step-1') }}</li>
+                      <li>{{ $t('views.editions-add.help.step-2') }}</li>
+                      <li>{{ $t('views.editions-add.help.step-3') }}</li>
                     </ol>
                   </v-alert>
                 </v-card-text>
@@ -189,7 +189,7 @@ file that was distributed with this source code.
 
     public metaInfo(): MetaInfo {
       return {
-        title: this.$i18n.t('views.edition-add.title') as string,
+        title: this.$i18n.t('views.editions-add.title') as string,
       };
     }
 

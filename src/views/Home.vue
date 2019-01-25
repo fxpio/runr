@@ -13,7 +13,7 @@ file that was distributed with this source code.
       <v-icon size="14em" :color="$store.state.darkMode.enabled ? null : 'accent'">directions_run</v-icon>
       <h1 :class="appNameClass()">{{ $t('app.name') }}</h1>
       <h3>{{ $t('app.description') }}</h3>
-      <v-btn color="accent" ripple class="mt-3" v-if="$store.state.edition.all.length === 0" :to="{name: 'edition-add'}">{{ $t('views.editions.add-first') }}</v-btn>
+      <v-btn color="accent" ripple class="mt-3" v-if="$store.state.edition.all.length === 0" :to="{name: 'editions-add'}">{{ $t('views.editions.add-first') }}</v-btn>
     </v-layout>
   </v-container>
 </template>

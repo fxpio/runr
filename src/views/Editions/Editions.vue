@@ -75,7 +75,7 @@ file that was distributed with this source code.
           <v-layout column align-center justify-center v-else>
             <v-icon size="14em" color="accent">flag</v-icon>
             <h2 class="pb-4 grey--text">{{ $t('views.editions.no-items') }}</h2>
-            <v-btn color="accent" ripple class="mt-3" :to="{name: 'edition-add'}">{{ $t('views.editions.add-first') }}</v-btn>
+            <v-btn color="accent" ripple class="mt-3" :to="{name: 'editions-add'}">{{ $t('views.editions.add-first') }}</v-btn>
           </v-layout>
         </v-flex>
       </v-layout>
@@ -113,7 +113,7 @@ file that was distributed with this source code.
     }
 
     public routeAdd(): void {
-      this.$router.push({name: 'edition-add'});
+      this.$router.push({name: 'editions-add'});
     }
 
     public async refresh(edition: IEdition): Promise<void> {
