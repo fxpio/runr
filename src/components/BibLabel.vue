@@ -9,14 +9,14 @@ file that was distributed with this source code.
 
 <template>
   <div class="bib-label">
-    <div class="bl-competition">{{competitionFormatted()}}</div>
-    <div class="bl-competition-unit">{{competitionUnit}}</div>
+    <div class="bl-distance">{{distanceFormatted()}}</div>
+    <div class="bl-unit">{{unitFormatted()}}<br/>{{datesFormatted()}}</div>
     <div class="bl-firstname">{{firstName}}</div>
 
     <div class="bl-bib-number">N° {{bibNumber}}</div>
 
-    <div class="bl-phone-urgency-label">Téléphone d'urgence</div>
-    <div class="bl-phone-urgency">{{phoneUrgency}}</div>
+    <div class="bl-phone-urgency-label" v-if="phoneUrgency">Téléphone d'urgence</div>
+    <div class="bl-phone-urgency" v-if="phoneUrgency">{{phoneUrgency}}</div>
   </div>
 </template>
 
@@ -31,14 +31,14 @@ file that was distributed with this source code.
     components: {},
   })
   export default class BibLabel extends Vue {
-    @Prop([String, Number])
-    public competition?: string|number;
+    @Prop(String)
+    public distance?: number;
 
     @Prop(String)
-    public competitionUnit?: string;
+    public unit?: string;
 
-    @Prop([String, Number])
-    public bibNumber?: string|number;
+    @Prop(String)
+    public bibNumber?: string;
 
     @Prop(String)
     public firstName?: string;
@@ -46,8 +46,42 @@ file that was distributed with this source code.
     @Prop(String)
     public phoneUrgency?: string;
 
-    public competitionFormatted(): string {
-      return String(this.competition).replace(',', '.');
+    @Prop(Date)
+    public startBirthDate?: Date;
+
+    @Prop(Date)
+    public endBirthDate?: Date;
+
+    public distanceFormatted(): string {
+      let alias;
+
+      if (this.$store.state.bib.useAlias) {
+        alias = this.$store.getters['bib/getAlias'](this.distance, this.unit);
+      }
+
+      return alias ? alias : this.getFormattedDistance();
+    }
+
+    public unitFormatted(): string {
+      return this.getFormattedDistance() + ' ' + this.unit;
+    }
+
+    public datesFormatted(): string {
+      let dates = '';
+
+      if (this.startBirthDate && this.endBirthDate) {
+        dates += ' (' + this.startBirthDate.getFullYear() + ' - ' + this.endBirthDate.getFullYear() + ')';
+      } else if (!this.startBirthDate && this.endBirthDate) {
+        dates += ' (≤ ' + this.endBirthDate.getFullYear() + ')';
+      } else if (this.startBirthDate && !this.endBirthDate) {
+        dates += ' (≥ ' + this.startBirthDate.getFullYear() + ')';
+      }
+
+      return dates;
+    }
+
+    private getFormattedDistance(): string {
+      return String(this.distance).replace(',', '.');
     }
   }
 </script>

@@ -8,6 +8,7 @@
  */
 
 import {AuthModuleState} from '@/stores/auth/AuthModuleState';
+import {BibModuleState} from '@/stores/bib/BibModuleState';
 import {DarkModeModuleState} from '@/stores/darkMode/DarkModeModuleState';
 import {DrawerModuleState} from '@/stores/drawer/DrawerModuleState';
 import {EditionModuleState} from '@/stores/edition/EditionModuleState';
@@ -18,9 +19,10 @@ import {SnackbarModuleState} from '@/stores/snackbar/SnackbarModuleState';
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface RootState extends DarkModeModuleState,
+export interface RootState extends AuthModuleState,
+                                   BibModuleState,
+                                   DarkModeModuleState,
                                    DrawerModuleState,
-                                   AuthModuleState,
                                    EditionModuleState,
                                    I18nModuleState,
                                    PrinterModuleState,

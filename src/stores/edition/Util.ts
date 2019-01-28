@@ -95,11 +95,12 @@ export class Util {
         return dCompetitions;
     }
 
-    public static convertCompetitions(competitions: CompetitionResponse[], editionId: number): ICompetition[] {
-        const dCompetitions: ICompetition[] = [];
+    public static convertCompetitions(competitions: CompetitionResponse[],
+                                      editionId: number): Record<number, ICompetition> {
+        const dCompetitions: Record<number, ICompetition> = {};
 
         for (const comp of competitions) {
-            dCompetitions.push({
+            dCompetitions[comp.id] = {
                 editionId,
                 id: Number(comp.id),
                 name: comp.name,
@@ -113,7 +114,7 @@ export class Util {
                 heightlevels: comp.heightlevels,
                 competitionType: comp.competitionType,
                 startDate: comp.startDate,
-            } as ICompetition);
+            } as ICompetition;
         }
 
         return dCompetitions;

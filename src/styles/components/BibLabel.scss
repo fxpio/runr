@@ -13,8 +13,9 @@ $bib-label-padding-wrapper: 2%;
 .bib-label {
   position: relative;
   width: 89mm;
+  min-width: 89mm;
   height: 28mm;
-  margin: 1em auto;
+  margin: 0.5em;
   font-family: 'Roboto', sans-serif;
   font-size: 12pt;
   line-height: 12pt;
@@ -32,7 +33,7 @@ $bib-label-padding-wrapper: 2%;
     position: absolute;
   }
 
-  .bl-competition {
+  .bl-distance {
     top: 0;
     bottom: 0;
     left: 0;
@@ -46,20 +47,20 @@ $bib-label-padding-wrapper: 2%;
     overflow: hidden;
   }
 
-  .bl-competition-unit {
+  .bl-unit {
     top: 0;
     bottom: 0;
-    left: 50%;
-    right: 46%;
-    padding: $bib-label-padding-base;
+    left: 49%;
+    right: 44%;
+    padding: $bib-label-padding-wrapper 0 $bib-label-padding-wrapper $bib-label-padding-base;
     font-family: 'Roboto', sans-serif;
     font-weight: bold;
     text-align: center;
     text-transform: uppercase;
     font-size: 0.6em;
-    line-height: 0.8em;
+    line-height: 1.1em;
     letter-spacing: 1pt;
-    writing-mode: vertical-lr;
+    writing-mode: vertical-rl;
     transform: rotateZ(180deg);
     transform-origin: initial;
   }
@@ -68,7 +69,7 @@ $bib-label-padding-wrapper: 2%;
   .bl-bib-number,
   .bl-phone-urgency,
   .bl-phone-urgency-label {
-    left: 54%;
+    left: 57%;
     right: 0;
     padding: $bib-label-padding-base $bib-label-padding-wrapper $bib-label-padding-base $bib-label-padding-base;
     text-transform: uppercase;

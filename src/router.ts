@@ -48,6 +48,15 @@ export default new Router({
       },
     },
     {
+      path: '/bib-labels/print-one',
+      name: 'bib-labels-print-one',
+      meta: {requiresAuth: true},
+      components: {
+        default: () => import(/* webpackChunkName: "bib-labels" */ '@/views/BibLabels/PrintBibLabel.vue'),
+        toolbar: () => import(/* webpackChunkName: "bib-labels" */'@/components/Toolbar.vue'),
+      },
+    },
+    {
       path: '/settings',
       name: 'settings',
       components: {

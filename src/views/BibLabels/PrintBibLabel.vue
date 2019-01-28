@@ -1,0 +1,183 @@
+<!--
+This file is part of the BibScan for Njuko package.
+
+(c) François Pluchino <francois.pluchino@gmail.com>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+-->
+
+<template>
+  <v-container fill-height>
+    <v-layout justify-center row>
+      <v-fade-transition mode="out-in">
+        <v-flex sm10 md8 lg6 xl4 v-if="!loading">
+          <v-card>
+            <v-card-title primary-title>
+              <div class="headline">{{ $t('views.bib-labels-print-one.title') }}</div>
+            </v-card-title>
+
+            <v-card-text>
+              <v-form ref="form" @submit.prevent>
+                <v-text-field
+                        :label="$i18n.t('views.bib-labels-print.bib-number')"
+                        v-model="searchBibNumber"
+                        data-vv-name="searchBibNumber"
+                        :data-vv-as="$i18n.t('views.bib-labels-print.bib-number')"
+                        v-validate="'required'"
+                        :error-messages="errors.collect('searchBibNumber')"
+                        @keyup.enter="search"
+                        autofocus
+                        outline
+                        clearable
+                        required>
+                </v-text-field>
+              </v-form>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-list-tile class="grow">
+                <v-layout align-center justify-center>
+                  <v-btn depressed block ripple color="accent" v-on:click="search"><v-icon>search</v-icon></v-btn>
+                  <v-btn depressed block ripple color="success" v-on:click="print" :disabled="!bibResult"><v-icon>print</v-icon></v-btn>
+                </v-layout>
+              </v-list-tile>
+            </v-card-actions>
+          </v-card>
+
+          <div class="bib-label-wrapper mt-3" v-if="bibResult">
+            <bib-label :key="bibResult.bibNumber"
+                       :distance="bibResult.distance"
+                       :unit="bibResult.unit"
+                       :firstName="bibResult.firstName"
+                       :bibNumber="bibResult.bibNumber"
+                       :phoneUrgency="bibResult.phoneUrgency"
+                       :startBirthDate="bibResult.startBirthDate"
+                       :endBirthDate="bibResult.endBirthDate"
+                       :registrationId="bibResult.registrationId"
+            ></bib-label>
+          </div>
+
+          <v-layout column align-center justify-center v-else-if="bibResult === false">
+            <v-icon size="14em" color="info">search</v-icon>
+            <h2 :class="$store.state.darkMode.enabled ? null : 'grey--text'">{{ $t('views.bib-labels-print.bib-not-found') }}</h2>
+          </v-layout>
+        </v-flex>
+
+        <loading v-if="loading"></loading>
+      </v-fade-transition>
+    </v-layout>
+  </v-container>
+</template>
+
+<script lang="ts">
+  import {ListResponse} from '@/api/models/responses/ListResponse';
+  import {RegistrationAnswerResponse} from '@/api/models/responses/RegistrationAnswerResponse';
+  import {RegistrationBibResponse} from '@/api/models/responses/RegistrationBibResponse';
+  import {RegistrationResponse} from '@/api/models/responses/RegistrationResponse';
+  import {Registration} from '@/api/services/Registration';
+  import BibItem from '@/bib/BibItem';
+  import BibLabel from '@/components/BibLabel.vue';
+  import Loading from '@/components/Loading.vue';
+  import {ICompetition} from '@/db/tables/ICompetition';
+  import {IField} from '@/db/tables/IField';
+  import {AjaxContent} from '@/mixins/AjaxContent';
+  import {Printer} from '@/printers/Printer';
+  import {PrinterModuleState} from '@/stores/printer/PrinterModuleState';
+  import {mixins} from 'vue-class-component';
+  import {MetaInfo} from 'vue-meta';
+  import {Component} from 'vue-property-decorator';
+  import '@/styles/views/BibLabels.scss';
+
+  /**
+   * @author François Pluchino <francois.pluchino@gmail.com>
+   */
+  @Component({
+    components: {Loading, BibLabel},
+  })
+  export default class BibLabels extends mixins(AjaxContent) {
+    public bibResult: BibItem|false|null = null;
+
+    public searchBibNumber?: string = '';
+
+    private printer: Printer<PrinterModuleState> = new Printer(this.$store, '.bib-label-wrapper .bib-label');
+
+    public metaInfo(): MetaInfo {
+      return {
+        title: this.$i18n.t('views.bib-labels-print-one.title') as string,
+      };
+    }
+
+    public async search() {
+      if (!await this.$validator.validateAll()) {
+        return;
+      }
+
+      this.loading = true;
+      this.bibResult = false;
+      const res = await this.fetchData<ListResponse<RegistrationResponse>>(() =>
+              this.$api.get<Registration>(Registration).list({
+        itemsPerPage: 1,
+        search: {
+          bibNumber: this.searchBibNumber,
+        },
+      }));
+
+      if (res && res.resultsSize > 0 && res.results[0].bib) {
+        const reg = res.results[0];
+
+        // find competition
+        const competitions: Record<number, ICompetition> = this.$store.state.edition.currentCompetitions;
+        const competition = competitions[reg.competition_id] as ICompetition;
+        const bib = new BibItem();
+        bib.bibNumber = (reg.bib as RegistrationBibResponse).code;
+        bib.firstName = reg.firstname;
+        bib.registrationId = reg.id;
+
+        if (competition) {
+          bib.distance = competition.sportsAndDistances[0].distance;
+          bib.unit = competition.sportsAndDistances[0].unit as string;
+
+          if (competition.startBirthDate) {
+            bib.startBirthDate = new Date(competition.startBirthDate);
+          }
+
+          if (competition.endBirthDate) {
+            bib.endBirthDate = new Date(competition.endBirthDate);
+          }
+        }
+
+        // find last phone field
+        if (reg.answers) {
+          const fields: Record<number, IField> = this.$store.state.edition.currentFields;
+          let field: IField;
+
+          for (const sField of Object.values(fields).reverse() as IField[]) {
+            if ('PhoneNumber' === sField.type) {
+              field = sField;
+
+              for (const answer of reg.answers.reverse()) {
+                if (answer.field_id === sField.id) {
+                  bib.phoneUrgency = answer.value as string;
+
+                  if ((answer as RegistrationAnswerResponse).country) {
+                    bib.phoneUrgency = '+' + (answer as RegistrationAnswerResponse).country + bib.phoneUrgency;
+                  }
+                  break;
+                }
+              }
+              break;
+            }
+          }
+        }
+
+        this.bibResult = bib;
+      }
+      this.loading = false;
+    }
+
+    public print(): void {
+      this.printer.print();
+    }
+  }
+</script>

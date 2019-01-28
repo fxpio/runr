@@ -16,7 +16,7 @@ import {Component} from 'vue-property-decorator';
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
 @Component
-export class AjaxContent<D, O> extends Vue {
+export class AjaxContent extends Vue {
     public loading: boolean = false;
 
     public previousRequest?: Canceler;
@@ -31,7 +31,7 @@ export class AjaxContent<D, O> extends Vue {
     /**
      * Fetch data.
      */
-    public async fetchData(request: () => D): Promise<D|undefined> {
+    public async fetchData<D>(request: () => Promise<D>): Promise<D|undefined> {
         try {
             this.loading = true;
 
@@ -40,11 +40,11 @@ export class AjaxContent<D, O> extends Vue {
             }
             this.previousRequest = new Canceler();
 
-            const res = await request();
+            const res: D = await request();
             this.previousRequest = undefined;
             this.loading = false;
 
-            return res;
+            return res as D;
         } catch (e) {
             this.loading = false;
             this.$store.commit('snackbar/snack', {message: getRequestErrorMessage(this, e), color: 'error'});

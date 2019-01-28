@@ -11,6 +11,8 @@ import {Api} from '@/api/Api';
 import {Database} from '@/db/Database';
 import {AuthModule} from '@/stores/auth/AuthModule';
 import {AuthModuleState} from '@/stores/auth/AuthModuleState';
+import {BibModule} from '@/stores/bib/BibModule';
+import {BibModuleState} from '@/stores/bib/BibModuleState';
 import {DarkModeModule} from '@/stores/darkMode/DarkModeModule';
 import {DarkModeModuleState} from '@/stores/darkMode/DarkModeModuleState';
 import {DrawerModule} from '@/stores/drawer/DrawerModule';
@@ -39,9 +41,10 @@ Vue.use(Vuex);
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
 export function createStore<R extends
-                            DarkModeModuleState
+                            AuthModuleState
+                          & BibModuleState
+                          & DarkModeModuleState
                           & DrawerModuleState
-                          & AuthModuleState
                           & EditionModuleState
                           & I18nModuleState
                           & PrinterModuleState
@@ -49,9 +52,10 @@ export function createStore<R extends
   return new Vuex.Store<R>({
     state: {} as R,
     modules: {
+      auth: new AuthModule<R>(router, api, db),
+      bib: new BibModule<R>(),
       darkMode: new DarkModeModule<R>(),
       drawer: new DrawerModule<R>(),
-      auth: new AuthModule<R>(router, api, db),
       edition: new EditionModule<R>(router, api, db),
       i18n: new I18nModule<R>(i18n),
       printer: new PrinterModule<R>(),

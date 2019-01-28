@@ -7,10 +7,9 @@
  * file that was distributed with this source code.
  */
 
-.bib-label-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  flex-flow: row wrap;
-  justify-content: center;
-  overflow-x: auto;
+/**
+ * @author François Pluchino <francois.pluchino@gmail.com>
+ */
+export interface BibState {
+    useAlias: boolean;
 }

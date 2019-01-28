@@ -54,6 +54,8 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
             initialized: false,
             all: [],
             current: null,
+            currentCompetitions: null,
+            currentFields: null,
             serverPending: false,
         } as EditionState;
     }
@@ -72,12 +74,22 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
         return {
             SELECT_CURRENT: (state: EditionState, current: IEdition|null) => {
                 state.current = current;
+                state.currentCompetitions = null;
+                state.currentFields = null;
 
                 if (current) {
                     this.storage.setItem('edition:selection', String(current.id));
                 } else {
                     this.storage.removeItem('edition:selection');
                 }
+            },
+
+            SET_CURRENT_COMPETITIONS: (state: EditionState, competitions: Record<number, ICompetition>) => {
+                state.currentCompetitions = competitions;
+            },
+
+            SET_CURRENT_FIELDS: (state: EditionState, fields: Record<number, IField>) => {
+                state.currentFields = fields;
             },
 
             SET_EDITIONS: (state: EditionState, editions: IEdition[]) => {
@@ -165,6 +177,29 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
                     }
 
                     commit('SELECT_CURRENT', edition);
+
+                    if (edition) {
+                        // find all competitions
+                        const competitions = {} as Record<number, ICompetition>;
+                        const edCompetitions = await self.db.competitions.where('editionId')
+                            .equals(edition.id).toArray();
+
+                        for (const comp of edCompetitions) {
+                            competitions[comp.id] = comp;
+                        }
+                        commit('SET_CURRENT_COMPETITIONS', competitions);
+
+                        // find all fields
+                        const fields = {} as Record<number, IField>;
+                        const edFields = await self.db.fields.where('editionId')
+                            .equals(edition.id).toArray();
+
+                        for (const field of edFields) {
+                            fields[field.id] = field;
+                        }
+                        commit('SET_CURRENT_FIELDS', fields);
+                    }
+
                 } catch (e) {
                     const mess = self.router.app.$i18n.t('error.invalid-authorization') as string;
                     commit('SELECT_CURRENT', null);
@@ -271,14 +306,18 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
 
                     self.previousRequest = undefined;
                     await dispatch('putFields', fields);
-                    await dispatch('putCompetitions', competitions);
+                    await dispatch('putCompetitions', Object.values(competitions));
                     await dispatch('put', edition);
 
                     if (typeof redirect === 'string') {
                         commit('SELECT_CURRENT', edition);
+                        commit('SET_CURRENT_COMPETITIONS', competitions);
+                        commit('SET_CURRENT_FIELDS', fields);
                         self.router.push(redirect);
                     } else if (false !== redirect) {
                         commit('SELECT_CURRENT', edition);
+                        commit('SET_CURRENT_COMPETITIONS', competitions);
+                        commit('SET_CURRENT_FIELDS', fields);
                         self.router.push({name: 'editions'});
                     }
 
