@@ -20,6 +20,7 @@ file that was distributed with this source code.
             <v-card-text>
               <v-form ref="form" @submit.prevent>
                 <v-text-field
+                        type="number"
                         :label="$i18n.t('views.bib-labels-print.bib-number')"
                         v-model="searchBibNumber"
                         data-vv-name="searchBibNumber"
