@@ -10,7 +10,7 @@ file that was distributed with this source code.
 <template>
   <v-container fill-height>
     <v-layout justify-center row>
-      <v-fade-transition mode="out-in">
+      <transition name="fade" mode="out-in" @after-enter="onAfterEnter">
         <v-flex sm10 md8 lg6 xl4 v-if="!loading">
           <v-card>
             <v-card-title primary-title>
@@ -52,13 +52,13 @@ file that was distributed with this source code.
               <v-list-tile class="grow">
                 <v-layout align-center justify-center>
                   <v-btn depressed block ripple color="accent" v-on:click="search"><v-icon>search</v-icon></v-btn>
-                  <v-btn depressed block ripple color="success" v-on:click="print" :disabled="!bibResult"><v-icon>print</v-icon></v-btn>
+                  <v-btn depressed block ripple color="success" v-on:click="print" :disabled="!isPrintable"><v-icon>print</v-icon></v-btn>
                 </v-layout>
               </v-list-tile>
             </v-card-actions>
           </v-card>
 
-          <div class="bib-label-wrapper mt-3" v-if="bibResult">
+          <div :class="bibWrapperClasses" v-if="bibResult">
             <bib-label :key="bibResult.bibNumber"
                        :distance="bibResult.distance"
                        :unit="bibResult.unit"
@@ -67,7 +67,6 @@ file that was distributed with this source code.
                        :phoneUrgency="bibResult.phoneUrgency"
                        :startBirthDate="bibResult.startBirthDate"
                        :endBirthDate="bibResult.endBirthDate"
-                       :registrationId="bibResult.registrationId"
             ></bib-label>
           </div>
 
@@ -78,7 +77,7 @@ file that was distributed with this source code.
         </v-flex>
 
         <loading v-if="loading"></loading>
-      </v-fade-transition>
+      </transition>
     </v-layout>
   </v-container>
 </template>
@@ -113,7 +112,9 @@ file that was distributed with this source code.
 
     public searchBibNumber?: string = '';
 
-    private printer: Printer<PrinterModuleState> = new Printer(this.$store, '.bib-label-wrapper .bib-label');
+    private launchPrint: boolean = false;
+
+    private printer: Printer<PrinterModuleState> = new Printer(this.$store);
 
     public get startPrintingImmediately(): boolean {
       return this.$store.state.bib.startPrintingImmediately;
@@ -123,10 +124,36 @@ file that was distributed with this source code.
       this.$store.commit('bib/toggleStartPrintingImmediately', value);
     }
 
+    public get isPrintable(): boolean {
+      return !!this.bibResult && -1 !== this.bibResult.registrationId;
+    }
+
+    public get bibWrapperClasses(): object {
+      return {
+        'bib-label-wrapper': true,
+        ' mt-3': true,
+        'hidden': !this.isPrintable,
+      };
+    }
+
     public metaInfo(): MetaInfo {
       return {
         title: this.$i18n.t('views.bib-labels-print-one.title') as string,
       };
+    }
+
+    public beforeMount(): void {
+      this.bibResult = new BibItem();
+      this.bibResult.registrationId = -1;
+      this.bibResult.distance = 'Dis';
+      this.bibResult.unit = 'unit';
+      this.bibResult.bibNumber = '0';
+      this.bibResult.firstName = 'Example';
+      this.bibResult.phoneUrgency = 'Phone number';
+    }
+
+    public destroyed(): void {
+      this.printer.destroy();
     }
 
     public async search() {
@@ -135,6 +162,7 @@ file that was distributed with this source code.
       }
 
       this.loading = true;
+      this.launchPrint = false;
       this.bibResult = false;
       const res = await this.fetchData<ListResponse<RegistrationResponse>>(() =>
               this.$api.get<Registration>(Registration).list({
@@ -198,13 +226,20 @@ file that was distributed with this source code.
       this.loading = false;
 
       if (this.startPrintingImmediately) {
-        this.print();
+        this.launchPrint = true;
       }
     }
 
     public print(): void {
-      if (this.bibResult) {
-        this.printer.print();
+      if (this.isPrintable) {
+        this.printer.print([...document.querySelectorAll('.bib-label-wrapper .bib-label').values()]);
+      }
+    }
+
+    public onAfterEnter(): void {
+      if (this.launchPrint) {
+        this.launchPrint = false;
+        this.print();
       }
     }
   }

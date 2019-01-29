@@ -13,4 +13,8 @@
   flex-flow: row wrap;
   justify-content: center;
   overflow-x: auto;
+
+  &.hidden {
+    height: 0;
+  }
 }

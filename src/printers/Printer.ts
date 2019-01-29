@@ -16,61 +16,103 @@ import {Store} from 'vuex';
 export class Printer<S extends PrinterModuleState> {
     private readonly store: Store<S>;
 
-    private readonly selector: string;
+    private readonly parent: HTMLElement;
 
-    private readonly pageId: string;
+    private wrapper?: HTMLDivElement;
 
-    constructor(store: Store<S>, selector: string, pageId: string = 'bib-scan-print-page') {
+    constructor(store: Store<S>, parent: HTMLElement = window.document.body) {
         this.store = store;
-        this.selector = selector;
-        this.pageId = pageId;
+        this.parent = parent;
     }
 
-    public print(): void {
-        let stylesHtml = '';
-        let prtHtml = '';
-        let width;
-        let height;
+    public print(nodes: Element[]): void {
+        const wrapper = this.createWrapper();
+        let pageStyled = false;
 
-        for (const node of [...document.querySelectorAll(this.selector)]) {
-            prtHtml += node.outerHTML;
-
-            if (!width) {
+        for (const node of nodes) {
+            if (!pageStyled) {
                 const compStyle = window.getComputedStyle(node as Element);
-                width = compStyle.width;
-                height = compStyle.height;
+                pageStyled = true;
+
+                const cssText = `@media print {
+                    @page {
+                        size: ${compStyle.width} ${compStyle.height};
+                    }
+
+                    #printer-wrapper {
+                        position: absolute !important;
+                        top: 0 !important;
+                        bottom: 0 !important;
+                        left: 0 !important;
+                        right: 0 !important;
+                        visibility: visible !important;
+                        width: auto !important;
+                        height: auto !important;
+                        z-index: auto !important;
+                    }
+
+                    body > div:not(#printer-wrapper) {
+                        display: none;
+                    }
+                }`;
+                const style: HTMLStyleElement = window.document.createElement('style');
+                style.id = 'printer-page-size-style';
+                (style as any).type = 'text/css';
+                style.appendChild(window.document.createTextNode(cssText));
+
+                window.document.head.appendChild(style);
             }
+
+            const cNode = node.cloneNode(true) as Element;
+            cNode.removeAttribute('id');
+
+            for (const cChildNode of [...cNode.querySelectorAll('*')]) {
+                cChildNode.removeAttribute('id');
+            }
+
+            wrapper.appendChild(cNode);
         }
 
-        for (const node of [...document.querySelectorAll('link[rel="stylesheet"], style')]) {
-            stylesHtml += node.outerHTML;
+        const result: boolean = window.document.execCommand('print', false);
+
+        if (!result) {
+            window.print();
         }
 
-        const winPrint = window.open('', this.pageId);
-        const store = this.store;
-
-        if (null !== winPrint) {
-            winPrint.document.write(`<!DOCTYPE html>
-                <html>
-                  <head>
-                    ${stylesHtml}
-                    <style>
-                      @media print {@page {size: ${width} ${height};}}
-                    </style>
-                  </head>
-                  <body>
-                    ${prtHtml}
-                  </body>
-                </html>`);
-            winPrint.document.close();
-            winPrint.onload = () => {
-                winPrint.focus();
-                winPrint.print();
-
-                if (store.state.printer.closeAfterPrint) {
-                    winPrint.close();
-                }
-            };
+        if (this.store.state.printer.closeAfterPrint) {
+            this.reset();
         }
+    }
+
+    public reset(): void {
+        const pageStyle = window.document.getElementById('printer-page-size-style');
+
+        if (pageStyle) {
+            pageStyle.remove();
+        }
+
+        if (this.wrapper) {
+            this.wrapper.remove();
+            this.wrapper = undefined;
+        }
+    }
+
+    public destroy(): void {
+        this.reset();
+    }
+
+    private createWrapper(): HTMLDivElement {
+        this.reset();
+
+        const el: HTMLDivElement = window.document.createElement('div');
+
+        el.setAttribute('style', 'visibility:hidden;width:0;height:0;position:fixed;z-index:-9999;bottom:0;');
+        el.setAttribute('id', 'printer-wrapper');
+        el.setAttribute('width', '0');
+        el.setAttribute('height', '0');
+
+        this.parent.appendChild(el);
+
+        return this.wrapper = el;
     }
 }
