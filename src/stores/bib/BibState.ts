@@ -12,4 +12,5 @@
  */
 export interface BibState {
     useAlias: boolean;
+    startPrintingImmediately: boolean;
 }

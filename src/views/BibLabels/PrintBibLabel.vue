@@ -17,7 +17,7 @@ file that was distributed with this source code.
               <div class="headline">{{ $t('views.bib-labels-print-one.title') }}</div>
             </v-card-title>
 
-            <v-card-text>
+            <v-card-text class="pb-0">
               <v-form ref="form" @submit.prevent>
                 <v-text-field
                         type="number"
@@ -35,6 +35,18 @@ file that was distributed with this source code.
                 </v-text-field>
               </v-form>
             </v-card-text>
+
+            <v-list dense>
+              <v-list-tile>
+                <v-list-tile-action>
+                  <v-switch v-model="startPrintingImmediately"></v-switch>
+                </v-list-tile-action>
+
+                <v-list-tile-content>
+                  <v-list-tile-title>{{ $t('views.settings.start-printing-immediately') }}</v-list-tile-title>
+                </v-list-tile-content>
+              </v-list-tile>
+            </v-list>
 
             <v-card-actions>
               <v-list-tile class="grow">
@@ -102,6 +114,14 @@ file that was distributed with this source code.
     public searchBibNumber?: string = '';
 
     private printer: Printer<PrinterModuleState> = new Printer(this.$store, '.bib-label-wrapper .bib-label');
+
+    public get startPrintingImmediately(): boolean {
+      return this.$store.state.bib.startPrintingImmediately;
+    }
+
+    public set startPrintingImmediately(value: boolean) {
+      this.$store.commit('bib/toggleStartPrintingImmediately', value);
+    }
 
     public metaInfo(): MetaInfo {
       return {
@@ -174,11 +194,18 @@ file that was distributed with this source code.
 
         this.bibResult = bib;
       }
+
       this.loading = false;
+
+      if (this.startPrintingImmediately) {
+        this.print();
+      }
     }
 
     public print(): void {
-      this.printer.print();
+      if (this.bibResult) {
+        this.printer.print();
+      }
     }
   }
 </script>

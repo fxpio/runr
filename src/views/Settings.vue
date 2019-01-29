@@ -142,6 +142,17 @@ file that was distributed with this source code.
 
             <v-list-tile>
               <v-list-tile-content>
+                <v-list-tile-title>{{ $t('views.settings.start-printing-immediately') }}</v-list-tile-title>
+                <v-list-tile-sub-title>{{ $t('views.settings.start-printing-immediately-description') }}</v-list-tile-sub-title>
+              </v-list-tile-content>
+
+              <v-list-tile-action>
+                <v-switch v-model="startPrintingImmediately"></v-switch>
+              </v-list-tile-action>
+            </v-list-tile>
+
+            <v-list-tile>
+              <v-list-tile-content>
                 <v-list-tile-title>{{ $t('views.settings.close-after-print') }}</v-list-tile-title>
                 <v-list-tile-sub-title>{{ $t('views.settings.close-after-print-description') }}</v-list-tile-sub-title>
               </v-list-tile-content>
@@ -225,6 +236,14 @@ file that was distributed with this source code.
 
     public set useBibAlias(value: boolean) {
       this.$store.commit('bib/toggleUseAlias', value);
+    }
+
+    public get startPrintingImmediately(): boolean {
+      return this.$store.state.bib.startPrintingImmediately;
+    }
+
+    public set startPrintingImmediately(value: boolean) {
+      this.$store.commit('bib/toggleStartPrintingImmediately', value);
     }
 
     public login(): void {

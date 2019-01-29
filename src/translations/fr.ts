@@ -55,6 +55,9 @@ export default {
     'views.settings.close-after-print': 'Fermer après l\'impression',
     'views.settings.close-after-print-description': 'Fermer automatiquement la fenêtre des étiquettes de dossard après '
                                                   + 'l\'impression',
+    'views.settings.start-printing-immediately': 'Lancer l\'impression immédiatement',
+    'views.settings.start-printing-immediately-description': 'Lancer l\'impression immediatement après la '
+                                                           + 'recherche d\'un dossard',
     'views.settings.languages.en': 'Anglais',
     'views.settings.languages.fr': 'Français',
     'views.bib-labels-print-one.title': 'Etiquette du dossard',

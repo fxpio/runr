@@ -52,6 +52,8 @@ export default {
                                                    + 'on the labels if it is available',
     'views.settings.close-after-print': 'Close after print',
     'views.settings.close-after-print-description': 'Automatically close the bib labels window after printing',
+    'views.settings.start-printing-immediately': 'Start printing immediately',
+    'views.settings.start-printing-immediately-description': 'Start printing immediately after finding a bib',
     'views.settings.languages.en': 'English',
     'views.settings.languages.fr': 'French',
     'views.bib-labels-print-one.title': 'Bib label',

@@ -26,9 +26,11 @@ export class BibModule<R extends BibModuleState> implements Module<BibState, R> 
 
     public get state(): BibState {
         const useAlias = localStorage.getItem('bib:useAlias');
+        const startPrintingImmediately = localStorage.getItem('bib:startPrintingImmediately');
 
         return {
             useAlias: null === useAlias ? true : 'true' === useAlias,
+            startPrintingImmediately: null === startPrintingImmediately ? true : 'true' === startPrintingImmediately,
         };
     }
 
@@ -47,6 +49,12 @@ export class BibModule<R extends BibModuleState> implements Module<BibState, R> 
             toggleUseAlias(state: BibState, useAlias?: boolean): void {
                 state.useAlias = undefined === useAlias ? !state.useAlias : useAlias;
                 localStorage.setItem('bib:useAlias', state.useAlias ? 'true' : 'false');
+            },
+            toggleStartPrintingImmediately(state: BibState, startPrinting?: boolean): void {
+                state.startPrintingImmediately = undefined === startPrinting
+                    ? !state.startPrintingImmediately
+                    : startPrinting;
+                localStorage.setItem('bib:startPrintingImmediately', state.startPrintingImmediately ? 'true' : 'false');
             },
         };
     }
