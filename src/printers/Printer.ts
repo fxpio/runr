@@ -7,21 +7,16 @@
  * file that was distributed with this source code.
  */
 
-import {PrinterModuleState} from '@/stores/printer/PrinterModuleState';
-import {Store} from 'vuex';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class Printer<S extends PrinterModuleState> {
-    private readonly store: Store<S>;
-
+export class Printer {
     private readonly parent: HTMLElement;
 
     private wrapper?: HTMLDivElement;
 
-    constructor(store: Store<S>, parent: HTMLElement = window.document.body) {
-        this.store = store;
+    constructor(parent: HTMLElement = window.document.body) {
         this.parent = parent;
     }
 
@@ -77,10 +72,6 @@ export class Printer<S extends PrinterModuleState> {
 
         if (!result) {
             window.print();
-        }
-
-        if (this.store.state.printer.closeAfterPrint) {
-            this.reset();
         }
     }
 

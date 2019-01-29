@@ -95,7 +95,6 @@ file that was distributed with this source code.
   import {IField} from '@/db/tables/IField';
   import {AjaxContent} from '@/mixins/AjaxContent';
   import {Printer} from '@/printers/Printer';
-  import {PrinterModuleState} from '@/stores/printer/PrinterModuleState';
   import {mixins} from 'vue-class-component';
   import {MetaInfo} from 'vue-meta';
   import {Component} from 'vue-property-decorator';
@@ -114,7 +113,7 @@ file that was distributed with this source code.
 
     private launchPrint: boolean = false;
 
-    private printer: Printer<PrinterModuleState> = new Printer(this.$store);
+    private printer: Printer = new Printer();
 
     public get startPrintingImmediately(): boolean {
       return this.$store.state.bib.startPrintingImmediately;

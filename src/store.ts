@@ -21,8 +21,6 @@ import {EditionModule} from '@/stores/edition/EditionModule';
 import {EditionModuleState} from '@/stores/edition/EditionModuleState';
 import {I18nModule} from '@/stores/i18n/I18nModule';
 import {I18nModuleState} from '@/stores/i18n/I18nModuleState';
-import {PrinterModule} from '@/stores/printer/PrinterModule';
-import {PrinterModuleState} from '@/stores/printer/PrinterModuleState';
 import {SnackbarModule} from '@/stores/snackbar/SnackbarModule';
 import {SnackbarModuleState} from '@/stores/snackbar/SnackbarModuleState';
 import Vue from 'vue';
@@ -47,7 +45,6 @@ export function createStore<R extends
                           & DrawerModuleState
                           & EditionModuleState
                           & I18nModuleState
-                          & PrinterModuleState
                           & SnackbarModuleState>(router: VueRouter, i18n: VueI18n, api: Api, db: Database): Store<R> {
   return new Vuex.Store<R>({
     state: {} as R,
@@ -58,7 +55,6 @@ export function createStore<R extends
       drawer: new DrawerModule<R>(),
       edition: new EditionModule<R>(router, api, db),
       i18n: new I18nModule<R>(i18n),
-      printer: new PrinterModule<R>(),
       snackbar: new SnackbarModule<R>(),
     },
   });

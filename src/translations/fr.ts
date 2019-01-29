@@ -52,9 +52,6 @@ export default {
     'views.settings.use-bib-aliases': 'Utilisez des alias',
     'views.settings.use-bib-aliases-description': 'Remplacer la distance de compétition '
                                                    + 'par un alias sur les étiquettes s\'il est disponible',
-    'views.settings.close-after-print': 'Fermer après l\'impression',
-    'views.settings.close-after-print-description': 'Fermer automatiquement la fenêtre des étiquettes de dossard après '
-                                                  + 'l\'impression',
     'views.settings.start-printing-immediately': 'Lancer l\'impression immédiatement',
     'views.settings.start-printing-immediately-description': 'Lancer l\'impression immediatement après la '
                                                            + 'recherche d\'un dossard',

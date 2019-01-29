@@ -150,17 +150,6 @@ file that was distributed with this source code.
                 <v-switch v-model="startPrintingImmediately"></v-switch>
               </v-list-tile-action>
             </v-list-tile>
-
-            <v-list-tile>
-              <v-list-tile-content>
-                <v-list-tile-title>{{ $t('views.settings.close-after-print') }}</v-list-tile-title>
-                <v-list-tile-sub-title>{{ $t('views.settings.close-after-print-description') }}</v-list-tile-sub-title>
-              </v-list-tile-content>
-
-              <v-list-tile-action>
-                <v-switch v-model="closeAfterPrint"></v-switch>
-              </v-list-tile-action>
-            </v-list-tile>
           </v-list>
         </v-card>
       </v-flex>
@@ -220,14 +209,6 @@ file that was distributed with this source code.
 
     public set darkMode(value: boolean) {
       this.$store.commit('darkMode/toggle', value);
-    }
-
-    public get closeAfterPrint(): boolean {
-      return this.$store.state.printer.closeAfterPrint;
-    }
-
-    public set closeAfterPrint(value: boolean) {
-      this.$store.commit('printer/toggle', value);
     }
 
     public get useBibAlias(): boolean {
