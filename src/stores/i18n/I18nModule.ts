@@ -20,13 +20,14 @@ import {GetterTree, Module, MutationTree} from 'vuex';
 export class I18nModule<R extends I18nModuleState> implements Module<I18nState, R> {
     private readonly i18n: VueI18n;
 
+    private readonly storage: Storage;
+
     /**
      * Constructor.
-     *
-     * @param i18n The i18n
      */
-    public constructor(i18n: VueI18n) {
+    public constructor(i18n: VueI18n, storage?: Storage) {
         this.i18n = i18n;
+        this.storage = storage ? storage : localStorage;
     }
 
     public get namespaced(): boolean {
@@ -75,7 +76,7 @@ export class I18nModule<R extends I18nModuleState> implements Module<I18nState, 
      * @return {string}
      */
     private findLocale(): string {
-        let locale = localStorage.getItem('i18n:locale');
+        let locale = this.storage.getItem('i18n:locale');
 
         if (null === locale && window.navigator) {
             const availables: any = window.navigator.languages;
@@ -124,7 +125,7 @@ export class I18nModule<R extends I18nModuleState> implements Module<I18nState, 
      * @return {string}
      */
     private saveLocale(locale: string): string {
-        localStorage.setItem('i18n:locale', locale);
+        this.storage.setItem('i18n:locale', locale);
         this.i18n.locale = locale;
         Validator.localize(locale);
         Vue.prototype.$vuetify.lang.current = locale;
