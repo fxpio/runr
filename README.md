@@ -6,10 +6,13 @@ one to one or in mass.
 
 **Features include:**
 
-- Manage the editions with the identifiers and API keys given by the Njuko application
+- Manage the editions with your email and password or directly with the identifiers and API keys given
+  by the Njuko application
 - Search or scan the QR code of registration to validate the informations before collecting the bib
 - Search or scan the QR code of bib and print his label
 - Import in mass the list of bib numbers and print their labels
+- Install this application on your device's home screen without the need for an app store
+  (it's a Progressive Web Application)
 
 > **Note:**
 >
