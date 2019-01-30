@@ -21,3 +21,7 @@ $material-design-icons-font-path: '~material-design-icons-iconfont/dist/fonts/';
 @import 'toolbar.scss';
 @import 'tooltips.scss';
 @import 'qrcode.scss';
+
+html {
+  overflow-y: scroll !important;
+}
