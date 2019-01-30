@@ -18,6 +18,7 @@ import '@/plugins/veeValidate';
 import '@/plugins/vueMeta';
 import '@/plugins/vuetify';
 import '@/plugins/vueLongClick';
+import '@/plugins/vueQrcodeReader';
 import i18n from '@/plugins/vueI18n';
 import apiClient from '@/plugins/vueApi';
 import dbClient from '@/plugins/vueDb';

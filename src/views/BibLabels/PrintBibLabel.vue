@@ -10,6 +10,10 @@ file that was distributed with this source code.
 <template>
   <v-container fill-height>
     <v-layout justify-center row>
+      <scanner v-model="dialogScanner"
+               @availableCameras="onAvailableCameras"
+               @decode="onDecode"></scanner>
+
       <transition name="fade" mode="out-in" @after-enter="onAfterEnter">
         <v-flex sm10 md8 lg6 xl4 v-if="!loading">
           <v-card>
@@ -28,7 +32,6 @@ file that was distributed with this source code.
                         v-validate="'required'"
                         :error-messages="errors.collect('searchBibNumber')"
                         @keyup.enter="search"
-                        autofocus
                         outline
                         clearable
                         required>
@@ -51,8 +54,21 @@ file that was distributed with this source code.
             <v-card-actions>
               <v-list-tile class="grow">
                 <v-layout align-center justify-center>
-                  <v-btn depressed block ripple color="accent" v-on:click="search"><v-icon>search</v-icon></v-btn>
-                  <v-btn depressed block ripple color="success" v-on:click="print" :disabled="!isPrintable"><v-icon>print</v-icon></v-btn>
+                  <v-tooltip top class="v-btn v-btn--block" v-if="availableCamera">
+                    <v-btn slot="activator" depressed ripple color="blue-grey" @click="dialogScanner = true">
+                      <v-img max-width="24"
+                             max-height="24"
+                             :src="require('@/assets/qrcode-scan-icon.svg')">
+                      </v-img>
+                    </v-btn>
+                    <span>{{ $t('scanner.scan-bib-withdrawal-card') }}</span>
+                  </v-tooltip>
+                  <v-btn depressed block ripple color="accent" v-on:click="search">
+                    <v-icon>search</v-icon>
+                  </v-btn>
+                  <v-btn depressed block ripple color="success" v-on:click="print" :disabled="!isPrintable">
+                    <v-icon>print</v-icon>
+                  </v-btn>
                 </v-layout>
               </v-list-tile>
             </v-card-actions>
@@ -83,6 +99,7 @@ file that was distributed with this source code.
 </template>
 
 <script lang="ts">
+  import {RegistrationOptionsSearch} from '@/api/models/request/RegistrationOptionsSearch';
   import {ListResponse} from '@/api/models/responses/ListResponse';
   import {RegistrationAnswerResponse} from '@/api/models/responses/RegistrationAnswerResponse';
   import {RegistrationBibResponse} from '@/api/models/responses/RegistrationBibResponse';
@@ -91,8 +108,10 @@ file that was distributed with this source code.
   import BibItem from '@/bib/BibItem';
   import BibLabel from '@/components/BibLabel.vue';
   import Loading from '@/components/Loading.vue';
+  import Scanner from '@/components/Scanner.vue';
   import {ICompetition} from '@/db/tables/ICompetition';
   import {IField} from '@/db/tables/IField';
+  import Camera from '@/devices/Camera';
   import {AjaxContent} from '@/mixins/AjaxContent';
   import {Printer} from '@/printers/Printer';
   import {mixins} from 'vue-class-component';
@@ -104,12 +123,16 @@ file that was distributed with this source code.
    * @author François Pluchino <francois.pluchino@gmail.com>
    */
   @Component({
-    components: {Loading, BibLabel},
+    components: {Scanner, Loading, BibLabel},
   })
   export default class BibLabels extends mixins(AjaxContent) {
     public bibResult: BibItem|false|null = null;
 
     public searchBibNumber?: string = '';
+
+    public dialogScanner: boolean = false;
+
+    public availableCamera: boolean = false;
 
     private launchPrint: boolean = false;
 
@@ -141,7 +164,7 @@ file that was distributed with this source code.
       };
     }
 
-    public beforeMount(): void {
+    public async beforeMount(): Promise<void> {
       this.bibResult = new BibItem();
       this.bibResult.registrationId = -1;
       this.bibResult.distance = 'Dis';
@@ -160,15 +183,19 @@ file that was distributed with this source code.
         return;
       }
 
+      await this.doSearch({
+        bibNumber: this.searchBibNumber,
+      });
+    }
+
+    public async doSearch(searchOptions: RegistrationOptionsSearch) {
       this.loading = true;
       this.launchPrint = false;
       this.bibResult = false;
       const res = await this.fetchData<ListResponse<RegistrationResponse>>(() =>
               this.$api.get<Registration>(Registration).list({
         itemsPerPage: 1,
-        search: {
-          bibNumber: this.searchBibNumber,
-        },
+        search: searchOptions,
       }));
 
       if (res && res.resultsSize > 0 && res.results[0].bib) {
@@ -220,6 +247,10 @@ file that was distributed with this source code.
         }
 
         this.bibResult = bib;
+
+        if (this.searchBibNumber !== bib.bibNumber) {
+          this.searchBibNumber = bib.bibNumber;
+        }
       }
 
       this.loading = false;
@@ -240,6 +271,17 @@ file that was distributed with this source code.
         this.launchPrint = false;
         this.print();
       }
+    }
+
+    public onAvailableCameras(cameras: Camera[]): void {
+      this.availableCamera = cameras.length > 0;
+    }
+
+    public async onDecode(value: string): Promise<void> {
+      this.dialogScanner = false;
+      await this.doSearch({
+        id: Number(value),
+      });
     }
   }
 </script>
