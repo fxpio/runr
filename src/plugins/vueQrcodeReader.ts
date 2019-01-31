@@ -9,9 +9,10 @@
 
 import Vue from 'vue';
 /* tslint:disable:no-var-requires */
-const VueQrcodeReader = require('vue-qrcode-reader');
+const QrcodeStream = require('vue-qrcode-reader/src').QrcodeStream;
+require('vue-qrcode-reader/dist/vue-qrcode-reader.css');
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-Vue.use(VueQrcodeReader);
+Vue.component('qrcode-stream', QrcodeStream);
