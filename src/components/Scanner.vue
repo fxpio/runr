@@ -50,7 +50,7 @@ file that was distributed with this source code.
           </v-menu>
         </v-toolbar>
 
-        <v-container fluid :class="showCamera ? 'pt-0 pb-0 pl-0 pr-0' : ''" ref="scanContainer">
+        <v-container fluid fill-height :class="showCamera ? 'pt-0 pb-0 pl-0 pr-0' : ''" ref="scanContainer">
           <v-fade-transition mode="out-in">
             <v-layout column align-center justify-center
                       v-if="showCamera">
