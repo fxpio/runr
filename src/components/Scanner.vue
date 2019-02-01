@@ -188,11 +188,15 @@ file that was distributed with this source code.
     }
 
     public async mounted(): Promise<void> {
-      window.addEventListener('resize', this.getContainerSize);
+      window.addEventListener('resize', this.onWindowResize);
     }
 
     public async destroyed(): Promise<void> {
-      window.removeEventListener('resize', this.getContainerSize);
+      window.removeEventListener('resize', this.onWindowResize);
+    }
+
+    private onWindowResize(): void {
+      this.cacheCameraMaxSize = this.getContainerSize();
     }
 
     private getContainerSize(): object {
@@ -207,11 +211,11 @@ file that was distributed with this source code.
         (qrCodeStream.$el as HTMLElement).style.display = 'none';
       }
 
-      if (scanContainer.clientWidth > 0) {
+      if (scanContainer && scanContainer.clientWidth > 0) {
         size.width = scanContainer.clientWidth;
       }
 
-      if (scanContainer.clientHeight > 0) {
+      if (scanContainer && scanContainer.clientHeight > 0) {
         size.height = scanContainer.clientHeight;
       }
 
@@ -219,7 +223,7 @@ file that was distributed with this source code.
         (qrCodeStream.$el as HTMLElement).style.display = '';
       }
 
-      return this.cacheCameraMaxSize = size;
+      return size;
     }
 
     @Emit('change-camera')
