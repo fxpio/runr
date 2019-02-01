@@ -45,6 +45,7 @@ file that was distributed with this source code.
                 <v-slide-y-transition>
                   <div v-if="loginWithMyCredentials">
                     <v-text-field
+                            type="email"
                             :label="$i18n.t('views.login.email')"
                             v-model="email"
                             data-vv-name="email"
