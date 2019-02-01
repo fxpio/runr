@@ -132,7 +132,10 @@ file that was distributed with this source code.
       try {
         const availableCameras = [];
         const lastCameraId = this.$store.state.scanner.lastCameraId;
-        await navigator.mediaDevices.getUserMedia({video: true, audio: false});
+        const stream = await navigator.mediaDevices.getUserMedia({video: true, audio: false});
+        stream.getTracks().forEach((track: MediaStreamTrack) => {
+          track.stop();
+        });
         const inputDevices = await navigator.mediaDevices.enumerateDevices();
         let selectedCamera: Camera|null = null;
 
