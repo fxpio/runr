@@ -166,7 +166,6 @@ file that was distributed with this source code.
 <script lang="ts">
   import {MetaInfo} from 'vue-meta';
   import {Component, Vue} from 'vue-property-decorator';
-  import '@/styles/views/BibLabels.scss';
 
   /**
    * @author François Pluchino <francois.pluchino@gmail.com>
