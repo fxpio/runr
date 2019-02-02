@@ -35,8 +35,11 @@ file that was distributed with this source code.
 
     public showCloseButton: boolean = true;
 
+    private stateUnwatch?: () => void;
+
     public created(): void {
-      this.$store.watch((state: SnackbarModuleState) => state.snackbar.config, (config: SnackConfig|null) => {
+      this.stateUnwatch = this.$store.watch((state: SnackbarModuleState) => state.snackbar.config,
+              (config: SnackConfig|null) => {
         if (config) {
           this.show = true;
           this.message = config.message;
@@ -63,6 +66,12 @@ file that was distributed with this source code.
           } as SnackConfig);
         }
       });
+    }
+
+    public destroyed(): void {
+      if (this.stateUnwatch) {
+        this.stateUnwatch();
+      }
     }
   }
 </script>
