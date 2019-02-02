@@ -19,12 +19,16 @@ file that was distributed with this source code.
           <v-card flat>
             <v-tabs centered icons-and-text v-model="tabActive">
               <v-tab key="apiKey" ripple>
-                <span class="$store.state.darkMode.enabled ? '' : 'accent--text'">Clé API</span>
+                <span :class="$store.state.darkMode.enabled ? '' : 'accent--text'">
+                  {{ $t('views.editions-add.api-key') }}
+                </span>
                 <v-icon :color="$store.state.darkMode.enabled ? null: 'accent'">vpn_key</v-icon>
               </v-tab>
 
               <v-tab key="credentials" ripple>
-                <span :class="$store.state.darkMode.enabled ? '' : 'accent--text'">Identifiants</span>
+                <span :class="$store.state.darkMode.enabled ? '' : 'accent--text'">
+                  {{ $t('views.editions-add.credentials') }}
+                </span>
                 <v-icon :color="$store.state.darkMode.enabled ? null: 'accent'">account_circle</v-icon>
               </v-tab>
 

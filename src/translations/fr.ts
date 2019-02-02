@@ -40,6 +40,7 @@ export default {
     'views.editions.no-items': 'Les éditions ajoutées s\'affichent ici',
     'views.editions.add-first': 'Ajouter votre première édition',
     'views.editions-add.title': 'Ajouter une édition',
+    'views.editions-add.credentials': 'Identifiants',
     'views.editions-add.identifier': 'Identifiant de l\'édition',
     'views.editions-add.api-key': 'Clé API',
     'views.editions-add.help.into': 'Pour obtenir vos identifiants d\'édition, '

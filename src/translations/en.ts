@@ -39,6 +39,7 @@ export default {
     'views.editions.no-items': 'The added editions are displayed here',
     'views.editions.add-first': 'Add your first edition',
     'views.editions-add.title': 'Add an edition',
+    'views.editions-add.credentials': 'Credentials',
     'views.editions-add.identifier': 'Edition identifier',
     'views.editions-add.api-key': 'API Key',
     'views.editions-add.help.into': 'To get your login details of edition, connect you to the Njuko app, then:',
