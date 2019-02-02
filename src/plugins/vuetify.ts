@@ -10,7 +10,7 @@
 import Vue from 'vue';
 import Vuetify from 'vuetify/lib';
 import vuetifyTranslationFr from '@/translations/vuetify/fr';
-import 'vuetify/src/stylus/app.styl';
+import '@/styles/vuetify.styl';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
