@@ -9,7 +9,7 @@ file that was distributed with this source code.
 
 <template>
   <v-fade-transition>
-    <v-toolbar dark :color="$store.state.darkMode.enabled ? null : 'primary'" app clipped-left>
+    <v-toolbar app clipped-left flat>
       <v-scale-transition mode="out-in">
         <v-toolbar-side-icon v-if="!showPreviousButton" @click="drawerButtonAction" key="menu-btn"></v-toolbar-side-icon>
 
@@ -18,7 +18,7 @@ file that was distributed with this source code.
         </v-btn>
       </v-scale-transition>
 
-      <edition-selector></edition-selector>
+      <edition-selector color="primary"></edition-selector>
     </v-toolbar>
   </v-fade-transition>
 </template>

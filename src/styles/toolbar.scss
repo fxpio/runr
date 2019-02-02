@@ -7,10 +7,33 @@
  * file that was distributed with this source code.
  */
 
+@import 'mixins/theme.scss';
+@import 'variables.scss';
+@import 'theme.scss';
+@import 'mixins/utils.scss';
+
 .v-toolbar__title {
   max-width: 80vw;
 }
 
 .v-list__tile__title {
   direction: rtl;
+}
+
+.v-toolbar {
+  &.elevation-0 {
+    border-bottom: 1px solid transparent;
+  }
+}
+
+@include theme-light('v-toolbar') {
+  &.elevation-0 {
+    border-color: map-deep-get($material-light, 'toolbar-border-color');
+  }
+}
+
+@include theme-dark('v-toolbar') {
+  &.elevation-0 {
+    border-color: map-deep-get($material-dark, 'toolbar-border-color');
+  }
 }

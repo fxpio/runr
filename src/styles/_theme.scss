@@ -7,10 +7,17 @@
  * file that was distributed with this source code.
  */
 
+@import 'colors.scss';
+@import 'mixins/utils.scss';
+
 $material-light: (
   cards: #fff,
+  toolbar-border-color: map-deep-get($grey, 'lighten-3'),
+  card-border-color: map-deep-get($grey, 'lighten-3'),
 );
 
 $material-dark: (
   cards: #424242,
+  toolbar-border-color: map-deep-get($grey, 'darken-3'),
+  card-border-color: map-deep-get($grey, 'darken-3'),
 );

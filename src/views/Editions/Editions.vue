@@ -28,9 +28,11 @@ file that was distributed with this source code.
     <v-fade-transition mode="out-in">
       <v-layout justify-space-between row fill-height wrap v-if="!pending">
         <v-flex xs12>
-          <v-subheader>{{ $t('views.editions.title') }}</v-subheader>
+          <v-subheader class="primary--text">
+            {{ $t('views.editions.title') }}
+          </v-subheader>
 
-          <v-card v-if="$store.state.edition.all.length > 0">
+          <v-card flat v-if="$store.state.edition.all.length > 0">
             <v-list two-line>
               <swipe-item
                 v-for="edition in $store.state.edition.all"

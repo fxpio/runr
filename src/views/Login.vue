@@ -12,9 +12,11 @@ file that was distributed with this source code.
     <v-layout justify-center row>
       <v-fade-transition mode="out-in">
         <v-flex sm10 md8 lg6 xl4 v-if="!$store.state.auth.authenticationPending">
-          <v-card>
+          <v-card flat>
             <v-card-title primary-title>
-              <div class="headline">{{ $t('views.login.title') }}</div>
+              <div class="headline primary--text">
+                {{ $t('views.login.title') }}
+              </div>
             </v-card-title>
 
             <v-card-text>

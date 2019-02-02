@@ -28,7 +28,7 @@ module.exports = {
   },
 
   pwa: {
-    themeColor: '#00a58c',
+    themeColor: '#fafafa',
   },
 
   configureWebpack: {

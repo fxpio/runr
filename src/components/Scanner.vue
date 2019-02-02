@@ -16,7 +16,7 @@ file that was distributed with this source code.
               transition="dialog-bottom-transition"
               hide-overlay>
       <v-card flat class="scanner-card">
-        <v-toolbar dark>
+        <v-toolbar dark flat>
           <v-btn icon dark @click="$emit('input', false)">
             <v-icon>close</v-icon>
           </v-btn>

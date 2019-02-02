@@ -10,7 +10,7 @@ file that was distributed with this source code.
 <template>
   <v-container fill-height>
     <v-layout column align-center justify-center>
-      <v-icon size="14em" :color="$store.state.darkMode.enabled ? null : 'red'">error</v-icon>
+      <v-icon size="14em" color="red">error</v-icon>
       <h2 :class="$store.state.darkMode.enabled ? null : 'grey--text'">{{ $t('error.404-page-not-found') }}</h2>
     </v-layout>
   </v-container>

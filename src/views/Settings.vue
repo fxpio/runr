@@ -11,8 +11,10 @@ file that was distributed with this source code.
   <v-container fill-height>
     <v-layout justify-space-between row fill-height wrap>
       <v-flex xs12 sm10 offset-sm1 md8 offset-md2 xl6 offset-xl3>
-        <v-subheader>{{ $t('views.settings.account') }}</v-subheader>
-        <v-card>
+        <v-subheader class="primary--text">
+          {{ $t('views.settings.account') }}
+        </v-subheader>
+        <v-card flat>
           <v-list two-line>
             <v-list-tile avatar>
               <v-list-tile-avatar>
@@ -37,7 +39,7 @@ file that was distributed with this source code.
                           outline
                           small
                           fab
-                          color="accent"
+                          :color="$store.state.darkMode.enabled ? null : 'accent'"
                           ripple
                           icon
                           @click="login">
@@ -54,7 +56,7 @@ file that was distributed with this source code.
                           outline
                           small
                           fab
-                          color="accent"
+                          :color="$store.state.darkMode.enabled ? null : 'accent'"
                           ripple
                           icon
                           @click="login">
@@ -71,7 +73,7 @@ file that was distributed with this source code.
                           outline
                           small
                           fab
-                          color="accent"
+                          :color="$store.state.darkMode.enabled ? null : 'accent'"
                           ripple
                           icon
                           @click="$store.dispatch('auth/logout', $router.currentRoute.fullPath)">
@@ -84,8 +86,10 @@ file that was distributed with this source code.
           </v-list>
         </v-card>
 
-        <v-subheader class="mt-4">{{ $t('views.settings.general') }}</v-subheader>
-        <v-card>
+        <v-subheader class="mt-4 primary--text">
+          {{ $t('views.settings.general') }}
+        </v-subheader>
+        <v-card flat>
           <v-list>
             <v-list-tile>
               <v-list-tile-content>
@@ -120,14 +124,16 @@ file that was distributed with this source code.
               </v-list-tile-content>
 
               <v-list-tile-action>
-                <v-switch v-model="darkMode"></v-switch>
+                <v-switch hide-details v-model="darkMode"></v-switch>
               </v-list-tile-action>
             </v-list-tile>
           </v-list>
         </v-card>
 
-        <v-subheader class="mt-4">{{ $t('menu.bibs') }}</v-subheader>
-        <v-card>
+        <v-subheader class="mt-4 primary--text">
+          {{ $t('menu.bibs') }}
+        </v-subheader>
+        <v-card flat>
           <v-list three-line>
             <v-list-tile>
               <v-list-tile-content>
@@ -136,7 +142,7 @@ file that was distributed with this source code.
               </v-list-tile-content>
 
               <v-list-tile-action>
-                <v-switch v-model="useBibAlias"></v-switch>
+                <v-switch hide-details v-model="useBibAlias"></v-switch>
               </v-list-tile-action>
             </v-list-tile>
 
@@ -147,7 +153,7 @@ file that was distributed with this source code.
               </v-list-tile-content>
 
               <v-list-tile-action>
-                <v-switch v-model="startPrintingImmediately"></v-switch>
+                <v-switch hide-details v-model="startPrintingImmediately"></v-switch>
               </v-list-tile-action>
             </v-list-tile>
           </v-list>

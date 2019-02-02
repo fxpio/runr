@@ -1,0 +1,31 @@
+/*
+ * This file is part of the BibScan for Njuko package.
+ *
+ * (c) François Pluchino <francois.pluchino@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+@import 'mixins/theme.scss';
+@import 'variables.scss';
+@import 'theme.scss';
+@import 'mixins/utils.scss';
+
+.v-card {
+  &:not([class*="elevation-"]) {
+    border: 1px solid transparent;
+  }
+}
+
+@include theme-light('v-card') {
+  &:not([class*="elevation-"]) {
+    border-color: map-deep-get($material-light, 'card-border-color');
+  }
+}
+
+@include theme-dark('v-card') {
+  &:not([class*="elevation-"]) {
+    border-color: map-deep-get($material-dark, 'card-border-color');
+  }
+}

@@ -12,10 +12,13 @@ file that was distributed with this source code.
     <v-toolbar-title slot="activator">
       <v-fade-transition mode="out-in">
         <div v-if="!$store.state.edition.serverPending">
-          <span>{{ toolbarTitle }}</span>
-          <v-icon>arrow_drop_down</v-icon>
+          <span :class="titleClasses">{{ title }}</span>
+          <v-icon :color="$store.state.darkMode.enabled ? null : color">arrow_drop_down</v-icon>
         </div>
-        <v-progress-circular indeterminate v-if="$store.state.edition.serverPending"></v-progress-circular>
+        <v-progress-circular indeterminate
+                             :color="$store.state.darkMode.enabled ? null : color"
+                             v-if="$store.state.edition.serverPending">
+        </v-progress-circular>
       </v-fade-transition>
     </v-toolbar-title>
 
@@ -41,7 +44,7 @@ file that was distributed with this source code.
 </template>
 
 <script lang="ts">
-  import {Component, Vue} from 'vue-property-decorator';
+  import {Component, Prop, Vue} from 'vue-property-decorator';
 
   /**
    * @author François Pluchino <francois.pluchino@gmail.com>
@@ -50,10 +53,23 @@ file that was distributed with this source code.
     components: {},
   })
   export default class EditionSelector extends Vue {
-    public get toolbarTitle(): string {
+    @Prop({type: [String], default: null})
+    public color!: string|null;
+
+    public get title(): string {
       const current = this.$store.state.edition.current;
 
       return current ? current.name : this.$i18n.t('app.name') as string;
+    }
+
+    public get titleClasses(): object {
+      const classes = {} as any;
+
+      if (this.color && !this.$store.state.darkMode.enabled) {
+        classes[this.color + '--text'] = true;
+      }
+
+      return classes;
     }
   }
 </script>

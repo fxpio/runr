@@ -16,9 +16,11 @@ file that was distributed with this source code.
 
       <transition name="fade" mode="out-in" @after-enter="onAfterEnter">
         <v-flex sm10 md8 lg6 xl4 v-if="!loading">
-          <v-card>
+          <v-card flat>
             <v-card-title primary-title>
-              <div class="headline">{{ $t('views.bib-labels-print-one.title') }}</div>
+              <div class="headline primary--text">
+                {{ $t('views.bib-labels-print-one.title') }}
+              </div>
             </v-card-title>
 
             <v-card-text class="pb-0">
@@ -36,20 +38,12 @@ file that was distributed with this source code.
                         clearable
                         required>
                 </v-text-field>
+
+                <v-switch v-model="startPrintingImmediately"
+                          :label="$t('views.settings.start-printing-immediately')">
+                </v-switch>
               </v-form>
             </v-card-text>
-
-            <v-list dense>
-              <v-list-tile>
-                <v-list-tile-action>
-                  <v-switch v-model="startPrintingImmediately"></v-switch>
-                </v-list-tile-action>
-
-                <v-list-tile-content>
-                  <v-list-tile-title>{{ $t('views.settings.start-printing-immediately') }}</v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
-            </v-list>
 
             <v-card-actions>
               <v-list-tile class="grow">

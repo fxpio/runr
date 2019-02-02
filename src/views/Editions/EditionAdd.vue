@@ -12,18 +12,20 @@ file that was distributed with this source code.
     <v-layout justify-center row>
       <v-fade-transition mode="out-in">
         <v-flex sm10 md8 lg6 xl4 v-if="!pending">
-          <v-subheader>{{ $t('views.editions-add.title') }}</v-subheader>
+          <v-subheader class="primary--text">
+            {{ $t('views.editions-add.title') }}
+          </v-subheader>
 
-          <v-card>
+          <v-card flat>
             <v-tabs centered icons-and-text v-model="tabActive">
               <v-tab key="apiKey" ripple>
-                Clé API
-                <v-icon>vpn_key</v-icon>
+                <span class="$store.state.darkMode.enabled ? '' : 'accent--text'">Clé API</span>
+                <v-icon :color="$store.state.darkMode.enabled ? null: 'accent'">vpn_key</v-icon>
               </v-tab>
 
               <v-tab key="credentials" ripple>
-                Identifiants
-                <v-icon>account_circle</v-icon>
+                <span :class="$store.state.darkMode.enabled ? '' : 'accent--text'">Identifiants</span>
+                <v-icon :color="$store.state.darkMode.enabled ? null: 'accent'">account_circle</v-icon>
               </v-tab>
 
               <v-tab-item key="apiKey">
