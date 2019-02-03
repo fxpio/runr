@@ -9,6 +9,7 @@
 
 import {I18nModuleState} from '@/stores/i18n/I18nModuleState';
 import {I18nState} from '@/stores/i18n/I18nState';
+import moment from 'moment';
 import {Validator} from 'vee-validate';
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
@@ -129,6 +130,7 @@ export class I18nModule<R extends I18nModuleState> implements Module<I18nState, 
         this.i18n.locale = locale;
         Validator.localize(locale);
         Vue.prototype.$vuetify.lang.current = locale;
+        moment.locale(locale);
 
         return locale;
     }

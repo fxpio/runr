@@ -57,6 +57,15 @@ export default new Router({
       },
     },
     {
+      path: '/participants',
+      name: 'participants',
+      meta: {requiresAuth: true},
+      components: {
+        default: () => import(/* webpackChunkName: "participants" */ '@/views/Participants/Participants.vue'),
+        toolbar: () => import(/* webpackChunkName: "participants" */'@/views/Participants/Toolbar.vue'),
+      },
+    },
+    {
       path: '/settings',
       name: 'settings',
       components: {

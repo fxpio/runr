@@ -45,6 +45,8 @@ file that was distributed with this source code.
 
     public drawerItems: object[] = [
       {icon: 'home', color: 'blue', text: 'views.home.title', route: {name: 'home'}},
+      {heading: 'menu.participants'},
+      {icon: 'search', color: 'cyan', text: 'search', route: {name: 'participants'}},
       {heading: 'menu.bibs'},
       {icon: 'print', color: 'deep-orange', text: 'views.bib-labels-print-one.title',
         route: {name: 'bib-labels-print-one'}},
