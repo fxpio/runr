@@ -11,9 +11,9 @@ file that was distributed with this source code.
   <v-fade-transition>
     <v-toolbar app clipped-left flat>
       <v-scale-transition mode="out-in">
-        <v-toolbar-side-icon v-if="!showPreviousButton" @click="drawerButtonAction" key="menu-btn"></v-toolbar-side-icon>
+        <v-toolbar-side-icon v-if="!showPreviousButton" @click.prevent="drawerButtonAction" key="menu-btn"></v-toolbar-side-icon>
 
-        <v-btn icon v-else @click="previousButtonAction" @long-click="drawerButtonAction" key="previous-btn">
+        <v-btn icon v-else @click.prevent="previousButtonAction" @long-click="drawerButtonAction" key="previous-btn">
           <v-icon>arrow_back</v-icon>
         </v-btn>
       </v-scale-transition>
