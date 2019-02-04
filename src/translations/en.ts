@@ -23,6 +23,7 @@ export default {
     'edit': 'Edit',
     'logout': 'Logout',
     'search': 'Search',
+    'retry': 'Retry',
     'scanner.scan-bib-withdrawal-card': 'Scan the bib withdrawal card',
     'scanner.permission-camera-required': 'Oops ! You must allow the app to access the camera to scan QR codes',
     'scanner.camera.front': 'Front camera',

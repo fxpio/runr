@@ -23,6 +23,7 @@ export default {
     'edit': 'Modifier',
     'logout': 'Déconnexion',
     'search': 'Rechercher',
+    'retry': 'Recommencer',
     'scanner.scan-bib-withdrawal-card': 'Scanner la carte de retrait du dossard',
     'scanner.permission-camera-required': 'Oops ! Vous devez autoriser l\'application à accèder '
                                         + 'à la caméra pour pouvoir scanner les QR codes',

@@ -8,6 +8,7 @@
  */
 
 import {Canceler} from '@/api/Canceler';
+import {RequestError} from '@/errors/RequestError';
 import {getRequestErrorMessage} from '@/utils/error';
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
@@ -19,9 +20,13 @@ import {Component} from 'vue-property-decorator';
 export class AjaxContent extends Vue {
     public loading: boolean = false;
 
+    public previousError: RequestError|null = null;
+
     public previousRequest?: Canceler;
 
     public beforeDestroy(): void {
+        this.previousError = null;
+
         if (this.previousRequest) {
             this.previousRequest.cancel();
             this.previousRequest = undefined;
@@ -31,9 +36,10 @@ export class AjaxContent extends Vue {
     /**
      * Fetch data.
      */
-    public async fetchData<D>(request: () => Promise<D>): Promise<D|undefined> {
+    public async fetchData<D>(request: () => Promise<D>, showSnackbar: boolean = false): Promise<D|undefined> {
         try {
             this.loading = true;
+            this.previousError = null;
 
             if (this.previousRequest) {
                 this.previousRequest.cancel();
@@ -42,12 +48,15 @@ export class AjaxContent extends Vue {
 
             const res: D = await request();
             this.previousRequest = undefined;
-            this.loading = false;
 
             return res as D;
         } catch (e) {
-            this.loading = false;
-            this.$store.commit('snackbar/snack', {message: getRequestErrorMessage(this, e), color: 'error'});
+            const message = getRequestErrorMessage(this, e);
+            this.previousError = new RequestError(e, message);
+
+            if (showSnackbar) {
+                this.$store.commit('snackbar/snack', {message, color: 'error'});
+            }
         }
     }
 }

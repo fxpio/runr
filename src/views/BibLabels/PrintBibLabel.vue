@@ -77,10 +77,12 @@ file that was distributed with this source code.
             ></bib-label>
           </div>
 
-          <v-layout column align-center justify-center v-else-if="bibResult === false">
-            <v-icon size="14em" color="info">search</v-icon>
-            <h2 :class="$store.state.darkMode.enabled ? null : 'grey--text'">{{ $t('views.bib-labels-print.bib-not-found') }}</h2>
-          </v-layout>
+          <error-message v-else-if="bibResult === false"
+                         icon-size="12em"
+                         :icon="previousError ? 'error' : 'search'"
+                         :icon-color="previousError ? 'red' : 'info'"
+                         :message="previousError ? previousError.message : $t('views.bib-labels-print.bib-not-found')">
+          </error-message>
         </v-flex>
 
         <loading v-if="loading"></loading>
@@ -98,6 +100,7 @@ file that was distributed with this source code.
   import {Registration} from '@/api/services/Registration';
   import BibItem from '@/bib/BibItem';
   import BibLabel from '@/components/BibLabel.vue';
+  import ErrorMessage from '@/components/ErrorMessage.vue';
   import Loading from '@/components/Loading.vue';
   import Scanner from '@/components/Scanner.vue';
   import {ICompetition} from '@/db/tables/ICompetition';
@@ -114,7 +117,7 @@ file that was distributed with this source code.
    * @author François Pluchino <francois.pluchino@gmail.com>
    */
   @Component({
-    components: {Scanner, Loading, BibLabel},
+    components: {ErrorMessage, Scanner, Loading, BibLabel},
   })
   export default class BibLabels extends mixins(AjaxContent) {
     public bibResult: BibItem|false|null = null;
@@ -186,7 +189,7 @@ file that was distributed with this source code.
               this.$api.get<Registration>(Registration).list({
         itemsPerPage: 1,
         search: searchOptions,
-      }));
+      }), true);
 
       if (res && res.resultsSize > 0 && res.results[0].bib) {
         const reg = res.results[0];
@@ -264,7 +267,6 @@ file that was distributed with this source code.
     }
 
     public async onDecode(value: string): Promise<void> {
-      // TODO
       await this.doSearch({
         id: Number(value),
       });

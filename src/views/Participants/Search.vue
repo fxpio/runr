@@ -8,14 +8,13 @@ file that was distributed with this source code.
 -->
 
 <template>
-  <v-card flat
-          key="search-page">
+  <v-card flat>
     <v-btn depressed
            block
            ripple
            color="accent"
            class="btn-content no-bottom-radius mt-0"
-           :disabled="!$store.state.scanner.enabled"
+           :disabled="!$store.state.scanner.availableCameras"
            @click="$store.commit('scanner/open')">
       <v-img width="48"
              height="48"
@@ -71,19 +70,21 @@ file that was distributed with this source code.
 </template>
 
 <script lang="ts">
+  import Scanner from '@/components/Scanner.vue';
   import {ICompetition} from '@/db/tables/ICompetition';
   import CompetitionItem from '@/forms/CompetitionItem';
   import SearchConfig from '@/forms/SearchConfig';
   import {EditionModuleState} from '@/stores/edition/EditionModuleState';
-  import {Component, Prop, Vue} from 'vue-property-decorator';
+  import {MetaInfo} from 'vue-meta';
+  import {Component, Vue} from 'vue-property-decorator';
 
   /**
    * @author François Pluchino <francois.pluchino@gmail.com>
    */
   @Component({
-    components: {},
+    components: {Scanner},
   })
-  export default class SearchPage extends Vue {
+  export default class Search extends Vue {
     private searchValue: string = '';
 
     private selectedCompetition: CompetitionItem|null = null;
@@ -92,36 +93,66 @@ file that was distributed with this source code.
 
     private stateUnwatch?: () => void;
 
+    public metaInfo(): MetaInfo {
+      return {
+        title: this.$i18n.t('views.participants.title') as string,
+      };
+    }
+
     public beforeMount(): void {
       this.watchEditionCompetitions(this.$store.state.edition.currentCompetitions);
       this.stateUnwatch = this.$store.watch((state: EditionModuleState) => state.edition.currentCompetitions,
               this.watchEditionCompetitions);
+
+      this.$root.$on('scanner-decode', this.search);
+
+      if (this.$store.state.participant.cacheSearchConfig) {
+        this.searchValue = this.$store.state.participant.cacheSearchConfig.searchValue;
+      }
     }
 
     public destroyed(): void {
       if (this.stateUnwatch) {
         this.stateUnwatch();
       }
+
+      this.$root.$off('scanner-decode', this.search);
     }
 
-    public async search(): Promise<void> {
-      if (!await this.$validator.validateAll()) {
+    public async search(registrationId?: string): Promise<void> {
+      if (!registrationId && !await this.$validator.validateAll()) {
         return;
       }
 
-      this.$emit('search', new SearchConfig(
-              null,
-              this.searchValue,
-              this.selectedCompetition ? [this.selectedCompetition.id] : [],
-      ));
+      if (registrationId && !isNaN(Number(registrationId))) {
+        this.$store.commit('participant/setSearchConfig', null);
+        this.$router.push({name: 'participants-details', params: {id: registrationId}});
+      } else {
+        const competitionIds = this.selectedCompetition ? [this.selectedCompetition.id] : [];
+        const searchConfig = new SearchConfig(this.searchValue, competitionIds);
+
+        this.$store.commit('participant/setSearchConfig', searchConfig);
+        this.$router.push({name: 'participants-results', query: {
+          s: encodeURIComponent(searchConfig.searchValue),
+          cids: encodeURIComponent(searchConfig.selectedCompetitions.join(',')),
+        }});
+      }
     }
 
     private watchEditionCompetitions(currentCompetitions: Record<number, ICompetition>|null): void {
       if (currentCompetitions) {
         this.competitions = [];
+        const selectedIds: number[] = this.$store.state.participant.cacheSearchConfig
+                ? this.$store.state.participant.cacheSearchConfig.selectedCompetitions
+                : [];
 
         for (const item of Object.values(currentCompetitions) as ICompetition[]) {
-          this.competitions.push(new CompetitionItem(item.id, item.name));
+          const compItem = new CompetitionItem(item.id, item.name);
+          this.competitions.push(compItem);
+
+          if (selectedIds.indexOf(item.id) > -1) {
+            this.selectedCompetition = compItem;
+          }
         }
       }
     }

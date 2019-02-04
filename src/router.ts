@@ -58,12 +58,40 @@ export default new Router({
     },
     {
       path: '/participants',
-      name: 'participants',
       meta: {requiresAuth: true},
       components: {
         default: () => import(/* webpackChunkName: "participants" */ '@/views/Participants/Participants.vue'),
-        toolbar: () => import(/* webpackChunkName: "participants" */'@/views/Participants/Toolbar.vue'),
+        toolbar: () => import(/* webpackChunkName: "participants" */'@/components/Toolbar.vue'),
       },
+      children: [
+        {
+          path: 'results',
+          name: 'participants-results',
+          meta: {requiresAuth: true},
+          components: {
+            default: () => import(/* webpackChunkName: "participants" */ '@/views/Participants/Results.vue'),
+            toolbar: () => import(/* webpackChunkName: "participants" */'@/components/Toolbar.vue'),
+          },
+        },
+        {
+          path: ':id',
+          name: 'participants-details',
+          meta: {requiresAuth: true},
+          components: {
+            default: () => import(/* webpackChunkName: "participants" */ '@/views/Participants/Details.vue'),
+            toolbar: () => import(/* webpackChunkName: "participants" */'@/components/Toolbar.vue'),
+          },
+        },
+        {
+          path: '',
+          name: 'participants',
+          meta: {requiresAuth: true},
+          components: {
+            default: () => import(/* webpackChunkName: "participants" */ '@/views/Participants/Search.vue'),
+            toolbar: () => import(/* webpackChunkName: "participants" */'@/components/Toolbar.vue'),
+          },
+        },
+      ],
     },
     {
       path: '/settings',

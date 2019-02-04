@@ -13,6 +13,7 @@ import {DarkModeModuleState} from '@/stores/darkMode/DarkModeModuleState';
 import {DrawerModuleState} from '@/stores/drawer/DrawerModuleState';
 import {EditionModuleState} from '@/stores/edition/EditionModuleState';
 import {I18nModuleState} from '@/stores/i18n/I18nModuleState';
+import {ParticipantModuleState} from '@/stores/participant/ParticipantModuleState';
 import {ScannerModuleState} from '@/stores/scanner/ScannerModuleState';
 import {SnackbarModuleState} from '@/stores/snackbar/SnackbarModuleState';
 
@@ -25,6 +26,7 @@ export interface RootState extends AuthModuleState,
                                    DrawerModuleState,
                                    EditionModuleState,
                                    I18nModuleState,
+                                   ParticipantModuleState,
                                    ScannerModuleState,
                                    SnackbarModuleState {
 }
