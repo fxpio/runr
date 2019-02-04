@@ -10,10 +10,6 @@ file that was distributed with this source code.
 <template>
   <v-container fill-height>
     <v-layout justify-center row>
-      <scanner v-model="dialogScanner"
-               @availableCameras="onAvailableCameras"
-               @decode="onDecode"></scanner>
-
       <transition name="fade" mode="out-in" @after-enter="onAfterEnter">
         <v-flex sm10 md8 lg6 xl4 v-if="!loading">
           <v-card flat>
@@ -48,8 +44,9 @@ file that was distributed with this source code.
             <v-card-actions>
               <v-list-tile class="grow">
                 <v-layout align-center justify-center>
-                  <v-tooltip top class="v-btn v-btn--block" v-if="availableCamera">
-                    <v-btn slot="activator" depressed ripple color="blue-grey" @click="dialogScanner = true">
+                  <v-tooltip top class="v-btn v-btn--block" v-if="!!$store.state.scanner.enabled">
+                    <v-btn slot="activator" depressed ripple color="blue-grey"
+                           @click="$store.commit('scanner/open')">
                       <v-img max-width="24"
                              max-height="24"
                              :src="require('@/assets/qrcode-scan-icon.svg')">
@@ -124,10 +121,6 @@ file that was distributed with this source code.
 
     public searchBibNumber?: string = '';
 
-    public dialogScanner: boolean = false;
-
-    public availableCamera: boolean = false;
-
     private launchPrint: boolean = false;
 
     private printer: Printer = new Printer();
@@ -166,9 +159,12 @@ file that was distributed with this source code.
       this.bibResult.bibNumber = '0';
       this.bibResult.firstName = 'Example';
       this.bibResult.phoneUrgency = 'Phone number';
+
+      this.$root.$on('scanner-decode', this.onDecode);
     }
 
     public destroyed(): void {
+      this.$root.$off('scanner-decode', this.onDecode);
       this.printer.destroy();
     }
 
@@ -267,12 +263,8 @@ file that was distributed with this source code.
       }
     }
 
-    public onAvailableCameras(cameras: Camera[]): void {
-      this.availableCamera = cameras.length > 0;
-    }
-
     public async onDecode(value: string): Promise<void> {
-      this.dialogScanner = false;
+      // TODO
       await this.doSearch({
         id: Number(value),
       });

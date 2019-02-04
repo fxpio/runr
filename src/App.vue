@@ -9,6 +9,7 @@ file that was distributed with this source code.
 
 <template>
   <v-app v-if="$store.state.edition.initialized" :dark="$store.state.darkMode.enabled">
+    <scanner></scanner>
     <snackbar></snackbar>
 
     <app-drawer :items="drawerItems"></app-drawer>
@@ -27,6 +28,7 @@ file that was distributed with this source code.
 
 <script lang="ts">
   import AppDrawer from '@/components/AppDrawer.vue';
+  import Scanner from '@/components/Scanner.vue';
   import Snackbar from '@/components/Snackbar.vue';
   import Vue from 'vue';
   import {MetaInfo} from 'vue-meta';
@@ -36,7 +38,7 @@ file that was distributed with this source code.
    * @author François Pluchino <francois.pluchino@gmail.com>
    */
   @Component({
-    components: {AppDrawer, Snackbar},
+    components: {Scanner, AppDrawer, Snackbar},
   })
   export default class App extends Vue {
     public static readonly DEFAULT_TRANSITION: string = 'fade';

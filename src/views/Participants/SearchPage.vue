@@ -15,8 +15,8 @@ file that was distributed with this source code.
            ripple
            color="accent"
            class="btn-content no-bottom-radius mt-0"
-           :disabled="!enableScanner"
-           @click="$emit('start-scanner')">
+           :disabled="!$store.state.scanner.enabled"
+           @click="$store.commit('scanner/open')">
       <v-img width="48"
              height="48"
              :src="require('@/assets/qrcode-scan-icon.svg')">
@@ -84,9 +84,6 @@ file that was distributed with this source code.
     components: {},
   })
   export default class SearchPage extends Vue {
-    @Prop({type: Boolean, default: false})
-    public enableScanner!: boolean;
-
     private searchValue: string = '';
 
     private selectedCompetition: CompetitionItem|null = null;

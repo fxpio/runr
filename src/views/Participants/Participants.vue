@@ -10,17 +10,11 @@ file that was distributed with this source code.
 <template>
   <v-container fill-height>
     <v-layout justify-center row>
-      <scanner v-model="dialogScanner"
-               @availableCameras="enableScanner = $event.length > 0"
-               @decode="onSearch"></scanner>
-
       <transition name="fade" mode="out-in">
         <v-flex sm10 md8 lg6 xl4 v-if="!loading">
           <v-slide-x-reverse-transition mode="out-in">
             <search-page v-if="pageState === 'search-page'"
-                         @search="onSearch"
-                         @start-scanner="dialogScanner = true"
-                         :enable-scanner="enableScanner">
+                         @search="onSearch">
             </search-page>
 
             <result-empty-page v-if="pageState === 'result-empty-page'"></result-empty-page>
@@ -47,13 +41,11 @@ file that was distributed with this source code.
 </template>
 
 <script lang="ts">
-  import {ListResponse} from '@/api/models/responses/ListResponse';
   import {RegistrationOptions} from '@/api/models/request/RegistrationOptions';
+  import {ListResponse} from '@/api/models/responses/ListResponse';
   import {RegistrationResponse} from '@/api/models/responses/RegistrationResponse';
   import {Registration} from '@/api/services/Registration';
   import Loading from '@/components/Loading.vue';
-  import Scanner from '@/components/Scanner.vue';
-  import {ICompetition} from '@/db/tables/ICompetition';
   import SearchConfig from '@/forms/SearchConfig';
   import {AjaxContent} from '@/mixins/AjaxContent';
   import {EditionModuleState} from '@/stores/edition/EditionModuleState';
@@ -61,7 +53,6 @@ file that was distributed with this source code.
   import ResultEmptyPage from '@/views/Participants/ResultEmptyPage.vue';
   import ResultListPage from '@/views/Participants/ResultListPage.vue';
   import SearchPage from '@/views/Participants/SearchPage.vue';
-  import PaginationConfig from '@/vuetify/datatable/PaginationConfig';
   import {mixins} from 'vue-class-component';
   import {MetaInfo} from 'vue-meta';
   import {Component, Watch} from 'vue-property-decorator';
@@ -70,13 +61,9 @@ file that was distributed with this source code.
    * @author François Pluchino <francois.pluchino@gmail.com>
    */
   @Component({
-    components: {Scanner, SearchPage, ResultListPage, ResultDetailPage, ResultEmptyPage, Loading},
+    components: {SearchPage, ResultListPage, ResultDetailPage, ResultEmptyPage, Loading},
   })
   export default class Participants extends mixins(AjaxContent) {
-    private enableScanner: boolean = false;
-
-    private dialogScanner: boolean = false;
-
     private searchResult: RegistrationResponse[]|null = null;
 
     private searchResultCursor: number|null = null;
@@ -120,6 +107,7 @@ file that was distributed with this source code.
               this.watchEditionCompetitions);
 
       this.$root.$on('participants-back-button-action', this.onComponentBackButtonAction);
+      this.$root.$on('scanner-decode', this.onSearch);
     }
 
     public mounted(): void {
@@ -132,6 +120,7 @@ file that was distributed with this source code.
       }
 
       this.$root.$off('participants-back-button-action', this.onComponentBackButtonAction);
+      this.$root.$off('scanner-decode', this.onSearch);
     }
 
     @Watch('searchResult')
@@ -143,7 +132,6 @@ file that was distributed with this source code.
       config = typeof config === 'string' ? new SearchConfig(config) : config;
       this.cacheSearchConfig = config;
       this.resetSearch(config.startPagination);
-      this.dialogScanner = false;
       let requestOpts: RegistrationOptions = {
         itemsPerPage: 1,
         search: {

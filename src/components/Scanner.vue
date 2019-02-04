@@ -9,7 +9,7 @@ file that was distributed with this source code.
 
 <template>
   <div>
-    <v-dialog v-model="value"
+    <v-dialog v-model="$store.state.scanner.opened"
               lazy
               fullscreen
               dark
@@ -17,7 +17,7 @@ file that was distributed with this source code.
               hide-overlay>
       <v-card flat class="scanner-card">
         <v-toolbar dark flat>
-          <v-btn icon dark @click="$emit('input', false)">
+          <v-btn icon dark @click.prevent="$store.commit('scanner/close')">
             <v-icon>close</v-icon>
           </v-btn>
 
@@ -33,7 +33,7 @@ file that was distributed with this source code.
 
             <v-list>
               <v-list-tile
-                      v-for="camera in (availableCameras || [])"
+                      v-for="camera in ($store.state.scanner.availableCameras || [])"
                       :key="camera.id"
                       @click="changeCamera(camera)"
               >
@@ -55,7 +55,7 @@ file that was distributed with this source code.
             <v-layout column align-center justify-center
                       v-if="showCamera">
               <qrcode-stream :camera="camera" ref="qrCodeStream"
-                             @decode="$emit('decode', $event)">
+                             @decode="onDecode">
               </qrcode-stream>
             </v-layout>
 
@@ -72,6 +72,7 @@ file that was distributed with this source code.
 
 <script lang="ts">
   import Camera from '@/devices/Camera';
+  import {ScannerModuleState} from '@/stores/scanner/ScannerModuleState';
   import {Component, Emit, Prop, Vue, Watch} from 'vue-property-decorator';
 
   /**
@@ -81,14 +82,41 @@ file that was distributed with this source code.
     components: {},
   })
   export default class Scanner extends Vue {
-    @Prop(Boolean)
-    public value!: boolean;
-
-    public selectedCamera: Camera|null = null;
-
-    public availableCameras: Camera[]|null = null;
+    public selectedCamera: Camera|false|null = null;
 
     private cacheCameraMaxSize: object|null = null;
+
+    private stateUnwatch?: () => void;
+
+    public async beforeMount(): Promise<void> {
+      this.stateUnwatch = this.$store.watch((state: ScannerModuleState) => state.scanner.opened,
+              this.checkCameraLabels);
+
+      const inputDevices = await navigator.mediaDevices.enumerateDevices();
+      const availables: Camera[] = [];
+
+      for (const input of inputDevices) {
+        if ('videoinput' === input.kind) {
+          availables.push(new Camera(input.deviceId, input.label));
+        }
+      }
+
+      this.$store.commit('scanner/setAvailableCameras', availables);
+      this.$store.commit('scanner/setEnabled', availables.length > 0);
+    }
+
+    public async mounted(): Promise<void> {
+      window.addEventListener('resize', this.onWindowResize);
+    }
+
+    public async destroyed(): Promise<void> {
+      if (this.stateUnwatch) {
+        this.stateUnwatch();
+      }
+
+      window.removeEventListener('resize', this.onWindowResize);
+      this.$store.commit('scanner/setEnabled', false);
+    }
 
     public get cameraMaxSize(): object {
       if (null === this.cacheCameraMaxSize) {
@@ -99,12 +127,13 @@ file that was distributed with this source code.
     }
 
     public get showCamera(): boolean {
-      return this.value && null !== this.availableCameras
-              && this.availableCameras.length > 0 && !!this.selectedCamera;
+      return this.$store.state.scanner.enabled && this.$store.state.scanner.opened
+              && !!this.selectedCamera;
     }
 
     public get showCameraErrorMessage(): boolean {
-      return this.value && null !== this.availableCameras;
+      return this.$store.state.scanner.enabled && this.$store.state.scanner.opened
+              && false === this.selectedCamera;
     }
 
     public get camera(): object|undefined {
@@ -120,14 +149,14 @@ file that was distributed with this source code.
       }
     }
 
-    @Watch('value')
-    public async checkCameraLabels(value?: any): Promise<void> {
-      if (!value) {
+    public async checkCameraLabels(opened?: boolean): Promise<void> {
+      if (!opened) {
         return;
       }
 
+      this.selectedCamera = null;
       this.cacheCameraMaxSize = null;
-      this.availableCameras = null;
+      this.$store.commit('scanner/setAvailableCameras', null);
 
       try {
         const availableCameras = [];
@@ -166,37 +195,21 @@ file that was distributed with this source code.
           selectedCamera = availableCameras[0];
         }
 
-        this.availableCameras = availableCameras;
+        this.$store.commit('scanner/setAvailableCameras', availableCameras);
         this.changeCamera(selectedCamera);
       } catch (e) {
-        this.availableCameras = [];
-        this.changeCamera(null);
+        this.$store.commit('scanner/setAvailableCameras', []);
+        this.changeCamera(false);
       }
-    }
-
-    public async beforeMount(): Promise<void> {
-      const inputDevices = await navigator.mediaDevices.enumerateDevices();
-      const availables: Camera[] = [];
-
-      for (const input of inputDevices) {
-        if ('videoinput' === input.kind) {
-          availables.push(new Camera(input.deviceId, input.label));
-        }
-      }
-
-      this.$emit('availableCameras', availables);
-    }
-
-    public async mounted(): Promise<void> {
-      window.addEventListener('resize', this.onWindowResize);
-    }
-
-    public async destroyed(): Promise<void> {
-      window.removeEventListener('resize', this.onWindowResize);
     }
 
     private onWindowResize(): void {
       this.cacheCameraMaxSize = this.getContainerSize();
+    }
+
+    private onDecode(value: string): void {
+      this.$store.commit('scanner/close');
+      this.$root.$emit('scanner-decode', value);
     }
 
     private getContainerSize(): object {
@@ -227,7 +240,7 @@ file that was distributed with this source code.
     }
 
     @Emit('change-camera')
-    private changeCamera(camera: Camera|null) {
+    private changeCamera(camera: Camera|false|null) {
       this.selectedCamera = camera;
 
       if (camera) {

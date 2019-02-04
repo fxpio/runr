@@ -7,9 +7,14 @@
  * file that was distributed with this source code.
  */
 
+import Camera from '@/devices/Camera';
+
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
 export interface ScannerState {
+    availableCameras: Camera[]|null;
+    enabled: boolean;
+    opened: boolean;
     lastCameraId: string|null;
 }
