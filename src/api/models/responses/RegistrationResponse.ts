@@ -66,4 +66,8 @@ export interface RegistrationResponse {
     previousRegistrationId: number;
     team_position: number[];
     bibRetrievedAt: number;
+    fromApi: boolean;
+    extendedData: any[];
+    isInsured: boolean;
+    clientExternalID: string|null;
 }
