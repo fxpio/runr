@@ -62,7 +62,7 @@ file that was distributed with this source code.
             </v-tooltip>
 
             <v-tooltip left v-else-if="props.item.hasBib">
-              <v-icon color="grey" slot="activator">archive</v-icon>
+              <v-icon color="grey" slot="activator">inbox</v-icon>
               <span>{{ $t('views.participants.bib-not-retrieved') }}</span>
             </v-tooltip>
           </td>

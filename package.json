@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.7.1",
     "@types/hammerjs": "^2.0.36",
     "@types/node": "^10.12.21",
     "axios": "^0.18.0",

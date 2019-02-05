@@ -1,0 +1,27 @@
+<!--
+This file is part of the BibScan for Njuko package.
+
+(c) François Pluchino <francois.pluchino@gmail.com>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+-->
+
+<template>
+  <tr>
+    <td colspan="2" class="pt-0 pb-0"></td>
+  </tr>
+</template>
+
+<script lang="ts">
+  import {Component, Vue} from 'vue-property-decorator';
+
+  /**
+   * @author François Pluchino <francois.pluchino@gmail.com>
+   */
+  @Component({
+    components: {},
+  })
+  export default class FieldSpacer extends Vue {
+  }
+</script>
