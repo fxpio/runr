@@ -144,6 +144,22 @@ file that was distributed with this source code.
       });
     }
 
+    public async beforeRouteUpdate(to: Route, from: Route, next: () => void): Promise<void> {
+      const toPage = Number(decodeURIComponent(String((to.query as any).p)));
+
+      if (undefined !== (from.query as any).p && !isNaN(toPage)) {
+        this.searchConfig = new SearchConfig(
+                this.getSearchValue(),
+                this.getSearchCompetitionIds(),
+                toPage,
+        );
+
+        await this.requestContent();
+      }
+
+      next();
+    }
+
     public beforeMount(): void {
       this.stateUnwatch = this.$store.watch((state: EditionModuleState) => state.edition.current,
               this.watchEdition);
@@ -196,14 +212,6 @@ file that was distributed with this source code.
           params: this.$route.params,
           query: Object.assign({}, this.$route.query, {p: config.page}),
         });
-
-        this.searchConfig = new SearchConfig(
-                this.searchConfig.searchValue,
-                this.searchConfig.selectedCompetitions,
-                config.page,
-        );
-
-        await this.requestContent();
       }
     }
 
