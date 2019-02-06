@@ -26,6 +26,8 @@ import App from '@/App.vue';
 import router from '@/router';
 import {createStore} from '@/store';
 import '@/registerServiceWorker';
+import '@/styles/fonts.scss';
+import '@/styles/vuetify.styl';
 import '@/styles/app.scss';
 
 /**
