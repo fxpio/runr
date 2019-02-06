@@ -36,6 +36,7 @@ file that was distributed with this source code.
   import ParticipantCard from '@/views/Participants/components/ParticipantCard.vue';
   import {mixins} from 'vue-class-component';
   import {Component} from 'vue-property-decorator';
+  import {Route} from 'vue-router';
 
   /**
    * @author François Pluchino <francois.pluchino@gmail.com>
@@ -47,6 +48,11 @@ file that was distributed with this source code.
     public registration!: RegistrationResponse;
 
     private stateUnwatch?: () => void;
+
+    public async beforeRouteUpdate(to: Route, from: Route, next: () => void): Promise<void> {
+      await this.requestContent(Number((to.params as any).id));
+      next();
+    }
 
     public beforeMount(): void {
       this.stateUnwatch = this.$store.watch((state: EditionModuleState) => state.edition.current,
@@ -77,8 +83,11 @@ file that was distributed with this source code.
       }
     }
 
-    private async requestContent() {
-      const id = Number((this.$route.params as any).id as string);
+    private async requestContent(id?: number) {
+      if (!id) {
+        id = Number((this.$route.params as any).id as string);
+      }
+
       const requestOpts = {
         itemsPerPage: 1,
         search: {
