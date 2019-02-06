@@ -16,10 +16,7 @@ file that was distributed with this source code.
            class="btn-content no-bottom-radius mt-0"
            :disabled="!$store.state.scanner.availableCameras"
            @click="$store.commit('scanner/open')">
-      <v-img width="48"
-             height="48"
-             :src="require('@/assets/qrcode-scan-icon.svg')">
-      </v-img>
+      <v-icon x-large>fas fa-qrcode</v-icon>
       <div class="mt-3">{{ $t('scanner.scan-bib-withdrawal-card') }}</div>
     </v-btn>
 

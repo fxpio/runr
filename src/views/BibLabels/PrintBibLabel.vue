@@ -45,12 +45,9 @@ file that was distributed with this source code.
               <v-list-tile class="grow">
                 <v-layout align-center justify-center>
                   <v-tooltip top class="v-btn v-btn--block" v-if="!!$store.state.scanner.enabled">
-                    <v-btn slot="activator" depressed ripple color="blue-grey"
+                    <v-btn slot="activator" depressed ripple dark color="blue-grey"
                            @click="$store.commit('scanner/open')">
-                      <v-img max-width="24"
-                             max-height="24"
-                             :src="require('@/assets/qrcode-scan-icon.svg')">
-                      </v-img>
+                      <v-icon>fas fa-qrcode</v-icon>
                     </v-btn>
                     <span>{{ $t('scanner.scan-bib-withdrawal-card') }}</span>
                   </v-tooltip>
