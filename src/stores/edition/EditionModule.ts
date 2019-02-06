@@ -67,6 +67,18 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
                     return (state.current && state.current.id === id) as boolean;
                 };
             },
+
+            getCompetitionName(state: EditionState) {
+                return (id: number): string => {
+                    const competitions = state.currentCompetitions;
+
+                    if (competitions && competitions[id]) {
+                        return (competitions[id] as ICompetition).name;
+                    }
+
+                    return String(id);
+                };
+            },
         };
     }
 

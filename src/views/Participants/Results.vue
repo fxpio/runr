@@ -32,7 +32,9 @@ file that was distributed with this source code.
         <template slot="items" slot-scope="props">
           <td class="participant-item pt-2 pb-2" @click="itemSelection(props.index)">
             <div>
-              <span class="primary--text">{{ getCompetitionName(props.item.competition_id) }}</span>
+              <span class="primary--text">
+                {{ $store.getters['edition/getCompetitionName'](props.item.competition_id) }}
+              </span>
             </div>
             <div class="subheading">
               <span>{{ props.item.firstname }}</span>
@@ -223,16 +225,6 @@ file that was distributed with this source code.
           this.$router.push(route);
         }
       }
-    }
-
-    public getCompetitionName(id: number): string {
-      const competitions = this.$store.state.edition.currentCompetitions;
-
-      if (competitions && competitions[id]) {
-        return (competitions[id] as ICompetition).name;
-      }
-
-      return String(id);
     }
 
     private getSearchValue(): string {

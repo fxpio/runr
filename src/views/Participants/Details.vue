@@ -34,7 +34,7 @@ file that was distributed with this source code.
           <td colspan="2">
             <v-chip color="indigo" text-color="white">
               <v-icon dark left>directions</v-icon>
-              {{ getCompetitionName(registration.competition_id) }}
+              {{ $store.getters['edition/getCompetitionName'](registration.competition_id) }}
             </v-chip>
 
             <v-chip small :color="registration.isRegistered ? 'teal' : 'red'" text-color="white">
@@ -89,7 +89,7 @@ file that was distributed with this source code.
         </field-section>
 
         <field-item :label="$t('views.participants.fields.competition')">
-          {{ getCompetitionName(registration.competition_id) }}
+          {{ $store.getters['edition/getCompetitionName'](registration.competition_id) }}
         </field-item>
 
         <field-item :label="$t('views.participants.fields.amount')">
@@ -283,16 +283,6 @@ file that was distributed with this source code.
       if (this.stateUnwatch) {
         this.stateUnwatch();
       }
-    }
-
-    public getCompetitionName(id: number): string {
-      const competitions = this.$store.state.edition.currentCompetitions;
-
-      if (competitions && competitions[id]) {
-        return (competitions[id] as ICompetition).name;
-      }
-
-      return String(id);
     }
 
     public formatDate(date: string|number): string {
