@@ -70,7 +70,7 @@ file that was distributed with this source code.
               <span>{{ $t('views.participants.bib-retrieved') }}</span>
             </v-tooltip>
             <v-tooltip left v-else>
-              <v-icon large color="grey" slot="activator">inbox</v-icon>
+              <v-icon large color="warning" slot="activator">inbox</v-icon>
               <span>{{ $t('views.participants.bib-not-retrieved') }}</span>
             </v-tooltip>
           </td>
