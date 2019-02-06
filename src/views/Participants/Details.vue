@@ -10,13 +10,18 @@ file that was distributed with this source code.
 <template>
   <transition name="fade" mode="out-in">
     <error-message :message="previousError.message" v-if="!loading && !!previousError">
-      <v-btn class="mt-3" @click.prevent="requestContent">{{ $t('retry') }}</v-btn>
+      <v-btn depressed ripple color="accent" class="mt-3" @click.prevent="requestContent">
+        {{ $t('retry') }}
+      </v-btn>
     </error-message>
 
     <participant-card :registration="registration" v-else-if="!loading && !!registration">
     </participant-card>
 
     <error-message :message="$t('error.404-page-not-found')" v-else-if="!loading && !previousError">
+      <v-btn depressed ripple color="accent" class="mt-3" @click.prevent="$routerBack.back()">
+        {{ $t('views.participants.retry-search') }}
+      </v-btn>
     </error-message>
 
     <loading v-else-if="loading"></loading>
