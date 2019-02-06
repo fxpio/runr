@@ -9,16 +9,8 @@ file that was distributed with this source code.
 
 <template>
   <v-card flat>
-    <v-card-title class="headline accent--text">
-      <span>{{ registration.firstname }}</span>
-      &nbsp;
-      <span class="text-uppercase">{{ registration.lastname }}</span>
-      <v-tooltip bottom>
-        <v-icon slot="activator" large right :color="'male' === registration.gender ? 'light-blue' : 'pink'">
-          fas fa-{{ 'male' === registration.gender ? 'mars' : 'venus' }}
-        </v-icon>
-        <span>{{ $t('views.participants.choices.gender.' + registration.gender) }}</span>
-      </v-tooltip>
+    <v-card-title class="headline text-uppercase accent--text">
+      {{ registration.firstname }} {{ registration.lastname }}
     </v-card-title>
 
     <table class="v-datatable v-table participant-detail">
@@ -32,6 +24,24 @@ file that was distributed with this source code.
             {{ $store.getters['edition/getCompetitionName'](registration.competition_id) }}
           </v-chip>
 
+          <v-chip color="indigo" text-color="white">
+            <v-icon dark small left class="ml-1">fas fa-birthday-cake</v-icon>
+            {{ $fd(registration.birthdate) }}
+          </v-chip>
+
+          <v-chip :color="'male' === registration.gender ? 'light-blue' : 'pink lighten-2'" text-color="white">
+            <v-tooltip bottom>
+              <v-icon slot="activator" dark>
+                fas fa-{{ 'male' === registration.gender ? 'mars' : 'venus' }}
+              </v-icon>
+              <span>{{ $t('views.participants.choices.gender.' + registration.gender) }}</span>
+            </v-tooltip>
+          </v-chip>
+        </td>
+      </tr>
+
+      <tr>
+        <td colspan="2">
           <v-chip small :color="registration.isRegistered ? 'teal' : 'red'" text-color="white">
             {{ $t('views.participants.choices.registered.' + registration.isRegistered) }}
           </v-chip>
