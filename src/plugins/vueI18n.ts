@@ -7,6 +7,7 @@
  * file that was distributed with this source code.
  */
 
+import VueI18nExtra from '@/i18n/VueI18nExtra';
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
 import translationEn from '@/translations/en';
@@ -16,6 +17,7 @@ import translationFr from '@/translations/fr';
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
 Vue.use(VueI18n);
+Vue.use(VueI18nExtra);
 
 export default new VueI18n({
   locale: 'en',
