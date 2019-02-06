@@ -77,12 +77,15 @@ file that was distributed with this source code.
       </tr>
 
       <field-spacer></field-spacer>
+      </tbody>
 
       <!-- Registration section -->
-      <field-section>
+      <field-section v-model="showRegistrationSection">
         {{ $t('views.participants.sections.registration') }}
       </field-section>
 
+      <v-slide-y-transition>
+      <tbody v-show="showRegistrationSection">
       <field-item :label="$t('views.participants.fields.competition')">
         {{ $store.getters['edition/getCompetitionName'](registration.competition_id) }}
       </field-item>
@@ -110,12 +113,16 @@ file that was distributed with this source code.
       <field-item :label="$t('views.participants.fields.comment')">
         {{ registration.comment }}
       </field-item>
+      </tbody>
+      </v-slide-y-transition>
 
       <!-- Permission slip section -->
-      <field-section>
+      <field-section v-model="showPermissionSlipSection">
         {{ $t('views.participants.sections.permission-slip') }}
       </field-section>
 
+      <v-slide-y-transition>
+      <tbody v-show="showPermissionSlipSection">
       <field-item :label="$t('views.participants.fields.permission-slip-status')">
         {{ $t('views.participants.choices.permission-slip-status.' + registration.permissionSlipStatus) }}
       </field-item>
@@ -129,12 +136,16 @@ file that was distributed with this source code.
       <field-item :label="$t('views.participants.fields.permission-slip-notes')">
         {{ registration.permissionSlipNotes }}
       </field-item>
+      </tbody>
+      </v-slide-y-transition>
 
       <!-- Personal section -->
-      <field-section>
+      <field-section v-model="showPersonalSection">
         {{ $t('views.participants.sections.personal') }}
       </field-section>
 
+      <v-slide-y-transition>
+      <tbody v-show="showPersonalSection">
       <field-item :label="$t('views.participants.fields.firstname')">
         {{ registration.firstname }}
       </field-item>
@@ -158,12 +169,16 @@ file that was distributed with this source code.
       <field-item :label="$t('views.participants.fields.email')">
         {{ registration.email }}
       </field-item>
+      </tbody>
+      </v-slide-y-transition>
 
       <!-- Bib section -->
-      <field-section>
+      <field-section v-model="showBibSection">
         {{ $t('views.participants.sections.bib') }}
       </field-section>
 
+      <v-slide-y-transition>
+      <tbody v-show="showBibSection">
       <field-item :label="$t('views.participants.fields.bib')">
         {{ registration.hasBib ? registration.bib.code : $t('views.participants.not-has-bib') }}
       </field-item>
@@ -175,12 +190,16 @@ file that was distributed with this source code.
       <field-item :label="$t('views.participants.fields.bib-retrieved-at')">
         {{ registration.bibRetrieved ? $fd(registration.bibRetrievedAt) : '' }}
       </field-item>
+      </tbody>
+      </v-slide-y-transition>
 
       <!-- Payment section -->
-      <field-section>
+      <field-section v-model="showPaymentSection">
         {{ $t('views.participants.sections.payment') }}
       </field-section>
 
+      <v-slide-y-transition>
+      <tbody v-show="showPaymentSection">
       <field-item :label="$t('views.participants.fields.payment-paid')">
         {{ $fc(registration.paid) }}
       </field-item>
@@ -206,6 +225,7 @@ file that was distributed with this source code.
         </div>
       </field-item>
       </tbody>
+      </v-slide-y-transition>
     </table>
   </v-card>
 </template>
@@ -228,6 +248,16 @@ file that was distributed with this source code.
   export default class ParticipantCard extends Vue {
     @Prop(Object)
     public registration!: RegistrationResponse;
+
+    private showRegistrationSection: boolean = false;
+
+    private showPermissionSlipSection: boolean = false;
+
+    private showPersonalSection: boolean = false;
+
+    private showBibSection: boolean = false;
+
+    private showPaymentSection: boolean = false;
 
     public metaInfo(): MetaInfo {
       return {
