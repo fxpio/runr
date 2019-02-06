@@ -13,7 +13,13 @@ file that was distributed with this source code.
       <v-btn class="mt-3" @click.prevent="requestContent">{{ $t('retry') }}</v-btn>
     </error-message>
 
-    <participant-card :registration="registration" v-else-if="!loading"></participant-card>
+    <participant-card :registration="registration" v-else-if="!loading && !!registration">
+    </participant-card>
+
+    <error-message :message="$t('error.404-page-not-found')" v-else-if="!loading && !previousError">
+    </error-message>
+
+    <loading v-else-if="loading"></loading>
   </transition>
 </template>
 
@@ -22,6 +28,7 @@ file that was distributed with this source code.
   import {RegistrationResponse} from '@/api/models/responses/RegistrationResponse';
   import {Registration} from '@/api/services/Registration';
   import ErrorMessage from '@/components/ErrorMessage.vue';
+  import Loading from '@/components/Loading.vue';
   import {IEdition} from '@/db/tables/IEdition';
   import {AjaxContent} from '@/mixins/AjaxContent';
   import {EditionModuleState} from '@/stores/edition/EditionModuleState';
@@ -34,7 +41,7 @@ file that was distributed with this source code.
    * @author François Pluchino <francois.pluchino@gmail.com>
    */
   @Component({
-    components: {ParticipantCard, ErrorMessage},
+    components: {Loading, ParticipantCard, ErrorMessage},
   })
   export default class Details extends mixins(AjaxContent) {
     public registration!: RegistrationResponse;
