@@ -8,7 +8,7 @@ file that was distributed with this source code.
 -->
 
 <template>
-  <v-card flat v-else-if="!loading">
+  <v-card flat>
     <v-card-title class="headline accent--text">
       <span>{{ registration.firstname }}</span>
       &nbsp;
@@ -78,6 +78,22 @@ file that was distributed with this source code.
 
       <field-spacer></field-spacer>
       </tbody>
+
+      <!-- Extra section -->
+      <field-section v-model="showExtraSection" v-if="answers.length > 0">
+        {{ $t('views.participants.sections.extra') }}
+      </field-section>
+
+      <v-slide-y-transition>
+      <tbody v-show="showExtraSection">
+        <field-item :key="answer.id" :label="answer.name" v-for="answer in answers">
+          <div v-if="!answer.isArray">{{ answer.value }}</div>
+          <div v-else v-for="item in answer.value">
+            {{ item }}
+          </div>
+        </field-item>
+      </tbody>
+      </v-slide-y-transition>
 
       <!-- Registration section -->
       <field-section v-model="showRegistrationSection">
@@ -231,6 +247,8 @@ file that was distributed with this source code.
 </template>
 
 <script lang="ts">
+  import {RegistrationAnswerChoiceResponse} from '@/api/models/responses/RegistrationAnswerChoiceResponse';
+  import {RegistrationAnswerResponse} from '@/api/models/responses/RegistrationAnswerResponse';
   import {RegistrationResponse} from '@/api/models/responses/RegistrationResponse';
   import '@/styles/views/Participants/Details.scss';
   import FieldItem from '@/views/Participants/components/FieldItem.vue';
@@ -246,8 +264,10 @@ file that was distributed with this source code.
     components: {FieldItem, FieldSection, FieldSpacer},
   })
   export default class ParticipantCard extends Vue {
-    @Prop(Object)
+    @Prop({type: Object, required: true})
     public registration!: RegistrationResponse;
+
+    private showExtraSection: boolean = true;
 
     private showRegistrationSection: boolean = false;
 
@@ -258,6 +278,14 @@ file that was distributed with this source code.
     private showBibSection: boolean = false;
 
     private showPaymentSection: boolean = false;
+
+    public get answers(): Array<RegistrationAnswerResponse|RegistrationAnswerChoiceResponse> {
+      if (this.registration && this.registration.answers) {
+        return this.$store.getters['edition/convertAnswers'](this.registration.answers);
+      }
+
+      return [];
+    }
 
     public metaInfo(): MetaInfo {
       return {

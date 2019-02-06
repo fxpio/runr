@@ -10,11 +10,15 @@
 import {Api} from '@/api/Api';
 import {Canceler} from '@/api/Canceler';
 import {ApiCredentials} from '@/api/credentials/ApiCredentials';
+import {RegistrationAnswerChoiceResponse} from '@/api/models/responses/RegistrationAnswerChoiceResponse';
+import {RegistrationAnswerResponse} from '@/api/models/responses/RegistrationAnswerResponse';
 import {Edition} from '@/api/services/Edition';
 import {Database} from '@/db/Database';
 import {ICompetition} from '@/db/tables/ICompetition';
 import {IEdition} from '@/db/tables/IEdition';
 import {IField} from '@/db/tables/IField';
+import {Answer} from '@/stores/edition/Answer';
+import {AnswerConverter} from '@/stores/edition/AnswerConverter';
 import {EditionModuleState} from '@/stores/edition/EditionModuleState';
 import {EditionState} from '@/stores/edition/EditionState';
 import {Util} from '@/stores/edition/Util';
@@ -77,6 +81,16 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
                     }
 
                     return String(id);
+                };
+            },
+
+            convertAnswers(state: EditionState) {
+                return (answers: RegistrationAnswerResponse[]|RegistrationAnswerChoiceResponse[]): Answer[] => {
+                    if (!state.currentFields) {
+                        return [];
+                    }
+
+                    return AnswerConverter.convertAll(state.currentFields, answers);
                 };
             },
         };

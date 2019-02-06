@@ -87,6 +87,7 @@ export default {
     'views.participants.sections.personal': 'Personnel',
     'views.participants.sections.bib': 'Dossard',
     'views.participants.sections.payment': 'Paiement',
+    'views.participants.sections.extra': 'Extra',
     'views.participants.fields.bib': 'Numéro de dossard',
     'views.participants.fields.bib-status': 'Statut',
     'views.participants.fields.bib-retrieved-at': 'Récupéré le',

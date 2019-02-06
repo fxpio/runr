@@ -83,6 +83,7 @@ export default {
     'views.participants.sections.personal': 'Personal',
     'views.participants.sections.bib': 'Bib',
     'views.participants.sections.payment': 'Payment',
+    'views.participants.sections.extra': 'Extra',
     'views.participants.fields.bib': 'Bib number',
     'views.participants.fields.bib-status': 'Status',
     'views.participants.fields.bib-retrieved-at': 'Retrieved at',
