@@ -36,7 +36,7 @@ file that was distributed with this source code.
                 v-model="searchValue"
                 data-vv-name="searchValue"
                 :data-vv-as="$i18n.t('views.participants.search-field-label')"
-                v-validate="'required'"
+                v-validate=""
                 :error-messages="errors.collect('searchValue')"
                 @keyup.enter="search()"
                 outline
@@ -62,7 +62,7 @@ file that was distributed with this source code.
     </v-card-text>
 
     <v-card-actions>
-      <v-btn depressed block ripple color="accent" :disabled="!searchValue" v-on:click="search()">
+      <v-btn depressed block ripple color="accent" v-on:click="search()">
         <v-icon>search</v-icon>
       </v-btn>
     </v-card-actions>
@@ -129,7 +129,8 @@ file that was distributed with this source code.
         this.$router.push({name: 'participants-details', params: {id: registrationId}});
       } else {
         const competitionIds = this.selectedCompetition ? [this.selectedCompetition.id] : [];
-        const searchConfig = new SearchConfig(this.searchValue, competitionIds);
+        const searchValue = '' === this.searchValue ? encodeURIComponent('*') : this.searchValue;
+        const searchConfig = new SearchConfig(searchValue, competitionIds);
 
         this.$store.commit('participant/setSearchConfig', searchConfig);
         this.$router.push({name: 'participants-results', query: {
