@@ -60,8 +60,8 @@ file that was distributed with this source code.
 
     public metaInfo(): MetaInfo {
       return {
-        title: this.$i18n.t('views.home.title', {}) as string,
-        titleTemplate: (titleChunk) => titleChunk + ' · ' + this.$i18n.t('app.name'),
+        title: this.$t('views.home.title', {}) as string,
+        titleTemplate: (titleChunk) => titleChunk + ' · ' + this.$t('app.name'),
       };
     }
 

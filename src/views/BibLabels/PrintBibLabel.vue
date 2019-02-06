@@ -150,7 +150,7 @@ file that was distributed with this source code.
 
     public metaInfo(): MetaInfo {
       return {
-        title: this.$i18n.t('views.bib-labels-print-one.title') as string,
+        title: this.$t('views.bib-labels-print-one.title') as string,
       };
     }
 

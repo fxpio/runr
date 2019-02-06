@@ -31,7 +31,7 @@ file that was distributed with this source code.
 export default class Home extends Vue {
     public metaInfo(): MetaInfo {
       return {
-        title: this.$i18n.t('views.home.title') as string,
+        title: this.$t('views.home.title') as string,
       };
     }
   }

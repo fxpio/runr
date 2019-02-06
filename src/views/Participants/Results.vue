@@ -130,7 +130,7 @@ file that was distributed with this source code.
 
     public metaInfo(): MetaInfo {
       return {
-        title: this.$i18n.t('views.participants.found-participants') as string,
+        title: this.$t('views.participants.found-participants') as string,
       };
     }
 

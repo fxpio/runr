@@ -95,7 +95,7 @@ file that was distributed with this source code.
 
     public metaInfo(): MetaInfo {
       return {
-        title: this.$i18n.t('views.participants.title') as string,
+        title: this.$t('views.participants.title') as string,
       };
     }
 

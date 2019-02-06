@@ -133,7 +133,7 @@ export default class Login extends Vue {
 
     public metaInfo(): MetaInfo {
       return {
-        title: this.$i18n.t('views.login.title') as string,
+        title: this.$t('views.login.title') as string,
       };
     }
 

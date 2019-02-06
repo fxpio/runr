@@ -60,7 +60,7 @@ file that was distributed with this source code.
           const mess = e.data as SnackbarEventMessage;
 
           this.$store.commit('snackbar/snack', {
-            message: mess.translatable ? this.$i18n.t(mess.message) : mess.message,
+            message: mess.translatable ? this.$t(mess.message) : mess.message,
             color: mess.color,
             closeButton: mess.closeButton,
           } as SnackConfig);

@@ -195,7 +195,7 @@ file that was distributed with this source code.
 
     public metaInfo(): MetaInfo {
       return {
-        title: this.$i18n.t('views.editions-add.title') as string,
+        title: this.$t('views.editions-add.title') as string,
       };
     }
 

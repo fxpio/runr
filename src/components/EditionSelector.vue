@@ -59,7 +59,7 @@ file that was distributed with this source code.
     public get title(): string {
       const current = this.$store.state.edition.current;
 
-      return current ? current.name : this.$i18n.t('app.name') as string;
+      return current ? current.name : this.$t('app.name') as string;
     }
 
     public get titleClasses(): object {

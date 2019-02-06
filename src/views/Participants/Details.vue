@@ -248,11 +248,11 @@ file that was distributed with this source code.
     public metaInfo(): MetaInfo {
       return {
         title: this.registration
-                ? this.$i18n.t('views.participants.details-title', {
+                ? this.$t('views.participants.details-title', {
                     firstname: this.registration.firstname,
                     lastname: this.registration.lastname,
                   }) as string
-                : this.$i18n.t('views.participants.title') as string,
+                : this.$t('views.participants.title') as string,
       };
     }
 
