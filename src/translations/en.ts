@@ -68,6 +68,7 @@ export default {
     'views.bib-labels-print.bib-number': 'Bib number',
     'views.bib-labels-print.bib-not-found': 'Oops! Bib not found',
     'views.participants.title': 'Find a participant',
+    'views.participants.details-title': 'Participant: {firstname} {lastname}',
     'views.participants.search-field-label': 'Bib number or lastname',
     'views.participants.search-not-found': 'Oops! No participants found',
     'views.participants.retry-search': 'Try a new search',

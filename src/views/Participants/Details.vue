@@ -247,12 +247,13 @@ file that was distributed with this source code.
 
     public metaInfo(): MetaInfo {
       return {
-        title: this.title,
+        title: this.registration
+                ? this.$i18n.t('views.participants.details-title', {
+                    firstname: this.registration.firstname,
+                    lastname: this.registration.lastname,
+                  }) as string
+                : this.$i18n.t('views.participants.title') as string,
       };
-    }
-
-    public get title(): string {
-      return this.$i18n.t('views.participants.title') as string;
     }
 
     public beforeMount(): void {

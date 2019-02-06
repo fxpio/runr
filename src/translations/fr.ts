@@ -72,6 +72,7 @@ export default {
     'views.bib-labels-print.bib-number': 'Numéro de dossard',
     'views.bib-labels-print.bib-not-found': 'Oops! Dossard non trouvé',
     'views.participants.title': 'Rechercher un participant',
+    'views.participants.details-title': 'Participant : {firstname} {lastname}',
     'views.participants.search-field-label': 'N° dossard ou nom',
     'views.participants.search-not-found': 'Oops! Aucun participant trouvé',
     'views.participants.retry-search': 'Essayez une nouvelle recherche',
