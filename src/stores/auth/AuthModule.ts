@@ -62,23 +62,23 @@ export class AuthModule<R extends AuthModuleState & EditionModuleState> implemen
 
     public get mutations(): MutationTree<AuthState> {
         return {
-            LOGIN(state: AuthState): void {
+            login(state: AuthState): void {
                 state.authenticationPending = true;
             },
-            LOGIN_SUCCESS(state: AuthState, credentials: AuthCredentials): void {
+            loginSuccess(state: AuthState, credentials: AuthCredentials): void {
                 state.authenticated = true;
                 state.fullName = credentials.fullName;
                 state.email = credentials.email;
                 state.password = credentials.password;
             },
-            LOGIN_SUCCESS_END(state: AuthState): void {
+            loginSuccessEnd(state: AuthState): void {
                 state.authenticationPending = false;
             },
-            LOGIN_ERROR(state: AuthState): void {
+            loginError(state: AuthState): void {
                 state.authenticated = false;
                 state.authenticationPending = false;
             },
-            LOGOUT(state: AuthState): void {
+            logout(state: AuthState): void {
                 state.authenticated = false;
             },
         };
@@ -89,7 +89,7 @@ export class AuthModule<R extends AuthModuleState & EditionModuleState> implemen
 
         return {
             async login({commit, dispatch, state, rootState}, credentials: AuthCredentials): Promise<void> {
-                commit('LOGIN');
+                commit('login');
 
                 try {
                     self.cancelPreviousRequest();
@@ -114,7 +114,7 @@ export class AuthModule<R extends AuthModuleState & EditionModuleState> implemen
 
                     self.previousRequest = undefined;
                     self.storage.setItem('auth:name', credentials.fullName);
-                    commit('LOGIN_SUCCESS', credentials);
+                    commit('loginSuccess', credentials);
 
                     let current = rootState.edition.current;
 
@@ -132,9 +132,9 @@ export class AuthModule<R extends AuthModuleState & EditionModuleState> implemen
                         self.router.replace({name: 'home'});
                     }
 
-                    commit('LOGIN_SUCCESS_END');
+                    commit('loginSuccessEnd');
                 } catch (e) {
-                    commit('LOGIN_ERROR');
+                    commit('loginError');
                     self.previousRequest = undefined;
                     throw e;
                 }
@@ -147,7 +147,7 @@ export class AuthModule<R extends AuthModuleState & EditionModuleState> implemen
                 state.password = null;
                 self.storage.removeItem('auth:name');
                 self.storage.removeItem('auth:email');
-                commit('LOGOUT');
+                commit('logout');
 
                 if (!redirect) {
                     redirect = {name: 'home'};

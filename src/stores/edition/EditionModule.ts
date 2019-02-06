@@ -72,7 +72,7 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
 
     public get mutations(): MutationTree<EditionState> {
         return {
-            SELECT_CURRENT: (state: EditionState, current: IEdition|null) => {
+            selectCurrent: (state: EditionState, current: IEdition|null) => {
                 state.current = current;
                 state.currentCompetitions = null;
                 state.currentFields = null;
@@ -84,15 +84,15 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
                 }
             },
 
-            SET_CURRENT_COMPETITIONS: (state: EditionState, competitions: Record<number, ICompetition>) => {
+            setCurrentCompetitions: (state: EditionState, competitions: Record<number, ICompetition>) => {
                 state.currentCompetitions = competitions;
             },
 
-            SET_CURRENT_FIELDS: (state: EditionState, fields: Record<number, IField>) => {
+            setCurrentFields: (state: EditionState, fields: Record<number, IField>) => {
                 state.currentFields = fields;
             },
 
-            SET_EDITIONS: (state: EditionState, editions: IEdition[]) => {
+            setEditions: (state: EditionState, editions: IEdition[]) => {
                 state.initialized = true;
                 state.all.splice(0, state.all.length);
 
@@ -101,7 +101,7 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
                 }
             },
 
-            ADD_EDITION: (state: EditionState, edition: IEdition) => {
+            addEdition: (state: EditionState, edition: IEdition) => {
                 const existingEditionPosition = state.all.findIndex((savedEdition: IEdition): boolean => {
                     return edition.id === savedEdition.id;
                 });
@@ -123,7 +123,7 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
                 });
             },
 
-            REMOVE_EDITION: (state: EditionState, id: number) => {
+            removeEdition: (state: EditionState, id: number) => {
                 const existingEditionPosition = state.all.findIndex((savedEdition: IEdition): boolean => {
                     return id === savedEdition.id;
                 });
@@ -133,13 +133,13 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
                 }
             },
 
-            PING: (state: EditionState) => {
+            ping: (state: EditionState) => {
                 state.serverPending = true;
             },
-            PING_SUCCESS: (state: EditionState) => {
+            pingSuccess: (state: EditionState) => {
                 state.serverPending = false;
             },
-            PING_ERROR: (state: EditionState) => {
+            pingError: (state: EditionState) => {
                 state.serverPending = false;
             },
         };
@@ -151,7 +151,7 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
         return {
             async init({commit, dispatch, state}): Promise<void> {
                 if (!state.initialized) {
-                    commit('SET_EDITIONS', await self.db.editions.orderBy('id').reverse().toArray());
+                    commit('setEditions', await self.db.editions.orderBy('id').reverse().toArray());
                     const val = self.storage.getItem('edition:selection');
                     const current = await Util.getOne(commit, state, val ? Number(val) : null, true);
                     await dispatch('select', current);
@@ -160,7 +160,7 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
 
             async refresh({commit, dispatch, state}): Promise<void> {
                 const id = state.current ? state.current.id : null;
-                commit('SET_EDITIONS', await self.db.editions.orderBy('id').reverse().toArray());
+                commit('setEditions', await self.db.editions.orderBy('id').reverse().toArray());
                 const current = await Util.getOne(commit, state, id, true);
                 await dispatch('select', current);
             },
@@ -176,7 +176,7 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
                         edition = await Util.getOne(commit, state, edition.id, false);
                     }
 
-                    commit('SELECT_CURRENT', edition);
+                    commit('selectCurrent', edition);
 
                     if (edition) {
                         // find all competitions
@@ -187,7 +187,7 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
                         for (const comp of edCompetitions) {
                             competitions[comp.id] = comp;
                         }
-                        commit('SET_CURRENT_COMPETITIONS', competitions);
+                        commit('setCurrentCompetitions', competitions);
 
                         // find all fields
                         const fields = {} as Record<number, IField>;
@@ -197,18 +197,18 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
                         for (const field of edFields) {
                             fields[field.id] = field;
                         }
-                        commit('SET_CURRENT_FIELDS', fields);
+                        commit('setCurrentFields', fields);
                     }
 
                 } catch (e) {
                     const mess = self.router.app.$i18n.t('error.invalid-authorization') as string;
-                    commit('SELECT_CURRENT', null);
+                    commit('selectCurrent', null);
                     commit('snackbar/snack', {message: mess, color: 'error'}, {root: true});
                 }
             },
 
             async unselect({commit}): Promise<void> {
-                commit('SELECT_CURRENT', null);
+                commit('selectCurrent', null);
             },
 
             async putFields({commit, state}, fields: IField[]): Promise<void> {
@@ -249,23 +249,23 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
                 await self.db.editions.bulkPut(editions);
 
                 for (const edition of editions) {
-                    commit('ADD_EDITION', edition);
+                    commit('addEdition', edition);
                 }
             },
 
             async put({commit, state}, edition: IEdition): Promise<void> {
                 await self.db.editions.put(edition);
-                commit('ADD_EDITION', edition);
+                commit('addEdition', edition);
             },
 
             async delete({commit, state}, id: number): Promise<void> {
                 await self.db.fields.where('editionId').equals(id).delete();
                 await self.db.competitions.where('editionId').equals(id).delete();
                 await self.db.editions.where('id').equals(id).delete();
-                commit('REMOVE_EDITION', id);
+                commit('removeEdition', id);
 
                 if (state.current && id === state.current.id) {
-                    commit('SELECT_CURRENT', null);
+                    commit('selectCurrent', null);
                 }
             },
 
@@ -273,12 +273,12 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
                 await self.db.fields.toCollection().delete();
                 await self.db.competitions.toCollection().delete();
                 await self.db.editions.toCollection().delete();
-                commit('SET_EDITIONS', []);
-                commit('SELECT_CURRENT', null);
+                commit('setEditions', []);
+                commit('selectCurrent', null);
             },
 
             async ping({commit, dispatch, state}, credentials: ApiCredentials): Promise<void> {
-                commit('PING');
+                commit('ping');
 
                 try {
                     if (self.previousRequest) {
@@ -310,20 +310,20 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
                     await dispatch('put', edition);
 
                     if (typeof redirect === 'string') {
-                        commit('SELECT_CURRENT', edition);
-                        commit('SET_CURRENT_COMPETITIONS', competitions);
-                        commit('SET_CURRENT_FIELDS', fields);
+                        commit('selectCurrent', edition);
+                        commit('setCurrentCompetitions', competitions);
+                        commit('setCurrentFields', fields);
                         self.router.push(redirect);
                     } else if (false !== redirect) {
-                        commit('SELECT_CURRENT', edition);
-                        commit('SET_CURRENT_COMPETITIONS', competitions);
-                        commit('SET_CURRENT_FIELDS', fields);
+                        commit('selectCurrent', edition);
+                        commit('setCurrentCompetitions', competitions);
+                        commit('setCurrentFields', fields);
                         self.router.push({name: 'editions'});
                     }
 
-                    commit('PING_SUCCESS');
+                    commit('pingSuccess');
                 } catch (e) {
-                    commit('PING_ERROR');
+                    commit('pingError');
                     self.previousRequest = undefined;
                     throw e;
                 }
