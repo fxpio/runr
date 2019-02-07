@@ -72,7 +72,7 @@ file that was distributed with this source code.
       <field-spacer></field-spacer>
 
       <tr>
-        <td colspan="2" class="text-xs-center pt-3 pb-3" v-if="!!registration.bib">
+        <td colspan="2" class="text-xs-center pt-3 pb-3" v-if="registration.bib && registration.bib.code">
           <span class="font-weight-bold accent--text display-2">
             {{ $t('views.participants.fields.short-number') }}&nbsp;{{ registration.bib.code }}
           </span>
@@ -100,7 +100,7 @@ file that was distributed with this source code.
           <v-scale-transition mode="out-in">
             <v-btn round ripple depressed dark color="light-green" :loading="loading"
                    @click.prevent="assignBib"
-                   v-if="!registration.bib">
+                   v-if="!registration.bib || !registration.bib.code">
               {{ $t('views.participants.assign-bib') }}
             </v-btn>
 
@@ -242,7 +242,7 @@ file that was distributed with this source code.
       <v-slide-y-transition>
       <tbody v-show="showBibSection">
       <field-item :label="$t('views.participants.fields.bib')">
-        {{ !!registration.bib ? registration.bib.code : $t('views.participants.not-has-bib') }}
+        {{ registration.bib && registration.bib.code ? registration.bib.code : $t('views.participants.not-has-bib') }}
       </field-item>
 
       <field-item :label="$t('views.participants.fields.bib-status')">
