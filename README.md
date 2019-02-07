@@ -9,6 +9,7 @@ one to one or in mass.
 - Manage the editions with your email and password or directly with the identifiers and API keys given
   by the Njuko application
 - Search or scan the QR code of registration to validate the informations before collecting the bib
+- Indicate on the registration that the bib has been retrieved by the runner or collected by the organizers
 - Search or scan the QR code of bib and print his label
 - Import in mass the list of bib numbers and print their labels
 - Install this application on your device's home screen without the need for an app store

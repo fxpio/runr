@@ -7,14 +7,11 @@
  * file that was distributed with this source code.
  */
 
-.align-left {
-  text-align: left;
-}
-
-.align-right {
-  text-align: right;
-}
-
-.align-center {
-  text-align: center;
+/**
+ * @author François Pluchino <francois.pluchino@gmail.com>
+ */
+export interface BibRetrievedResponse {
+    success: boolean;
+    message: string;
+    exception: any|null;
 }

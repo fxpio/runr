@@ -82,6 +82,8 @@ export default {
     'views.participants.bib-retrieved': 'Dossard retiré',
     'views.participants.bib-not-retrieved': 'Dossard non retiré',
     'views.participants.not-has-bib': 'Sans dossard',
+    'views.participants.retrieve-bib': 'Retrier le dossard',
+    'views.participants.collect-bib': 'Récupérer le dossard',
     'views.participants.sections.registration': 'Inscription',
     'views.participants.sections.permission-slip': 'Justificatif',
     'views.participants.sections.personal': 'Personnel',

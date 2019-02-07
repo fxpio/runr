@@ -70,19 +70,38 @@ file that was distributed with this source code.
             {{ $t('views.participants.fields.short-number') }}&nbsp;{{ registration.bib.code }}
           </span>
           &nbsp;
-          <v-tooltip left v-if="registration.bibRetrieved">
-            <v-icon large color="green" slot="activator">directions_run</v-icon>
-            <span>{{ $t('views.participants.bib-retrieved') }}</span>
-          </v-tooltip>
-          <v-tooltip left v-else>
-            <v-icon large color="warning" slot="activator">inbox</v-icon>
-            <span>{{ $t('views.participants.bib-not-retrieved') }}</span>
-          </v-tooltip>
+          <v-fade-transition mode="out-in">
+            <v-tooltip key="bib-retrieved" left v-if="registration.bibRetrieved">
+              <v-icon large color="green" slot="activator">directions_run</v-icon>
+              <span>{{ $t('views.participants.bib-retrieved') }}</span>
+            </v-tooltip>
+            <v-tooltip key="bib-collect" left v-else>
+              <v-icon large color="warning" slot="activator">inbox</v-icon>
+              <span>{{ $t('views.participants.bib-not-retrieved') }}</span>
+            </v-tooltip>
+          </v-fade-transition>
         </td>
         <td colspan="2" class="text-xs-center pt-3 pb-3" v-else>
           <span class="font-weight-bold warning--text display-2 text-uppercase">
             {{ $t('views.participants.not-has-bib') }}
           </span>
+        </td>
+      </tr>
+
+      <tr v-if="registration.hasBib">
+        <td colspan="2" class="align-center">
+          <v-scale-transition mode="out-in">
+            <v-btn key="btn-retrieve-bib" round ripple depressed dark color="light-green" :loading="loading"
+                   @click.prevent="updateBibRetrieved(true)"
+                   v-if="!registration.bibRetrieved">
+              {{ $t('views.participants.retrieve-bib') }}
+            </v-btn>
+            <v-btn key="btn-collect-bib" round ripple depressed dark color="blue-grey" :loading="loading"
+                   @click.prevent="updateBibRetrieved(false)"
+                   v-else>
+              {{ $t('views.participants.collect-bib') }}
+            </v-btn>
+          </v-scale-transition>
         </td>
       </tr>
 
@@ -121,7 +140,7 @@ file that was distributed with this source code.
       </field-item>
 
       <field-item :label="$t('views.participants.fields.registration-date')">
-        {{ $fd(registration.registrationDate) }}
+        {{ $fd(registration.registrationDate, 'L LTS') }}
       </field-item>
 
       <field-item :label="$t('views.participants.fields.registration-code')">
@@ -155,7 +174,7 @@ file that was distributed with this source code.
 
       <field-item :label="$t('views.participants.fields.permission-slip-valid-until')">
         <span v-if="registration.permissionSlipValidUntil > 0">
-          {{ $fd(registration.permissionSlipValidUntil) }}
+          {{ $fd(registration.permissionSlipValidUntil, 'L LTS') }}
         </span>
       </field-item>
 
@@ -214,7 +233,7 @@ file that was distributed with this source code.
       </field-item>
 
       <field-item :label="$t('views.participants.fields.bib-retrieved-at')">
-        {{ registration.bibRetrieved ? $fd(registration.bibRetrievedAt) : '' }}
+        {{ registration.bibRetrieved ? $fd(registration.bibRetrievedAt, 'L LTS') : '' }}
       </field-item>
       </tbody>
       </v-slide-y-transition>
@@ -257,15 +276,20 @@ file that was distributed with this source code.
 </template>
 
 <script lang="ts">
+  import {BibRetrievedRequest} from '@/api/models/request/BibRetrievedRequest';
+  import {BibRetrievedResponse} from '@/api/models/responses/BibRetrievedResponse';
   import {RegistrationAnswerChoiceResponse} from '@/api/models/responses/RegistrationAnswerChoiceResponse';
   import {RegistrationAnswerResponse} from '@/api/models/responses/RegistrationAnswerResponse';
   import {RegistrationResponse} from '@/api/models/responses/RegistrationResponse';
   import '@/styles/views/Participants/Details.scss';
+  import {Registration} from '@/api/services/Registration';
+  import {AjaxContent} from '@/mixins/AjaxContent';
   import FieldItem from '@/views/Participants/components/FieldItem.vue';
   import FieldSection from '@/views/Participants/components/FieldSection.vue';
   import FieldSpacer from '@/views/Participants/components/FieldSpacer.vue';
+  import {mixins} from 'vue-class-component';
   import {MetaInfo} from 'vue-meta';
-  import {Component, Prop, Vue} from 'vue-property-decorator';
+  import {Component, Prop} from 'vue-property-decorator';
 
   /**
    * @author François Pluchino <francois.pluchino@gmail.com>
@@ -273,7 +297,7 @@ file that was distributed with this source code.
   @Component({
     components: {FieldItem, FieldSection, FieldSpacer},
   })
-  export default class ParticipantCard extends Vue {
+  export default class ParticipantCard extends mixins(AjaxContent) {
     @Prop({type: Object, required: true})
     public registration!: RegistrationResponse;
 
@@ -304,6 +328,27 @@ file that was distributed with this source code.
           lastname: this.registration.lastname,
         }) as string,
       };
+    }
+
+    public async updateBibRetrieved(value: boolean): Promise<void> {
+      this.loading = true;
+      const date = (new Date());
+
+      const res = await this.fetchData<BibRetrievedResponse>(() =>
+              this.$api.get<Registration>(Registration).updateBibRetrieved(new BibRetrievedRequest(
+                      this.registration.id,
+                      this.$store.state.auth.fullName,
+                      date,
+                      value,
+              )), true);
+
+      if (res) {
+        this.registration.bibRetrieved = value;
+        this.registration.bibRetrievedAt = value ? date.getTime() / 1000 : 0;
+        this.$store.commit('participant/updateSelection', this.registration);
+      }
+
+      this.loading = false;
     }
   }
 </script>

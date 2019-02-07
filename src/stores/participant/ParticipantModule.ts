@@ -71,6 +71,18 @@ export class ParticipantModule<R extends ParticipantModuleState> implements Modu
                 state.cacheSelection = selection;
             },
 
+            updateSelection(state: ParticipantState, selection: RegistrationResponse): void {
+                state.cacheSelection = selection;
+
+                if (state.cacheResults) {
+                    for (const item of state.cacheResults.results) {
+                        if (item.id === selection.id) {
+                            Object.assign(item, selection);
+                        }
+                    }
+                }
+            },
+
             resetCache(state: ParticipantState): void {
                 state.cacheSearchConfig = null;
                 state.cacheResults = null;
