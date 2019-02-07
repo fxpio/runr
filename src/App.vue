@@ -56,6 +56,7 @@ file that was distributed with this source code.
       {heading: 'menu.configuration'},
       {icon: 'flag', color: 'blue-grey', text: 'views.editions.title', route: {name: 'editions'}},
       {icon: 'settings', color: 'grey', text: 'views.settings.title', route: {name: 'settings'}},
+      {icon: 'info', color: 'grey', text: 'views.about.title', route: {name: 'about'}},
     ];
 
     public metaInfo(): MetaInfo {

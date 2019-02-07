@@ -8,7 +8,13 @@
  */
 
 const CreateFileWebpack = require('create-file-webpack');
-const webpackPlugin = [];
+const webpack = require('webpack');
+
+const webpackPlugin = [
+  new webpack.DefinePlugin({
+    __VERSION__: JSON.stringify(require("./package.json").version),
+  })
+];
 
 if ('production' === process.env.NODE_ENV && process.env.VUE_APP_APP_DOMAIN) {
   webpackPlugin.push(new CreateFileWebpack({

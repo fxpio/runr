@@ -110,6 +110,14 @@ export default new Router({
       },
     },
     {
+      path: '/about',
+      name: 'about',
+      components: {
+        default: () => import(/* webpackChunkName: "about" */ '@/views/About.vue'),
+        toolbar: () => import(/* webpackChunkName: "about" */'@/components/Toolbar.vue'),
+      },
+    },
+    {
       path: '*',
       name: 'not-found',
       components: {
