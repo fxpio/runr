@@ -14,6 +14,7 @@ one to one or in mass.
 - Import in mass the list of bib numbers and print their labels
 - Install this application on your device's home screen without the need for an app store
   (it's a Progressive Web Application)
+- Direct connection with the Njuko APIs, so it is not necessary to use the local server *La box Njuko*
 
 > **Note:**
 >
