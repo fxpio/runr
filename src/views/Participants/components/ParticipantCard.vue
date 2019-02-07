@@ -278,7 +278,7 @@ file that was distributed with this source code.
 <script lang="ts">
   import {Canceler} from '@/api/Canceler';
   import {BibRetrievedRequest} from '@/api/models/request/BibRetrievedRequest';
-  import {BibRetrievedResponse} from '@/api/models/responses/BibRetrievedResponse';
+  import {ChangeRegistrationResponse} from '@/api/models/responses/ChangeRegistrationResponse';
   import {RegistrationAnswerChoiceResponse} from '@/api/models/responses/RegistrationAnswerChoiceResponse';
   import {RegistrationAnswerResponse} from '@/api/models/responses/RegistrationAnswerResponse';
   import {RegistrationResponse} from '@/api/models/responses/RegistrationResponse';
@@ -335,8 +335,8 @@ file that was distributed with this source code.
       this.loading = true;
       const date = (new Date());
 
-      const res = await this.fetchData<BibRetrievedResponse>((canceler: Canceler) =>
-              this.$api.get<Registration>(Registration).updateBibRetrieved(new BibRetrievedRequest(
+      const res = await this.fetchData<ChangeRegistrationResponse>((canceler: Canceler) =>
+              this.$api.get<Registration>(Registration).change(new BibRetrievedRequest(
                       this.registration.id,
                       this.$store.state.auth.fullName,
                       date,
@@ -344,9 +344,13 @@ file that was distributed with this source code.
               ), canceler), true);
 
       if (res) {
-        this.registration.bibRetrieved = value;
-        this.registration.bibRetrievedAt = value ? date.getTime() / 1000 : 0;
-        this.$store.commit('participant/updateSelection', this.registration);
+        if (res.success) {
+          this.registration.bibRetrieved = value;
+          this.registration.bibRetrievedAt = value ? date.getTime() / 1000 : 0;
+          this.$store.commit('participant/updateSelection', this.registration);
+        } else {
+          this.$store.commit('snackbar/snack', {message: res.message, color: 'error'});
+        }
       }
 
       this.loading = false;

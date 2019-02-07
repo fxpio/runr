@@ -10,8 +10,9 @@
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface BibRetrievedResponse {
-    success: boolean;
-    message: string;
-    exception: any|null;
+export interface ChangeRegistrationRequest {
+    regid: number;
+    description: string;
+    who: string;
+    data: string;
 }

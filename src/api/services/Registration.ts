@@ -9,9 +9,9 @@
 
 import {BaseService} from '@/api/BaseService';
 import {Canceler} from '@/api/Canceler';
-import {BibRetrievedRequest} from '@/api/models/request/BibRetrievedRequest';
+import {ChangeRegistrationRequest} from '@/api/models/request/ChangeRegistrationRequest';
 import {RegistrationOptions} from '@/api/models/request/RegistrationOptions';
-import {BibRetrievedResponse} from '@/api/models/responses/BibRetrievedResponse';
+import {ChangeRegistrationResponse} from '@/api/models/responses/ChangeRegistrationResponse';
 import {ListResponse} from '@/api/models/responses/ListResponse';
 import {RegistrationResponse} from '@/api/models/responses/RegistrationResponse';
 
@@ -38,12 +38,12 @@ export class Registration extends BaseService {
         }, canceler) as ListResponse<RegistrationResponse>;
     }
 
-    public async updateBibRetrieved(data: BibRetrievedRequest,
-                                    canceler?: Canceler): Promise<BibRetrievedResponse> {
-        return await this.request<BibRetrievedResponse>({
+    public async change(data: ChangeRegistrationRequest,
+                        canceler?: Canceler): Promise<ChangeRegistrationResponse> {
+        return await this.request<ChangeRegistrationResponse>({
             method: 'POST',
             url: '/api-registrations/registration-change',
             data,
-        }, canceler) as BibRetrievedResponse;
+        }, canceler) as ChangeRegistrationResponse;
     }
 }

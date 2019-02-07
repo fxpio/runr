@@ -7,10 +7,12 @@
  * file that was distributed with this source code.
  */
 
+import {ChangeRegistrationRequest} from '@/api/models/request/ChangeRegistrationRequest';
+
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export class BibRetrievedRequest {
+export class BibRetrievedRequest implements ChangeRegistrationRequest {
     public readonly regid: number;
 
     public readonly description: string;
