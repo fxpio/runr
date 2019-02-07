@@ -89,6 +89,7 @@ file that was distributed with this source code.
 </template>
 
 <script lang="ts">
+  import {Canceler} from '@/api/Canceler';
   import {RegistrationOptionsSearch} from '@/api/models/request/RegistrationOptionsSearch';
   import {ListResponse} from '@/api/models/responses/ListResponse';
   import {RegistrationAnswerResponse} from '@/api/models/responses/RegistrationAnswerResponse';
@@ -182,11 +183,11 @@ file that was distributed with this source code.
       this.loading = true;
       this.launchPrint = false;
       this.bibResult = false;
-      const res = await this.fetchData<ListResponse<RegistrationResponse>>(() =>
+      const res = await this.fetchData<ListResponse<RegistrationResponse>>((canceler: Canceler) =>
               this.$api.get<Registration>(Registration).list({
         itemsPerPage: 1,
         search: searchOptions,
-      }), true);
+      }, canceler), true);
 
       if (res && res.resultsSize > 0 && res.results[0].bib) {
         const reg = res.results[0];

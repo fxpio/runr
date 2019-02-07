@@ -29,6 +29,7 @@ file that was distributed with this source code.
 </template>
 
 <script lang="ts">
+  import {Canceler} from '@/api/Canceler';
   import {ListResponse} from '@/api/models/responses/ListResponse';
   import {RegistrationResponse} from '@/api/models/responses/RegistrationResponse';
   import {Registration} from '@/api/services/Registration';
@@ -100,8 +101,8 @@ file that was distributed with this source code.
         },
       };
 
-      const res = await this.fetchData<ListResponse<RegistrationResponse>>(() =>
-              this.$api.get<Registration>(Registration).list(requestOpts));
+      const res = await this.fetchData<ListResponse<RegistrationResponse>>((canceler: Canceler) =>
+              this.$api.get<Registration>(Registration).list(requestOpts, canceler));
 
       if (res) {
         this.registration = res.results[0];

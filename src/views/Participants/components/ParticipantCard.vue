@@ -276,6 +276,7 @@ file that was distributed with this source code.
 </template>
 
 <script lang="ts">
+  import {Canceler} from '@/api/Canceler';
   import {BibRetrievedRequest} from '@/api/models/request/BibRetrievedRequest';
   import {BibRetrievedResponse} from '@/api/models/responses/BibRetrievedResponse';
   import {RegistrationAnswerChoiceResponse} from '@/api/models/responses/RegistrationAnswerChoiceResponse';
@@ -334,13 +335,13 @@ file that was distributed with this source code.
       this.loading = true;
       const date = (new Date());
 
-      const res = await this.fetchData<BibRetrievedResponse>(() =>
+      const res = await this.fetchData<BibRetrievedResponse>((canceler: Canceler) =>
               this.$api.get<Registration>(Registration).updateBibRetrieved(new BibRetrievedRequest(
                       this.registration.id,
                       this.$store.state.auth.fullName,
                       date,
                       value,
-              )), true);
+              ), canceler), true);
 
       if (res) {
         this.registration.bibRetrieved = value;
