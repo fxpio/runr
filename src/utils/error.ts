@@ -21,8 +21,8 @@ export function getRequestErrorMessage(vue: Vue, err: Error, isAuth: boolean = f
     if ((err as AxiosError).response && ((err as AxiosError).response as AxiosResponse).status) {
         if (((err as AxiosError).response as AxiosResponse)
                 && ((err as AxiosError).response as AxiosResponse).data
-                && ((err as AxiosError).response as AxiosResponse).data.message) {
-            return ((err as AxiosError).response as AxiosResponse).data.message;
+                && ((err as AxiosError).response as AxiosResponse).data.detail) {
+            return ((err as AxiosError).response as AxiosResponse).data.detail;
         } else if (((err as AxiosError).response as AxiosResponse).status === 403) {
             return i18n.t('error.invalid-' + (isAuth ? 'credentials' : 'authorization')) as string;
         }

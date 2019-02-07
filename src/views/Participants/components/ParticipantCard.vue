@@ -72,7 +72,7 @@ file that was distributed with this source code.
       <field-spacer></field-spacer>
 
       <tr>
-        <td colspan="2" class="text-xs-center pt-3 pb-3" v-if="registration.hasBib">
+        <td colspan="2" class="text-xs-center pt-3 pb-3" v-if="!!registration.bib">
           <span class="font-weight-bold accent--text display-2">
             {{ $t('views.participants.fields.short-number') }}&nbsp;{{ registration.bib.code }}
           </span>
@@ -95,12 +95,18 @@ file that was distributed with this source code.
         </td>
       </tr>
 
-      <tr v-if="registration.hasBib">
+      <tr>
         <td colspan="2" class="align-center">
           <v-scale-transition mode="out-in">
+            <v-btn round ripple depressed dark color="light-green" :loading="loading"
+                   @click.prevent="assignBib"
+                   v-if="!registration.bib">
+              {{ $t('views.participants.assign-bib') }}
+            </v-btn>
+
             <v-btn key="btn-retrieve-bib" round ripple depressed dark color="light-green" :loading="loading"
                    @click.prevent="updateBibRetrieved(true)"
-                   v-if="!registration.bibRetrieved">
+                   v-else-if="!registration.bibRetrieved">
               {{ $t('views.participants.retrieve-bib') }}
             </v-btn>
             <v-btn key="btn-collect-bib" round ripple depressed dark color="blue-grey" :loading="loading"
@@ -236,7 +242,7 @@ file that was distributed with this source code.
       <v-slide-y-transition>
       <tbody v-show="showBibSection">
       <field-item :label="$t('views.participants.fields.bib')">
-        {{ registration.hasBib ? registration.bib.code : $t('views.participants.not-has-bib') }}
+        {{ !!registration.bib ? registration.bib.code : $t('views.participants.not-has-bib') }}
       </field-item>
 
       <field-item :label="$t('views.participants.fields.bib-status')">
@@ -283,11 +289,47 @@ file that was distributed with this source code.
       </tbody>
       </v-slide-y-transition>
     </table>
+
+    <v-dialog v-model="showAssignForm" persistent max-width="500px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">{{ $t('views.participants.assign-bib') }}</span>
+        </v-card-title>
+
+        <v-card-text>
+          <v-text-field
+                  type="number"
+                  :label="$i18n.t('views.participants.fields.bib')"
+                  v-model="assignBibNumber"
+                  data-vv-name="assignBibNumber"
+                  :data-vv-as="$i18n.t('views.participants.fields.bib')"
+                  v-validate="'required'"
+                  :error-messages="errors.collect('assignBibNumber')"
+                  :disabled="loading"
+                  @keyup.enter="doAssignBib"
+                  outline
+                  clearable
+                  required>
+          </v-text-field>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn flat @click="showAssignForm = false" :disabled="loading">
+            {{ $t('cancel') }}
+          </v-btn>
+          <v-btn color="accent" depressed :loading="loading" @click="doAssignBib">
+            {{ $t('add') }}
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-card>
 </template>
 
 <script lang="ts">
   import {Canceler} from '@/api/Canceler';
+  import {AssignBibRequest} from '@/api/models/request/AssignBibRequest';
   import {BibRetrievedRequest} from '@/api/models/request/BibRetrievedRequest';
   import {ChangeRegistrationResponse} from '@/api/models/responses/ChangeRegistrationResponse';
   import {RegistrationAnswerChoiceResponse} from '@/api/models/responses/RegistrationAnswerChoiceResponse';
@@ -295,6 +337,7 @@ file that was distributed with this source code.
   import {RegistrationResponse} from '@/api/models/responses/RegistrationResponse';
   import '@/styles/views/Participants/Details.scss';
   import {Registration} from '@/api/services/Registration';
+  import Loading from '@/components/Loading.vue';
   import {AjaxContent} from '@/mixins/AjaxContent';
   import FieldItem from '@/views/Participants/components/FieldItem.vue';
   import FieldSection from '@/views/Participants/components/FieldSection.vue';
@@ -307,7 +350,7 @@ file that was distributed with this source code.
    * @author François Pluchino <francois.pluchino@gmail.com>
    */
   @Component({
-    components: {FieldItem, FieldSection, FieldSpacer},
+    components: {Loading, FieldItem, FieldSection, FieldSpacer},
   })
   export default class ParticipantCard extends mixins(AjaxContent) {
     @Prop({type: Object, required: true})
@@ -325,6 +368,10 @@ file that was distributed with this source code.
 
     public showPaymentSection: boolean = false;
 
+    public showAssignForm: boolean = false;
+
+    public assignBibNumber: string = '';
+
     public get answers(): Array<RegistrationAnswerResponse|RegistrationAnswerChoiceResponse> {
       if (this.registration && this.registration.answers) {
         return this.$store.getters['edition/convertAnswers'](this.registration.answers);
@@ -340,6 +387,49 @@ file that was distributed with this source code.
           lastname: this.registration.lastname,
         }) as string,
       };
+    }
+
+    public async assignBib(): Promise<void> {
+      this.showAssignForm = true;
+    }
+
+    public async doAssignBib(): Promise<void> {
+      if (!await this.$validator.validateAll()) {
+        return;
+      }
+
+      this.loading = true;
+      const date = (new Date());
+
+      const res = await this.fetchData<ChangeRegistrationResponse>((canceler: Canceler) =>
+              this.$api.get<Registration>(Registration).change(new AssignBibRequest(
+                      this.registration.id,
+                      this.$store.state.auth.fullName,
+                      date,
+                      this.assignBibNumber,
+              ), canceler), true);
+
+      if (res) {
+        if (res.success) {
+          this.registration.hasBib = true;
+          this.registration.bib = {
+            id: 0,
+            code: this.assignBibNumber,
+            codeAsInteger: Number(this.assignBibNumber),
+            teamPart: '',
+            particpantPart: '',
+            bibdef: 0,
+            affected: '' !== this.assignBibNumber ? date.getTime() / 1000 : 0,
+          };
+          this.$store.commit('participant/updateSelection', this.registration);
+          this.assignBibNumber = '';
+          this.showAssignForm = false;
+        } else {
+          this.$store.commit('snackbar/snack', {message: res.message, color: 'error'});
+        }
+      }
+
+      this.loading = false;
     }
 
     public async updateBibRetrieved(value: boolean): Promise<void> {

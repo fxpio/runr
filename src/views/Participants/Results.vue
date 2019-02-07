@@ -58,12 +58,12 @@ file that was distributed with this source code.
             </div>
           </td>
           <td class="participant-item" @click="itemSelection(props.index)">
-            <v-tooltip left v-if="props.item.hasBib && props.item.bibRetrieved">
+            <v-tooltip left v-if="!!props.item.bib && props.item.bibRetrieved">
               <v-icon color="green" slot="activator">directions_run</v-icon>
               <span>{{ $t('views.participants.bib-retrieved') }}</span>
             </v-tooltip>
 
-            <v-tooltip left v-else-if="props.item.hasBib">
+            <v-tooltip left v-else-if="!!props.item.bib">
               <v-icon color="grey" slot="activator">inbox</v-icon>
               <span>{{ $t('views.participants.bib-not-retrieved') }}</span>
             </v-tooltip>
@@ -89,7 +89,6 @@ file that was distributed with this source code.
   import {Registration} from '@/api/services/Registration';
   import ErrorMessage from '@/components/ErrorMessage.vue';
   import Loading from '@/components/Loading.vue';
-  import {ICompetition} from '@/db/tables/ICompetition';
   import {IEdition} from '@/db/tables/IEdition';
   import SearchConfig from '@/forms/SearchConfig';
   import {AjaxContent} from '@/mixins/AjaxContent';

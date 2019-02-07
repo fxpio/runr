@@ -78,6 +78,7 @@ export default {
     'views.participants.bib-retrieved': 'Bib retrieved',
     'views.participants.bib-not-retrieved': 'Bib not retrieved',
     'views.participants.not-has-bib': 'Not has bib',
+    'views.participants.assign-bib': 'Assign the bib',
     'views.participants.retrieve-bib': 'Retrieve the bib',
     'views.participants.collect-bib': 'Collect the bib',
     'views.participants.sections.registration': 'Registration',

@@ -10,6 +10,7 @@ one to one or in mass.
   by the Njuko application
 - Search or scan the QR code of registration to validate the informations before collecting the bib
 - Indicate on the registration that the bib has been retrieved by the runner or collected by the organizers
+- Assign manually a bib number directly from the registration if the runner has not a bib
 - Search or scan the QR code of bib and print his label
 - Import in mass the list of bib numbers and print their labels
 - Install this application on your device's home screen without the need for an app store
