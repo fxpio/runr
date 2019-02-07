@@ -309,17 +309,17 @@ file that was distributed with this source code.
     @Prop({type: Object, required: true})
     public registration!: RegistrationResponse;
 
-    private showExtraSection: boolean = true;
+    public showExtraSection: boolean = true;
 
-    private showRegistrationSection: boolean = false;
+    public showRegistrationSection: boolean = false;
 
-    private showPermissionSlipSection: boolean = false;
+    public showPermissionSlipSection: boolean = false;
 
-    private showPersonalSection: boolean = false;
+    public showPersonalSection: boolean = false;
 
-    private showBibSection: boolean = false;
+    public showBibSection: boolean = false;
 
-    private showPaymentSection: boolean = false;
+    public showPaymentSection: boolean = false;
 
     public get answers(): Array<RegistrationAnswerResponse|RegistrationAnswerChoiceResponse> {
       if (this.registration && this.registration.answers) {
