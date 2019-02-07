@@ -19,24 +19,31 @@ file that was distributed with this source code.
       <!-- Chips of registration -->
       <tr>
         <td colspan="2">
-          <v-chip color="indigo" text-color="white">
-            <v-icon dark left>directions</v-icon>
-            {{ $store.getters['edition/getCompetitionName'](registration.competition_id) }}
-          </v-chip>
+          <v-tooltip bottom>
+            <v-chip slot="activator" color="indigo" text-color="white">
+              <v-icon dark left>directions</v-icon>
+              {{ $store.getters['edition/getCompetitionName'](registration.competition_id) }}
+            </v-chip>
+            <span>{{ $t('views.participants.fields.competition') }}</span>
+          </v-tooltip>
 
-          <v-chip color="indigo" text-color="white">
-            <v-icon dark small left class="ml-1">fas fa-birthday-cake</v-icon>
-            {{ $fd(registration.birthdate) }}
-          </v-chip>
+          <v-tooltip bottom>
+            <v-chip slot="activator" color="indigo" text-color="white">
+              <v-icon dark small left class="ml-1">fas fa-birthday-cake</v-icon>
+              {{ $fd(registration.birthdate) }}
+            </v-chip>
+            <span>{{ $t('views.participants.fields.birthday') }}</span>
+          </v-tooltip>
 
-          <v-chip :color="'male' === registration.gender ? 'light-blue' : 'pink lighten-2'" text-color="white">
-            <v-tooltip bottom>
-              <v-icon slot="activator" dark>
+          <v-tooltip bottom>
+            <v-chip slot="activator" :color="'male' === registration.gender ? 'light-blue' : 'pink lighten-2'"
+                    text-color="white">
+              <v-icon dark>
                 fas fa-{{ 'male' === registration.gender ? 'mars' : 'venus' }}
               </v-icon>
-              <span>{{ $t('views.participants.choices.gender.' + registration.gender) }}</span>
-            </v-tooltip>
-          </v-chip>
+            </v-chip>
+            <span>{{ $t('views.participants.choices.gender.' + registration.gender) }}</span>
+          </v-tooltip>
         </td>
       </tr>
 
