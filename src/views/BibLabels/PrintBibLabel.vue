@@ -103,7 +103,6 @@ file that was distributed with this source code.
   import Scanner from '@/components/Scanner.vue';
   import {ICompetition} from '@/db/tables/ICompetition';
   import {IField} from '@/db/tables/IField';
-  import Camera from '@/devices/Camera';
   import {AjaxContent} from '@/mixins/AjaxContent';
   import {Printer} from '@/printers/Printer';
   import {mixins} from 'vue-class-component';
