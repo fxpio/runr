@@ -113,6 +113,10 @@ file that was distributed with this source code.
       </tr>
 
       <field-spacer></field-spacer>
+
+      <field-item :label="$t('views.participants.fields.comment')" v-if="!!registration.comment">
+        {{ registration.comment }}
+      </field-item>
       </tbody>
 
       <!-- Extra section -->
