@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import 'babel-polyfill';
+import '@babel/polyfill';
 import '@/registerHooks';
 import ApiInterceptors from '@/api/ApiInterceptors';
 import {useVueRouterBackPlugin} from '@/plugins/vueRouterBack';
