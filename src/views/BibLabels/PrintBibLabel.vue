@@ -92,8 +92,6 @@ file that was distributed with this source code.
   import {Canceler} from '@/api/Canceler';
   import {RegistrationOptionsSearch} from '@/api/models/request/RegistrationOptionsSearch';
   import {ListResponse} from '@/api/models/responses/ListResponse';
-  import {RegistrationAnswerResponse} from '@/api/models/responses/RegistrationAnswerResponse';
-  import {RegistrationBibResponse} from '@/api/models/responses/RegistrationBibResponse';
   import {RegistrationResponse} from '@/api/models/responses/RegistrationResponse';
   import {Registration} from '@/api/services/Registration';
   import BibItem from '@/bib/BibItem';
@@ -101,9 +99,8 @@ file that was distributed with this source code.
   import ErrorMessage from '@/components/ErrorMessage.vue';
   import Loading from '@/components/Loading.vue';
   import Scanner from '@/components/Scanner.vue';
-  import {ICompetition} from '@/db/tables/ICompetition';
-  import {IField} from '@/db/tables/IField';
   import {AjaxContent} from '@/mixins/AjaxContent';
+  import {Bib} from '@/mixins/Bib';
   import {Printer} from '@/printers/Printer';
   import {mixins} from 'vue-class-component';
   import {MetaInfo} from 'vue-meta';
@@ -115,7 +112,7 @@ file that was distributed with this source code.
   @Component({
     components: {ErrorMessage, Scanner, Loading, BibLabel},
   })
-  export default class BibLabels extends mixins(AjaxContent) {
+  export default class BibLabels extends mixins(AjaxContent, Bib) {
     public bibResult: BibItem|false|null = null;
 
     public searchBibNumber?: string = '';
@@ -151,14 +148,7 @@ file that was distributed with this source code.
     }
 
     public async beforeMount(): Promise<void> {
-      this.bibResult = new BibItem();
-      this.bibResult.registrationId = -1;
-      this.bibResult.distance = 'Dis';
-      this.bibResult.unit = 'unit';
-      this.bibResult.bibNumber = '0';
-      this.bibResult.firstName = 'Example';
-      this.bibResult.phoneUrgency = 'Phone number';
-
+      this.bibResult = this.createMockBib();
       this.$root.$on('scanner-decode', this.onDecode);
     }
 
@@ -188,57 +178,10 @@ file that was distributed with this source code.
       }, canceler), true);
 
       if (res && res.resultsSize > 0 && res.results[0].bib) {
-        const reg = res.results[0];
+        this.bibResult = await this.convertRegistrationToBib(res.results[0]);
 
-        // find competition
-        const competitions: Record<number, ICompetition> = this.$store.state.edition.currentCompetitions;
-        const competition = competitions[reg.competition_id] as ICompetition;
-        const bib = new BibItem();
-        bib.bibNumber = (reg.bib as RegistrationBibResponse).code;
-        bib.firstName = reg.firstname;
-        bib.registrationId = reg.id;
-
-        if (competition) {
-          bib.distance = competition.sportsAndDistances[0].distance;
-          bib.unit = competition.sportsAndDistances[0].unit as string;
-
-          if (competition.startBirthDate) {
-            bib.startBirthDate = new Date(competition.startBirthDate);
-          }
-
-          if (competition.endBirthDate) {
-            bib.endBirthDate = new Date(competition.endBirthDate);
-          }
-        }
-
-        // find last phone field
-        if (reg.answers) {
-          const fields: Record<number, IField> = this.$store.state.edition.currentFields;
-          let field: IField;
-
-          for (const sField of Object.values(fields).reverse() as IField[]) {
-            if ('PhoneNumber' === sField.type) {
-              field = sField;
-
-              for (const answer of reg.answers.reverse()) {
-                if (answer.field_id === sField.id) {
-                  bib.phoneUrgency = answer.value as string;
-
-                  if ((answer as RegistrationAnswerResponse).country) {
-                    bib.phoneUrgency = '+' + (answer as RegistrationAnswerResponse).country + bib.phoneUrgency;
-                  }
-                  break;
-                }
-              }
-              break;
-            }
-          }
-        }
-
-        this.bibResult = bib;
-
-        if (this.searchBibNumber !== bib.bibNumber) {
-          this.searchBibNumber = bib.bibNumber;
+        if (this.searchBibNumber !== this.bibResult.bibNumber) {
+          this.searchBibNumber = this.bibResult.bibNumber;
         }
       }
 
