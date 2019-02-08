@@ -10,6 +10,19 @@
 $bib-label-padding-base: 1%;
 $bib-label-padding-wrapper: 2%;
 
+.bib-label-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  flex-flow: row wrap;
+  justify-content: center;
+  overflow-x: auto;
+  max-width: 100%;
+
+  &.hidden {
+    height: 0;
+  }
+}
+
 .bib-label {
   position: relative;
   width: 89mm;

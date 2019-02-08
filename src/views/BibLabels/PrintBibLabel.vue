@@ -108,7 +108,6 @@ file that was distributed with this source code.
   import {mixins} from 'vue-class-component';
   import {MetaInfo} from 'vue-meta';
   import {Component} from 'vue-property-decorator';
-  import '@/styles/views/BibLabels.scss';
 
   /**
    * @author François Pluchino <francois.pluchino@gmail.com>
