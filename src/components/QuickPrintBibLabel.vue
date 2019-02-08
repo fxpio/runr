@@ -85,7 +85,9 @@ file that was distributed with this source code.
       this.bib = this.registration
               ? await this.convertRegistrationToBib(this.registration)
               : this.createMockBib();
+    }
 
+    public mounted(): void {
       this.dialog = (this.$refs.printDialog as Vue).$refs.dialog as HTMLElement;
     }
 
@@ -101,7 +103,7 @@ file that was distributed with this source code.
     }
 
     @Watch('value')
-    public async watchValue(): Promise<void> {
+    public watchValue(): void {
       if (this.value) {
         this.dialog.addEventListener('transitionend', this.print);
       } else {
