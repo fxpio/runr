@@ -29,3 +29,10 @@
     border-color: map-deep-get($material-dark, 'card-border-color');
   }
 }
+
+.v-dialog--fullscreen {
+  .v-card {
+    border: none;
+    border-radius: 0;
+  }
+}
