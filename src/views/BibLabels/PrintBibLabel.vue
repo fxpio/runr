@@ -101,6 +101,7 @@ file that was distributed with this source code.
   import Scanner from '@/components/Scanner.vue';
   import {AjaxContent} from '@/mixins/AjaxContent';
   import {Bib} from '@/mixins/Bib';
+  import {Printerable} from '@/mixins/Printerable';
   import {Printer} from '@/printers/Printer';
   import {mixins} from 'vue-class-component';
   import {MetaInfo} from 'vue-meta';
@@ -112,14 +113,12 @@ file that was distributed with this source code.
   @Component({
     components: {ErrorMessage, Scanner, Loading, BibLabel},
   })
-  export default class BibLabels extends mixins(AjaxContent, Bib) {
+  export default class BibLabels extends mixins(AjaxContent, Bib, Printerable) {
     public bibResult: BibItem|false|null = null;
 
     public searchBibNumber?: string = '';
 
     private launchPrint: boolean = false;
-
-    private printer: Printer = new Printer();
 
     public get startPrintingImmediately(): boolean {
       return this.$store.state.bib.startPrintingImmediately;
@@ -154,7 +153,6 @@ file that was distributed with this source code.
 
     public destroyed(): void {
       this.$root.$off('scanner-decode', this.onDecode);
-      this.printer.destroy();
     }
 
     public async search() {
