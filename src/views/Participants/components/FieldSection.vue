@@ -13,7 +13,7 @@ file that was distributed with this source code.
     <td :colspan="showButton ? 1 : 2" class="font-weight-bold subheading text-uppercase primary--text">
       <slot></slot>
     </td>
-    <td v-if="showButton" class="align-right">
+    <td v-if="showButton" class="text-align-right">
       <v-btn depressed fab icon ripple small flat right class="mr-0">
         <v-icon>{{ value ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
       </v-btn>

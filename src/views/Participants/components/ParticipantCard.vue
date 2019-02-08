@@ -96,7 +96,7 @@ file that was distributed with this source code.
       </tr>
 
       <tr>
-        <td colspan="2" class="align-center">
+        <td colspan="2" class="text-align-center">
           <v-scale-transition mode="out-in">
             <v-btn round ripple depressed dark color="light-green" :loading="loading"
                    @click.prevent="assignBib"

@@ -12,7 +12,7 @@ file that was distributed with this source code.
           ripple
           hover
           :color="color"
-          class="white--text align-left"
+          class="white--text text-align-left"
           height="100%"
           :to="to">
     <v-card-title>
