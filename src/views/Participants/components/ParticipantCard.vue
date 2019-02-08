@@ -9,6 +9,10 @@ file that was distributed with this source code.
 
 <template>
   <v-card flat>
+    <quick-print-bib-label v-model="openPrintBibLabel"
+                           :registration="registration">
+    </quick-print-bib-label>
+
     <v-card-title class="headline text-uppercase accent--text">
       {{ registration.firstname }} {{ registration.lastname }}
     </v-card-title>
@@ -97,6 +101,8 @@ file that was distributed with this source code.
 
       <tr>
         <td colspan="2" class="text-align-center">
+          <div class="btn-wrapper"></div>
+
           <v-scale-transition mode="out-in">
             <v-btn round ripple depressed dark color="light-green" :loading="loading"
                    @click.prevent="assignBib"
@@ -115,6 +121,20 @@ file that was distributed with this source code.
               {{ $t('views.participants.collect-bib') }}
             </v-btn>
           </v-scale-transition>
+
+          <div class="btn-wrapper">
+            <v-scale-transition>
+              <v-tooltip left
+                         v-if="registration.bib && registration.bib.code && !registration.bibRetrieved">
+                <v-btn slot="activator" fab small ripple depressed dark color="light-green"
+                       :loading="loading"
+                       @click.prevent="openPrintBibLabel = true">
+                  <v-icon>print</v-icon>
+                </v-btn>
+                <span>{{ $t('views.bib-labels-print-one.title') }}</span>
+              </v-tooltip>
+            </v-scale-transition>
+          </div>
         </td>
       </tr>
 
@@ -335,10 +355,11 @@ file that was distributed with this source code.
   import {RegistrationAnswerChoiceResponse} from '@/api/models/responses/RegistrationAnswerChoiceResponse';
   import {RegistrationAnswerResponse} from '@/api/models/responses/RegistrationAnswerResponse';
   import {RegistrationResponse} from '@/api/models/responses/RegistrationResponse';
-  import '@/styles/views/Participants/Details.scss';
   import {Registration} from '@/api/services/Registration';
   import Loading from '@/components/Loading.vue';
+  import QuickPrintBibLabel from '@/components/QuickPrintBibLabel.vue';
   import {AjaxContent} from '@/mixins/AjaxContent';
+  import '@/styles/views/Participants/Details.scss';
   import FieldItem from '@/views/Participants/components/FieldItem.vue';
   import FieldSection from '@/views/Participants/components/FieldSection.vue';
   import FieldSpacer from '@/views/Participants/components/FieldSpacer.vue';
@@ -350,7 +371,7 @@ file that was distributed with this source code.
    * @author François Pluchino <francois.pluchino@gmail.com>
    */
   @Component({
-    components: {Loading, FieldItem, FieldSection, FieldSpacer},
+    components: {QuickPrintBibLabel, Loading, FieldItem, FieldSection, FieldSpacer},
   })
   export default class ParticipantCard extends mixins(AjaxContent) {
     @Prop({type: Object, required: true})
@@ -371,6 +392,8 @@ file that was distributed with this source code.
     public showAssignForm: boolean = false;
 
     public assignBibNumber: string = '';
+
+    public openPrintBibLabel: boolean = false;
 
     public get answers(): Array<RegistrationAnswerResponse|RegistrationAnswerChoiceResponse> {
       if (this.registration && this.registration.answers) {
