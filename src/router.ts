@@ -25,7 +25,7 @@ export default new Router({
       path: '/home',
       name: 'home',
       components: {
-        default: () => import(/* webpackChunkName: "home" */ '@/views/Home.vue'),
+        default: () => import(/* webpackChunkName: "home" */ '@/views/Home/Home.vue'),
         toolbar: () => import(/* webpackChunkName: "home" */'@/components/Toolbar.vue'),
       },
     },

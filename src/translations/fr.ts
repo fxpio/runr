@@ -75,11 +75,17 @@ export default {
     'views.about.sections.author': 'Auteur',
     'views.about.fields.fork-on-github': 'Cloner sur Github',
     'views.about.fields.send-an-email': 'Envoyer un email',
-    'views.bib-labels-print-one.title': 'Etiquette du dossard',
+    'views.bib-labels-print-one.title': 'Imprimer une étiquette',
+    'views.bib-labels-print-one.description': 'Imprimer une étiquette de dossard depuis ' +
+                                              'le numéro de dossard ou en scannant la carte de retrait ' +
+                                              'du dossard',
     'views.bib-labels-print.title': 'Etiquettes des dossards',
     'views.bib-labels-print.bib-number': 'Numéro de dossard',
     'views.bib-labels-print.bib-not-found': 'Oops! Dossard non trouvé',
     'views.participants.title': 'Rechercher un participant',
+    'views.participants.description': 'En scannant la carte de retrait du dossard ' +
+                                      'ou en recherchant manuellement avec le numéro de dossard ' +
+                                      'ou le nom de famille',
     'views.participants.details-title': 'Participant : {firstname} {lastname}',
     'views.participants.search-field-label': 'N° dossard ou nom',
     'views.participants.search-not-found': 'Oops! Aucun participant trouvé',

@@ -71,11 +71,15 @@ export default {
     'views.about.sections.author': 'Author',
     'views.about.fields.fork-on-github': 'Fork on Github',
     'views.about.fields.send-an-email': 'Send an email',
-    'views.bib-labels-print-one.title': 'Bib label',
+    'views.bib-labels-print-one.title': 'Print a label',
+    'views.bib-labels-print-one.description': 'Print a bib label from the bib number ' +
+                                              'or by scanning the bib withdrawal card',
     'views.bib-labels-print.title': 'Bib labels',
     'views.bib-labels-print.bib-number': 'Bib number',
     'views.bib-labels-print.bib-not-found': 'Oops! Bib not found',
     'views.participants.title': 'Find a participant',
+    'views.participants.description': 'By scanning the bib withdrawal card or manually searching ' +
+                                      'with the bib number or the last name',
     'views.participants.details-title': 'Participant: {firstname} {lastname}',
     'views.participants.search-field-label': 'Bib number or lastname',
     'views.participants.search-not-found': 'Oops! No participants found',
