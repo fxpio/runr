@@ -101,8 +101,6 @@ file that was distributed with this source code.
 
       <tr>
         <td colspan="2" class="text-align-center">
-          <div class="btn-wrapper"></div>
-
           <v-scale-transition mode="out-in">
             <v-btn round ripple depressed dark color="light-green" :loading="loading"
                    @click.prevent="assignBib"
@@ -121,24 +119,26 @@ file that was distributed with this source code.
               {{ $t('views.participants.collect-bib') }}
             </v-btn>
           </v-scale-transition>
-
-          <div class="btn-wrapper">
-            <v-scale-transition>
-              <v-tooltip left
-                         v-if="registration.bib && registration.bib.code && !registration.bibRetrieved">
-                <v-btn slot="activator" fab small ripple depressed dark color="light-green"
-                       :loading="loading"
-                       @click.prevent="openPrintBibLabel = true">
-                  <v-icon>print</v-icon>
-                </v-btn>
-                <span>{{ $t('views.bib-labels-print-one.title') }}</span>
-              </v-tooltip>
-            </v-scale-transition>
-          </div>
         </td>
       </tr>
 
-      <field-spacer></field-spacer>
+      <tr>
+        <td colspan="2" class="text-align-center">
+          <div class="btn-wrapper">
+          <v-scale-transition>
+            <v-tooltip left
+                       v-if="registration.bib && registration.bib.code && !registration.bibRetrieved">
+              <v-btn slot="activator" fab small ripple depressed dark color="light-green"
+                     :loading="loading"
+                     @click.prevent="openPrintBibLabel = true">
+                <v-icon>print</v-icon>
+              </v-btn>
+              <span>{{ $t('views.bib-labels-print-one.title') }}</span>
+            </v-tooltip>
+          </v-scale-transition>
+          </div>
+        </td>
+      </tr>
 
       <field-item :label="$t('views.participants.fields.comment')" v-if="!!registration.comment">
         {{ registration.comment }}
