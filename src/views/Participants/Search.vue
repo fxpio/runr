@@ -67,7 +67,6 @@ file that was distributed with this source code.
 </template>
 
 <script lang="ts">
-  import Scanner from '@/components/Scanner.vue';
   import {ICompetition} from '@/db/tables/ICompetition';
   import CompetitionItem from '@/forms/CompetitionItem';
   import SearchConfig from '@/forms/SearchConfig';
@@ -79,7 +78,7 @@ file that was distributed with this source code.
    * @author François Pluchino <francois.pluchino@gmail.com>
    */
   @Component({
-    components: {Scanner},
+    components: {},
   })
   export default class Search extends Vue {
     private searchValue: string = '';

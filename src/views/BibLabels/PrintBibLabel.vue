@@ -98,11 +98,9 @@ file that was distributed with this source code.
   import BibLabel from '@/components/BibLabel.vue';
   import ErrorMessage from '@/components/ErrorMessage.vue';
   import Loading from '@/components/Loading.vue';
-  import Scanner from '@/components/Scanner.vue';
   import {AjaxContent} from '@/mixins/AjaxContent';
   import {Bib} from '@/mixins/Bib';
   import {Printerable} from '@/mixins/Printerable';
-  import {Printer} from '@/printers/Printer';
   import {mixins} from 'vue-class-component';
   import {MetaInfo} from 'vue-meta';
   import {Component} from 'vue-property-decorator';
@@ -111,7 +109,7 @@ file that was distributed with this source code.
    * @author François Pluchino <francois.pluchino@gmail.com>
    */
   @Component({
-    components: {ErrorMessage, Scanner, Loading, BibLabel},
+    components: {ErrorMessage, Loading, BibLabel},
   })
   export default class BibLabels extends mixins(AjaxContent, Bib, Printerable) {
     public bibResult: BibItem|false|null = null;
