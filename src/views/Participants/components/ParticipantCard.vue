@@ -111,7 +111,7 @@ file that was distributed with this source code.
             <v-btn key="btn-retrieve-bib" round ripple depressed dark color="light-green" :loading="loading"
                    @click.prevent="updateBibRetrieved(true)"
                    v-else-if="!registration.bibRetrieved">
-              {{ $t('views.participants.retrieve-bib') }}
+              {{ $t('views.participants.give-bib') }}
             </v-btn>
             <v-btn key="btn-collect-bib" round ripple depressed dark color="blue-grey" :loading="loading"
                    @click.prevent="updateBibRetrieved(false)"
