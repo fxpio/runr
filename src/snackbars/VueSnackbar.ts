@@ -7,11 +7,16 @@
  * file that was distributed with this source code.
  */
 
-import {SnackConfig} from '@/stores/snackbar/SnackConfig';
+import {SnackbarManager} from '@/snackbars/SnackbarManager';
+import _Vue, {PluginObject} from 'vue';
 
 /**
+ * Snackbar vue plugin.
+ *
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface SnackbarState {
-    config: SnackConfig|null;
-}
+export default {
+    install: (Vue: typeof _Vue, options?: SnackbarManager): void => {
+        Vue.prototype.$snackbar = options;
+    },
+} as PluginObject<SnackbarManager>;

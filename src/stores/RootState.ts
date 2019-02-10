@@ -15,7 +15,6 @@ import {EditionModuleState} from '@/stores/edition/EditionModuleState';
 import {I18nModuleState} from '@/stores/i18n/I18nModuleState';
 import {ParticipantModuleState} from '@/stores/participant/ParticipantModuleState';
 import {ScannerModuleState} from '@/stores/scanner/ScannerModuleState';
-import {SnackbarModuleState} from '@/stores/snackbar/SnackbarModuleState';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
@@ -27,6 +26,5 @@ export interface RootState extends AuthModuleState,
                                    EditionModuleState,
                                    I18nModuleState,
                                    ParticipantModuleState,
-                                   ScannerModuleState,
-                                   SnackbarModuleState {
+                                   ScannerModuleState {
 }

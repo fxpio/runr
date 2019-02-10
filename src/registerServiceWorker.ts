@@ -8,7 +8,7 @@
  */
 
 /* tslint:disable:no-console */
-import {SnackbarEventMessage} from '@/snackbars/SnackbarEventMessage';
+import {SnackbarMessage} from '@/snackbars/SnackbarMessage';
 import {register} from 'register-service-worker';
 
 /**
@@ -30,7 +30,17 @@ if (process.env.NODE_ENV === 'production') {
     },
     updated() {
       console.log('New content is available; please refresh.');
-      self.postMessage(new SnackbarEventMessage('sw.app.updated', true, true), window.location.origin);
+      const message = (new SnackbarMessage('sw.app.updated'))
+          .setTranslatable(true)
+          .setCloseButton(true)
+          .setMultiLine(true)
+          .setTimeout(0)
+          .setColor('info');
+
+      self.dispatchEvent(new MessageEvent('snackbar-push-snack', {
+        data: message,
+        origin: window.location.origin,
+      }));
     },
     offline() {
       console.log('No internet connection found. App is running in offline mode.');

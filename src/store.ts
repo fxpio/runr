@@ -9,6 +9,7 @@
 
 import {Api} from '@/api/Api';
 import {Database} from '@/db/Database';
+import {SnackbarManager} from '@/snackbars/SnackbarManager';
 import {AuthModule} from '@/stores/auth/AuthModule';
 import {AuthModuleState} from '@/stores/auth/AuthModuleState';
 import {BibModule} from '@/stores/bib/BibModule';
@@ -25,8 +26,6 @@ import {ParticipantModule} from '@/stores/participant/ParticipantModule';
 import {ParticipantModuleState} from '@/stores/participant/ParticipantModuleState';
 import {ScannerModule} from '@/stores/scanner/ScannerModule';
 import {ScannerModuleState} from '@/stores/scanner/ScannerModuleState';
-import {SnackbarModule} from '@/stores/snackbar/SnackbarModule';
-import {SnackbarModuleState} from '@/stores/snackbar/SnackbarModuleState';
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
 import VueRouter from 'vue-router';
@@ -50,8 +49,11 @@ export function createStore<R extends
                           & EditionModuleState
                           & I18nModuleState
                           & ParticipantModuleState
-                          & ScannerModuleState
-                          & SnackbarModuleState>(router: VueRouter, i18n: VueI18n, api: Api, db: Database): Store<R> {
+                          & ScannerModuleState>(router: VueRouter,
+                                                i18n: VueI18n,
+                                                api: Api,
+                                                db: Database,
+                                                snackbar: SnackbarManager): Store<R> {
   return new Vuex.Store<R>({
     state: {} as R,
     modules: {
@@ -59,11 +61,10 @@ export function createStore<R extends
       bib: new BibModule<R>(),
       darkMode: new DarkModeModule<R>(),
       drawer: new DrawerModule<R>(),
-      edition: new EditionModule<R>(router, api, db),
+      edition: new EditionModule<R>(router, api, db, snackbar),
       i18n: new I18nModule<R>(i18n),
       participant: new ParticipantModule<R>(router),
       scanner: new ScannerModule<R>(),
-      snackbar: new SnackbarModule<R>(),
     },
   });
 }

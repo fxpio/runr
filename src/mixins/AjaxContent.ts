@@ -9,6 +9,7 @@
 
 import {Canceler} from '@/api/Canceler';
 import {RequestError} from '@/errors/RequestError';
+import {SnackbarMessage} from '@/snackbars/SnackbarMessage';
 import {getRequestErrorMessage} from '@/utils/error';
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
@@ -56,7 +57,7 @@ export class AjaxContent extends Vue {
             this.previousError = new RequestError(e, message);
 
             if (showSnackbar) {
-                this.$store.commit('snackbar/snack', {message, color: 'error'});
+                this.$snackbar.snack(new SnackbarMessage(message, 'error'));
             }
         }
     }

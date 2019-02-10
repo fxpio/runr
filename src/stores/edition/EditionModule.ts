@@ -17,6 +17,8 @@ import {Database} from '@/db/Database';
 import {ICompetition} from '@/db/tables/ICompetition';
 import {IEdition} from '@/db/tables/IEdition';
 import {IField} from '@/db/tables/IField';
+import {SnackbarManager} from '@/snackbars/SnackbarManager';
+import {SnackbarMessage} from '@/snackbars/SnackbarMessage';
 import {Answer} from '@/stores/edition/Answer';
 import {AnswerConverter} from '@/stores/edition/AnswerConverter';
 import {EditionModuleState} from '@/stores/edition/EditionModuleState';
@@ -35,6 +37,8 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
 
     private readonly db: Database;
 
+    private readonly snackbar: SnackbarManager;
+
     private readonly storage: Storage;
 
     private previousRequest?: Canceler;
@@ -42,10 +46,11 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
     /**
      * Constructor.
      */
-    public constructor(router: Router, api: Api, db: Database, storage?: Storage) {
+    public constructor(router: Router, api: Api, db: Database, snackbar: SnackbarManager, storage?: Storage) {
         this.router = router;
         this.api = api;
         this.db = db;
+        this.snackbar = snackbar;
         this.storage = storage ? storage : localStorage;
     }
 
@@ -229,7 +234,7 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
                 } catch (e) {
                     const mess = self.router.app.$i18n.t('error.invalid-authorization') as string;
                     commit('selectCurrent', null);
-                    commit('snackbar/snack', {message: mess, color: 'error'}, {root: true});
+                    self.snackbar.snack(new SnackbarMessage(mess, 'error'));
                 }
             },
 

@@ -21,6 +21,7 @@ import '@/plugins/vueLongClick';
 import i18n from '@/plugins/vueI18n';
 import apiClient from '@/plugins/vueApi';
 import dbClient from '@/plugins/vueDb';
+import snackbar from '@/plugins/vueSnackbar';
 import App from '@/App.vue';
 import router from '@/router';
 import {createStore} from '@/store';
@@ -35,7 +36,7 @@ import '@/styles/app.scss';
 Vue.config.productionTip = false;
 useVueRouterBackPlugin({router, forceHistory: true});
 
-const store = createStore<RootState>(router, i18n, apiClient, dbClient);
+const store = createStore<RootState>(router, i18n, apiClient, dbClient, snackbar);
 
 RouterGuards.addAuthGuard(router, store);
 RouterGuards.addAuthEditionGuard(router, store);

@@ -14,6 +14,7 @@ export default {
     'app.name': 'BibScan pour Njuko',
     'app.description': 'L\'application pour scanner et vérifier les dossards ou imprimer les étiquettes des dossards',
     'sw.app.updated': 'Une nouvelle version de l\'application est disponible. Relancez l\'application pour l\'utiliser',
+    'next.count': 'Suivant ({count})',
     'close': 'Fermer',
     'cancel': 'Annuler',
     'delete': 'Supprimer',

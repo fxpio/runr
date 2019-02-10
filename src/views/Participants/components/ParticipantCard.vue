@@ -360,6 +360,7 @@ file that was distributed with this source code.
   import QuickPrintBibLabel from '@/components/QuickPrintBibLabel.vue';
   import {AjaxContent} from '@/mixins/AjaxContent';
   import '@/styles/views/Participants/Details.scss';
+  import {SnackbarMessage} from '@/snackbars/SnackbarMessage';
   import FieldItem from '@/views/Participants/components/FieldItem.vue';
   import FieldSection from '@/views/Participants/components/FieldSection.vue';
   import FieldSpacer from '@/views/Participants/components/FieldSpacer.vue';
@@ -448,7 +449,7 @@ file that was distributed with this source code.
           this.assignBibNumber = '';
           this.showAssignForm = false;
         } else {
-          this.$store.commit('snackbar/snack', {message: res.message, color: 'error'});
+          this.$snackbar.snack(new SnackbarMessage(res.message, 'error'));
         }
       }
 
@@ -473,7 +474,7 @@ file that was distributed with this source code.
           this.registration.bibRetrievedAt = value ? date.getTime() / 1000 : 0;
           this.$store.commit('participant/updateSelection', this.registration);
         } else {
-          this.$store.commit('snackbar/snack', {message: res.message, color: 'error'});
+          this.$snackbar.snack(new SnackbarMessage(res.message, 'error'));
         }
       }
 

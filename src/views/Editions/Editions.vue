@@ -92,6 +92,7 @@ file that was distributed with this source code.
   import Loading from '@/components/Loading.vue';
   import SwipeItem from '@/components/SwipeItem.vue';
   import {IEdition} from '@/db/tables/IEdition';
+  import {SnackbarMessage} from '@/snackbars/SnackbarMessage';
   import {getParent} from '@/utils/element';
   import {getRequestErrorMessage} from '@/utils/error';
   import {MetaInfo} from 'vue-meta';
@@ -123,7 +124,7 @@ file that was distributed with this source code.
         const credentials = new ApiCredentials(String(edition.id), edition.apiKey, false);
         await this.$store.dispatch('edition/ping', credentials);
       } catch (e) {
-        this.$store.commit('snackbar/snack', {message: getRequestErrorMessage(this, e), color: 'error'});
+        this.$snackbar.snack(new SnackbarMessage(getRequestErrorMessage(this, e), 'error'));
       }
     }
 

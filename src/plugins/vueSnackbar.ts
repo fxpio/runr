@@ -7,11 +7,15 @@
  * file that was distributed with this source code.
  */
 
-import {SnackbarState} from '@/stores/snackbar/SnackbarState';
+import {SnackbarManager} from '@/snackbars/SnackbarManager';
+import VueSnackbar from '@/snackbars/VueSnackbar';
+import Vue from 'vue';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface SnackbarModuleState {
-    snackbar: SnackbarState;
-}
+const snackbarManager = new SnackbarManager();
+
+Vue.use(VueSnackbar, snackbarManager);
+
+export default snackbarManager;

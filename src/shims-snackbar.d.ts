@@ -7,11 +7,13 @@
  * file that was distributed with this source code.
  */
 
+import {SnackbarManager} from '@/snackbars/SnackbarManager';
+
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface SnackConfig {
-    message: string;
-    color?: string;
-    closeButton?: boolean;
+declare module 'vue/types/vue' {
+    interface Vue {
+        $snackbar: SnackbarManager;
+    }
 }
