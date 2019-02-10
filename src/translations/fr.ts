@@ -30,6 +30,7 @@ export default {
                                         + 'à la caméra pour pouvoir scanner les QR codes',
     'scanner.camera.front': 'Caméra frontale',
     'scanner.camera.back': 'Caméra arrière',
+    'scanner.camera.noname': 'Caméra {number}',
     'menu.participants': 'Participants',
     'menu.bibs': 'Dossards',
     'menu.configuration': 'Configuration',

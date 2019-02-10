@@ -14,7 +14,7 @@ file that was distributed with this source code.
            ripple
            color="accent"
            class="btn-content no-bottom-radius mt-0"
-           :disabled="!$store.state.scanner.availableCameras"
+           :disabled="!$store.state.scanner.enabled"
            @click="$store.commit('scanner/open')">
       <v-icon x-large>fas fa-qrcode</v-icon>
       <div class="mt-3">{{ $t('scanner.scan-bib-withdrawal-card') }}</div>

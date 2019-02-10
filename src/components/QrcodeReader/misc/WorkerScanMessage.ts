@@ -7,11 +7,13 @@
  * file that was distributed with this source code.
  */
 
+import QrCodeLocation from '@/components/QrcodeReader/misc/QrCodeLocation';
+
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface ScannerState {
-    enabled: boolean;
-    opened: boolean;
-    lastCameraId: string|null;
+export default interface WorkerScanMessage {
+    content: string|null;
+    location: QrCodeLocation|null;
+    imageData: ImageData;
 }

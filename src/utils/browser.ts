@@ -8,10 +8,8 @@
  */
 
 /**
- * @author François Pluchino <francois.pluchino@gmail.com>
+ * Check mobile device.
  */
-export interface ScannerState {
-    enabled: boolean;
-    opened: boolean;
-    lastCameraId: string|null;
+export function isMobile(): boolean {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }

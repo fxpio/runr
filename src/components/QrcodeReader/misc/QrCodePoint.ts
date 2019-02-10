@@ -7,12 +7,10 @@
  * file that was distributed with this source code.
  */
 
-import Vue from 'vue';
-/* tslint:disable:no-var-requires */
-const QrcodeStream = require('vue-qrcode-reader/src').QrcodeStream;
-require('vue-qrcode-reader/dist/vue-qrcode-reader.css');
-
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-Vue.component('qrcode-stream', QrcodeStream);
+export default interface QrCodePoint {
+    x: number;
+    y: number;
+}

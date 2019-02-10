@@ -10,13 +10,10 @@
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export default class Camera {
-    public readonly id: string;
+declare module 'worker-loader!*' {
+  class WebpackWorker extends Worker {
+    constructor();
+  }
 
-    public readonly label: string;
-
-    constructor(id: string, label: string) {
-        this.id = id;
-        this.label = label;
-    }
+  export default WebpackWorker;
 }

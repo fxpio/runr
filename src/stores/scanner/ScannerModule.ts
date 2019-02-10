@@ -7,7 +7,6 @@
  * file that was distributed with this source code.
  */
 
-import Camera from '@/devices/Camera';
 import {ScannerModuleState} from '@/stores/scanner/ScannerModuleState';
 import {ScannerState} from '@/stores/scanner/ScannerState';
 import {Module, MutationTree} from 'vuex';
@@ -30,7 +29,6 @@ export class ScannerModule<R extends ScannerModuleState> implements Module<Scann
         const lastCameraId = this.storage.getItem('scanner:lastCameraId');
 
         return {
-            availableCameras: null,
             enabled: false,
             opened: false,
             lastCameraId: lastCameraId ? lastCameraId : null,
@@ -47,10 +45,6 @@ export class ScannerModule<R extends ScannerModuleState> implements Module<Scann
 
             close(state: ScannerState): void {
                 state.opened = false;
-            },
-
-            setAvailableCameras(state: ScannerState, availableCameras: Camera[]|null): void {
-                state.availableCameras = availableCameras;
             },
 
             setEnabled(state: ScannerState, enabled: boolean): void {

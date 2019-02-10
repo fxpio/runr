@@ -29,6 +29,7 @@ export default {
     'scanner.permission-camera-required': 'Oops ! You must allow the app to access the camera to scan QR codes',
     'scanner.camera.front': 'Front camera',
     'scanner.camera.back': 'Back camera',
+    'scanner.camera.noname': 'Camera {number}',
     'menu.participants': 'Participants',
     'menu.bibs': 'Bibs',
     'menu.configuration': 'Configuration',

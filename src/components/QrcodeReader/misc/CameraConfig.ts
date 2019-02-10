@@ -7,11 +7,12 @@
  * file that was distributed with this source code.
  */
 
+import AvailableCamera from '@/components/QrcodeReader/camera/AvailableCamera';
+
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface ScannerState {
-    enabled: boolean;
-    opened: boolean;
-    lastCameraId: string|null;
+export default interface CameraConfig {
+    availables: AvailableCamera[];
+    selected: AvailableCamera;
 }

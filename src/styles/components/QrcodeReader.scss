@@ -1,0 +1,39 @@
+/*
+ * This file is part of the BibScan for Njuko package.
+ *
+ * (c) François Pluchino <francois.pluchino@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+.qrcode-reader {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  align-items: center;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.qrcode-reader--wrapper {
+  position: relative;
+  max-width: 100%;
+  max-height: 100%;
+  z-index: 0;
+}
+
+.qrcode-reader--camera {
+  display: block;
+  object-fit: contain;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.qrcode-reader--tracker {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}

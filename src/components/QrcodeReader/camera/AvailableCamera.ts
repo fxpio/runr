@@ -10,8 +10,13 @@
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface ScannerState {
-    enabled: boolean;
-    opened: boolean;
-    lastCameraId: string|null;
+export default class AvailableCamera {
+    public readonly id: string|null;
+
+    public label: string;
+
+    constructor(id: string|null, label: string) {
+        this.id = id;
+        this.label = label;
+    }
 }
