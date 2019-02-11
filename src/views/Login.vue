@@ -32,7 +32,7 @@ file that was distributed with this source code.
                         :data-vv-as="$i18n.t('views.login.full-name')"
                         v-validate="'required'"
                         :error-messages="errors.collect('fullName')"
-                        @keyup.enter="login"
+                        @keydown.enter="login"
                         autofocus
                         outline
                         clearable
@@ -54,7 +54,7 @@ file that was distributed with this source code.
                             :data-vv-as="$i18n.t('views.login.email')"
                             v-validate="'required|email'"
                             :error-messages="errors.collect('email')"
-                            @keyup.enter="login"
+                            @keydown.enter="login"
                             outline
                             clearable
                             required>
@@ -70,7 +70,7 @@ file that was distributed with this source code.
                             :append-icon="showPassword ? 'visibility_off' : 'visibility'"
                             :type="showPassword ? 'text' : 'password'"
                             @click:append="showPassword = !showPassword"
-                            @keyup.enter="login"
+                            @keydown.enter="login"
                             outline
                             clearable
                             required>

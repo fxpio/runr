@@ -29,7 +29,7 @@ file that was distributed with this source code.
                         :data-vv-as="$i18n.t('views.bib-labels-print.bib-number')"
                         v-validate="'required'"
                         :error-messages="errors.collect('searchBibNumber')"
-                        @keyup.enter="search"
+                        @keydown.enter="search"
                         outline
                         clearable
                         required>

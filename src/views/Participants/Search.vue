@@ -35,7 +35,7 @@ file that was distributed with this source code.
                 :data-vv-as="$i18n.t('views.participants.search-field-label')"
                 v-validate=""
                 :error-messages="errors.collect('searchValue')"
-                @keyup.enter="search()"
+                @keydown.enter="search()"
                 outline
                 clearable
                 required>

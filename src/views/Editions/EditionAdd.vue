@@ -47,7 +47,7 @@ file that was distributed with this source code.
                             :data-vv-as="$i18n.t('views.editions-add.identifier')"
                             v-validate="{rules: {required: 0 === tabActive}}"
                             :error-messages="errors.collect('identifier')"
-                            @keyup.enter="pingEdition"
+                            @keydown.enter="pingEdition"
                             autofocus
                             outline
                             clearable
@@ -64,7 +64,7 @@ file that was distributed with this source code.
                             :append-icon="showPassword ? 'visibility_off' : 'visibility'"
                             :type="showPassword ? 'text' : 'password'"
                             @click:append="showPassword = !showPassword"
-                            @keyup.enter="pingEdition"
+                            @keydown.enter="pingEdition"
                             outline
                             clearable
                             required>
@@ -107,7 +107,7 @@ file that was distributed with this source code.
                             :data-vv-as="$i18n.t('views.login.email')"
                             v-validate="{rules: {required: 1 === tabActive, email: 1 === tabActive}}"
                             :error-messages="errors.collect('email')"
-                            @keyup.enter="login"
+                            @keydown.enter="login"
                             outline
                             clearable
                             required>
@@ -123,7 +123,7 @@ file that was distributed with this source code.
                             :append-icon="showPassword ? 'visibility_off' : 'visibility'"
                             :type="showPassword ? 'text' : 'password'"
                             @click:append="showPassword = !showPassword"
-                            @keyup.enter="login"
+                            @keydown.enter="login"
                             outline
                             clearable
                             required>

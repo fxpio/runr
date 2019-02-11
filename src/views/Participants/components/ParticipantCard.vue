@@ -326,7 +326,7 @@ file that was distributed with this source code.
                   v-validate="'required'"
                   :error-messages="errors.collect('assignBibNumber')"
                   :disabled="loading"
-                  @keyup.enter="doAssignBib"
+                  @keydown.enter="doAssignBib"
                   outline
                   clearable
                   required>
