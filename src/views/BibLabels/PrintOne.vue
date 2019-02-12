@@ -29,7 +29,7 @@ file that was distributed with this source code.
                         :data-vv-as="$i18n.t('views.bib-labels-print.bib-number')"
                         v-validate="'required'"
                         :error-messages="errors.collect('searchBibNumber')"
-                        @keydown.enter="search"
+                        @keydown.enter.prevent="search"
                         outline
                         clearable
                         required>
@@ -111,7 +111,7 @@ file that was distributed with this source code.
   @Component({
     components: {ErrorMessage, Loading, BibLabel},
   })
-  export default class PrintBibLabel extends mixins(AjaxContent, Bib, Printerable) {
+  export default class PrintOne extends mixins(AjaxContent, Bib, Printerable) {
     public bibResult: BibItem|false|null = null;
 
     public searchBibNumber?: string = '';

@@ -48,13 +48,23 @@ export default new Router({
       },
     },
     {
-      path: '/bib-labels/print-one',
-      name: 'bib-labels-print-one',
+      path: '/bib-labels',
       meta: {requiresAuth: true},
       components: {
-        default: () => import(/* webpackChunkName: "bib-labels" */ '@/views/BibLabels/PrintBibLabel.vue'),
+        default: () => import(/* webpackChunkName: "bib-labels" */ '@/views/BibLabels/BibLabels.vue'),
         toolbar: () => import(/* webpackChunkName: "bib-labels" */'@/components/Toolbar.vue'),
       },
+      children: [
+        {
+          path: 'print-one',
+          name: 'bib-labels-print-one',
+          meta: {requiresAuth: true},
+          components: {
+            default: () => import(/* webpackChunkName: "bib-labels" */ '@/views/BibLabels/PrintOne.vue'),
+            toolbar: () => import(/* webpackChunkName: "bib-labels" */'@/components/Toolbar.vue'),
+          },
+        },
+      ],
     },
     {
       path: '/participants',
