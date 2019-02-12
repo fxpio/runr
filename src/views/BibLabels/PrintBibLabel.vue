@@ -111,7 +111,7 @@ file that was distributed with this source code.
   @Component({
     components: {ErrorMessage, Loading, BibLabel},
   })
-  export default class BibLabels extends mixins(AjaxContent, Bib, Printerable) {
+  export default class PrintBibLabel extends mixins(AjaxContent, Bib, Printerable) {
     public bibResult: BibItem|false|null = null;
 
     public searchBibNumber?: string = '';
