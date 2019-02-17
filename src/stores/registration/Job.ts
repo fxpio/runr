@@ -99,6 +99,11 @@ export class Job {
 
             const res = await this.api.get<Registration>(Registration)
                 .list(requestOpts, this.previousRequest, headers);
+
+            if (!res) {
+                return;
+            }
+
             await this.db.registrations.bulkPut(Util.convertRegistrations(res.results, this.startedAt as Date));
             this.update(res.totalHits, res.resultsSize);
 
