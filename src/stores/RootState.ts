@@ -14,6 +14,7 @@ import {DrawerModuleState} from '@/stores/drawer/DrawerModuleState';
 import {EditionModuleState} from '@/stores/edition/EditionModuleState';
 import {I18nModuleState} from '@/stores/i18n/I18nModuleState';
 import {ParticipantModuleState} from '@/stores/participant/ParticipantModuleState';
+import {RegistrationModuleState} from '@/stores/registration/RegistrationModuleState';
 import {ScannerModuleState} from '@/stores/scanner/ScannerModuleState';
 
 /**
@@ -26,5 +27,6 @@ export interface RootState extends AuthModuleState,
                                    EditionModuleState,
                                    I18nModuleState,
                                    ParticipantModuleState,
+                                   RegistrationModuleState,
                                    ScannerModuleState {
 }

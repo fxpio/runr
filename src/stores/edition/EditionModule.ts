@@ -293,6 +293,7 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
                 await self.db.fields.where('editionId').equals(id).delete();
                 await self.db.competitions.where('editionId').equals(id).delete();
                 await self.db.editions.where('id').equals(id).delete();
+                await self.db.registrations.where('editionId').equals(id).delete();
                 commit('removeEdition', id);
 
                 if (state.current && id === state.current.id) {
@@ -304,6 +305,7 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
                 await self.db.fields.toCollection().delete();
                 await self.db.competitions.toCollection().delete();
                 await self.db.editions.toCollection().delete();
+                await self.db.registrations.toCollection().delete();
                 commit('setEditions', []);
                 commit('selectCurrent', null);
             },

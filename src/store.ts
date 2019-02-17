@@ -24,6 +24,8 @@ import {I18nModule} from '@/stores/i18n/I18nModule';
 import {I18nModuleState} from '@/stores/i18n/I18nModuleState';
 import {ParticipantModule} from '@/stores/participant/ParticipantModule';
 import {ParticipantModuleState} from '@/stores/participant/ParticipantModuleState';
+import {RegistrationModule} from '@/stores/registration/RegistrationModule';
+import {RegistrationModuleState} from '@/stores/registration/RegistrationModuleState';
 import {ScannerModule} from '@/stores/scanner/ScannerModule';
 import {ScannerModuleState} from '@/stores/scanner/ScannerModuleState';
 import Vue from 'vue';
@@ -49,6 +51,7 @@ export function createStore<R extends
                           & EditionModuleState
                           & I18nModuleState
                           & ParticipantModuleState
+                          & RegistrationModuleState
                           & ScannerModuleState>(router: VueRouter,
                                                 i18n: VueI18n,
                                                 api: Api,
@@ -64,6 +67,7 @@ export function createStore<R extends
       edition: new EditionModule<R>(router, api, db, snackbar),
       i18n: new I18nModule<R>(i18n),
       participant: new ParticipantModule<R>(router),
+      registration: new RegistrationModule<R>(router, api, db, snackbar),
       scanner: new ScannerModule<R>(),
     },
   });

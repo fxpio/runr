@@ -30,11 +30,12 @@ export class Registration extends BaseService {
      * Get the editions of the organization.
      */
     public async list(options?: RegistrationOptions,
-                      canceler?: Canceler): Promise<ListResponse<RegistrationResponse>> {
+                      canceler?: Canceler, headers?: any): Promise<ListResponse<RegistrationResponse>> {
         return await this.request<ListResponse<RegistrationResponse>>({
             method: 'POST',
             url: '/api-registrations/registrations',
             data: options,
+            headers,
         }, canceler) as ListResponse<RegistrationResponse>;
     }
 
