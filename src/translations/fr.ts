@@ -26,6 +26,7 @@ export default {
     'search': 'Rechercher',
     'retry': 'Recommencer',
     'print': 'Imprimer',
+    'stop': 'Arrêter',
     'scanner.scan-bib-withdrawal-card': 'Scanner la carte de retrait du dossard',
     'scanner.permission-camera-required': 'Oops ! Vous devez autoriser l\'application à accèder '
                                         + 'à la caméra pour pouvoir scanner les QR codes',
@@ -82,6 +83,11 @@ export default {
     'views.bib-labels-print-one.description': 'Imprimer une étiquette de dossard depuis ' +
                                               'le numéro de dossard ou en scannant la carte de retrait ' +
                                               'du dossard',
+    'views.bib-labels-print-mass.title': 'Imprimer des étiquettes',
+    'views.bib-labels-print-mass.bib-number-range': 'Numéros de dossard ou plage',
+    'views.bib-labels-print-mass.bib-number-range-description': 'Numéros séparés par des virgules ' +
+                                                                'et les plages par des tirets',
+    'views.bib-labels-print-mass.print-labels': '1 étiquette | {count} étiquettes',
     'views.bib-labels-print.title': 'Etiquettes des dossards',
     'views.bib-labels-print.bib-number': 'Numéro de dossard',
     'views.bib-labels-print.bib-not-found': 'Oops! Dossard non trouvé',

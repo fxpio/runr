@@ -13,6 +13,9 @@ import {RegistrationResponse} from '@/api/models/responses/RegistrationResponse'
 import BibItem from '@/bib/BibItem';
 import {ICompetition} from '@/db/tables/ICompetition';
 import {IField} from '@/db/tables/IField';
+import {IRegistration} from '@/db/tables/IRegistration';
+import {IRegistrationAnswer} from '@/db/tables/IRegistrationAnswer';
+import {IRegistrationBib} from '@/db/tables/IRegistrationBib';
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
 
@@ -34,12 +37,22 @@ export class Bib extends Vue {
         return bib;
     }
 
+    public async convertRegistrationsToBibs(registrations: RegistrationResponse[]|IRegistration[]): Promise<BibItem[]> {
+        const bibs: BibItem[] = [];
+
+        registrations.forEach(async (reg) => {
+            bibs.push(await this.convertRegistrationToBib(reg));
+        });
+
+        return bibs;
+    }
+
     /**
      * Convert the registration response into a bib item.
      */
-    public async convertRegistrationToBib(reg: RegistrationResponse): Promise<BibItem> {
+    public async convertRegistrationToBib(reg: RegistrationResponse|IRegistration): Promise<BibItem> {
         const bib = new BibItem();
-        bib.bibNumber = (reg.bib as RegistrationBibResponse).code;
+        bib.bibNumber = (reg.bib as RegistrationBibResponse|IRegistrationBib).code;
         bib.firstName = reg.firstname;
         bib.registrationId = reg.id;
 
@@ -73,8 +86,9 @@ export class Bib extends Vue {
                         if (answer.field_id === sField.id) {
                             bib.phoneUrgency = answer.value as string;
 
-                            if ((answer as RegistrationAnswerResponse).country) {
-                                bib.phoneUrgency = '+' + (answer as RegistrationAnswerResponse).country
+                            if ((answer as (RegistrationAnswerResponse|IRegistrationAnswer)).country) {
+                                bib.phoneUrgency = '+'
+                                    + (answer as RegistrationAnswerResponse|IRegistrationAnswer).country
                                     + bib.phoneUrgency;
                             }
                             break;

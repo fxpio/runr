@@ -1,0 +1,23 @@
+/*
+ * This file is part of the BibScan for Njuko package.
+ *
+ * (c) François Pluchino <francois.pluchino@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+.printer-dialog {
+  overflow: hidden;
+}
+
+.printer-card {
+  display: flex !important;
+  flex-direction: column;
+  background-color: #1c1c1c !important;
+
+  > .container {
+    max-height: 100%;
+    overflow-y: auto;
+  }
+}

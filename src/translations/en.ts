@@ -26,6 +26,7 @@ export default {
     'search': 'Search',
     'retry': 'Retry',
     'print': 'Print',
+    'stop': 'Stop',
     'scanner.scan-bib-withdrawal-card': 'Scan the bib withdrawal card',
     'scanner.permission-camera-required': 'Oops ! You must allow the app to access the camera to scan QR codes',
     'scanner.camera.front': 'Front camera',
@@ -77,6 +78,10 @@ export default {
     'views.bib-labels-print-one.title': 'Print a label',
     'views.bib-labels-print-one.description': 'Print a bib label from the bib number ' +
                                               'or by scanning the bib withdrawal card',
+    'views.bib-labels-print-mass.title': 'Print labels',
+    'views.bib-labels-print-mass.bib-number-range': 'Bib numbers or range',
+    'views.bib-labels-print-mass.bib-number-range-description': 'Numbers separated by comma and ranges by hyphens',
+    'views.bib-labels-print-mass.print-labels': '1 label | {count} labels',
     'views.bib-labels-print.title': 'Bib labels',
     'views.bib-labels-print.bib-number': 'Bib number',
     'views.bib-labels-print.bib-not-found': 'Oops! Bib not found',

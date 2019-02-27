@@ -52,6 +52,8 @@ file that was distributed with this source code.
       {heading: 'menu.bibs'},
       {icon: 'print', color: 'deep-orange', text: 'views.bib-labels-print-one.title',
         route: {name: 'bib-labels-print-one'}},
+      {icon: 'print', color: 'deep-orange', text: 'views.bib-labels-print-mass.title',
+        route: {name: 'bib-labels-print-mass'}},
       {divider: true},
       {heading: 'menu.configuration'},
       {icon: 'flag', color: 'blue-grey', text: 'views.editions.title', route: {name: 'editions'}},

@@ -64,6 +64,15 @@ export default new Router({
             toolbar: () => import(/* webpackChunkName: "bib-labels" */'@/components/Toolbar.vue'),
           },
         },
+        {
+          path: 'print-mass',
+          name: 'bib-labels-print-mass',
+          meta: {requiresAuth: true},
+          components: {
+            default: () => import(/* webpackChunkName: "bib-labels" */ '@/views/BibLabels/PrintMass.vue'),
+            toolbar: () => import(/* webpackChunkName: "bib-labels" */'@/components/Toolbar.vue'),
+          },
+        },
       ],
     },
     {
