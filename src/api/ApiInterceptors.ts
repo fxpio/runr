@@ -21,6 +21,7 @@ export default class ApiInterceptors {
      */
     public static addAuthEditionInterceptor(apiClient: Api, store: Store<EditionModuleState>): void {
         apiClient.addRequestInterceptor(async (config: AxiosRequestConfig): Promise<AxiosRequestConfig> => {
+            config.headers = config.headers || {};
             await store.dispatch('edition/init');
 
             if (!config.auth && !config.headers.Authorization && store.state.edition.current) {
