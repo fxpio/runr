@@ -67,7 +67,7 @@ export function createStore<R extends
       edition: new EditionModule<R>(router, api, db, snackbar),
       i18n: new I18nModule<R>(i18n),
       participant: new ParticipantModule<R>(router),
-      registration: new RegistrationModule<R>(router, api, db, snackbar),
+      registration: new RegistrationModule<R>(api, db, snackbar),
       scanner: new ScannerModule<R>(),
     },
   });

@@ -16,15 +16,12 @@ import {SnackbarMessage} from '@/snackbars/SnackbarMessage';
 import {Job} from '@/stores/registration/Job';
 import {RegistrationModuleState} from '@/stores/registration/RegistrationModuleState';
 import {RegistrationState} from '@/stores/registration/RegistrationState';
-import Router from 'vue-router';
 import {ActionTree, Module} from 'vuex';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
 export class RegistrationModule<R extends RegistrationModuleState> implements Module<RegistrationState, R> {
-    private readonly router: Router;
-
     private readonly api: Api;
 
     private readonly db: Database;
@@ -34,8 +31,7 @@ export class RegistrationModule<R extends RegistrationModuleState> implements Mo
     /**
      * Constructor.
      */
-    public constructor(router: Router, api: Api, db: Database, snackbar: SnackbarManager) {
-        this.router = router;
+    public constructor(api: Api, db: Database, snackbar: SnackbarManager) {
         this.api = api;
         this.db = db;
         this.snackbar = snackbar;
