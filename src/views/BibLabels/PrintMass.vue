@@ -37,6 +37,21 @@ file that was distributed with this source code.
 
             <v-card-text class="pb-0">
               <v-form ref="form" @submit.prevent>
+                <v-select
+                        :items="competitions"
+                        :loading="0 === competitions.length"
+                        v-model="selectedCompetition"
+                        item-value="id"
+                        item-text="label"
+                        :label="$t('forms.competitions.all')"
+                        return-object
+                        chips
+                        single-line
+                        clearable
+                        outline>
+                  <template slot="item" slot-scope="data">{{ data.item.label }}</template>
+                </v-select>
+
                 <v-text-field
                         type="text"
                         :readonly="building"
@@ -131,9 +146,12 @@ file that was distributed with this source code.
   import BibUtil from '@/bib/BibUtil';
   import BibLabel from '@/components/BibLabel.vue';
   import ErrorMessage from '@/components/ErrorMessage.vue';
+  import {ICompetition} from '@/db/tables/ICompetition';
+  import CompetitionItem from '@/forms/CompetitionItem';
   import {AjaxContent} from '@/mixins/AjaxContent';
   import {Bib} from '@/mixins/Bib';
   import {Printerable} from '@/mixins/Printerable';
+  import {EditionModuleState} from '@/stores/edition/EditionModuleState';
   import SyncPending from '@/views/BibLabels/components/SyncPending.vue';
   import {mixins} from 'vue-class-component';
   import {Component, Watch} from 'vue-property-decorator';
@@ -147,9 +165,15 @@ file that was distributed with this source code.
   export default class PrintMass extends mixins(AjaxContent, Bib, Printerable) {
     public bibNumbers: string|null = null;
 
+    public selectedCompetition: CompetitionItem|null = null;
+
+    public competitions: CompetitionItem[] = [];
+
     public bibs: BibItem[]|null = null;
 
     public building: boolean = false;
+
+    private stateUnwatch?: () => void;
 
     public get isPrintable(): boolean {
       return null !== this.bibs && this.bibs.length > 0;
@@ -160,6 +184,18 @@ file that was distributed with this source code.
         'bib-label-wrapper': true,
         'hidden': !this.isPrintable,
       };
+    }
+
+    public beforeMount(): void {
+      this.watchEditionCompetitions(this.$store.state.edition.currentCompetitions);
+      this.stateUnwatch = this.$store.watch((state: EditionModuleState) => state.edition.currentCompetitions,
+              this.watchEditionCompetitions);
+    }
+
+    public destroyed(): void {
+      if (this.stateUnwatch) {
+        this.stateUnwatch();
+      }
     }
 
     @Watch('bibNumbers', {immediate: true})
@@ -191,6 +227,7 @@ file that was distributed with this source code.
       const registrations = await this.$store.getters['registration/list']({
         editionId,
         ranges,
+        competitionIds: this.selectedCompetition ? [this.selectedCompetition.id] : [],
       });
       this.bibs = await this.convertRegistrationsToBibs(registrations);
       this.building = this.updateBibNumbers();
@@ -214,6 +251,24 @@ file that was distributed with this source code.
       }
 
       return false;
+    }
+
+    private watchEditionCompetitions(currentCompetitions: Record<number, ICompetition>|null): void {
+      if (currentCompetitions) {
+        this.competitions = [];
+        const selectedIds: number[] = this.$store.state.participant.cacheSearchConfig
+                ? this.$store.state.participant.cacheSearchConfig.selectedCompetitions
+                : [];
+
+        for (const item of Object.values(currentCompetitions) as ICompetition[]) {
+          const compItem = new CompetitionItem(item.id, item.name);
+          this.competitions.push(compItem);
+
+          if (selectedIds.indexOf(item.id) > -1) {
+            this.selectedCompetition = compItem;
+          }
+        }
+      }
     }
   }
 </script>

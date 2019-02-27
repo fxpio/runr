@@ -84,6 +84,10 @@ export class RegistrationModule<R extends RegistrationModuleState> implements Mo
                                 } else {
                                     valid = true;
                                 }
+
+                                if (valid && filter.competitionIds && filter.competitionIds.length > 0) {
+                                    valid = -1 !== filter.competitionIds.indexOf(registration.competition_id);
+                                }
                             }
 
                             return valid;

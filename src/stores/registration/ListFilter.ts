@@ -15,4 +15,5 @@ import BibRange from '@/bib/BibRange';
 export interface ListFilter {
     editionId: number;
     ranges?: Array<number|BibRange>;
+    competitionIds?: number[];
 }
