@@ -88,6 +88,19 @@ export class RegistrationModule<R extends RegistrationModuleState> implements Mo
                                 if (valid && filter.competitionIds && filter.competitionIds.length > 0) {
                                     valid = -1 !== filter.competitionIds.indexOf(registration.competition_id);
                                 }
+
+                                if (valid && filter.registrationStatus && filter.registrationStatus.length > 0) {
+                                    let valueFound = false;
+
+                                    for (const status of filter.registrationStatus) {
+                                        if (status === registration.isRegistered) {
+                                            valueFound = true;
+                                            break;
+                                        }
+                                    }
+
+                                    valid = valueFound;
+                                }
                             }
 
                             return valid;

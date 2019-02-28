@@ -36,6 +36,7 @@ export default {
     'menu.bibs': 'Bibs',
     'menu.configuration': 'Configuration',
     'forms.competitions.all': 'All competitions',
+    'forms.registration-status.all': 'All registration statuses',
     'views.home.title': 'Home',
     'views.login.title': 'Login',
     'views.login.full-name': 'Full name',

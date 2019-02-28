@@ -7,14 +7,16 @@
  * file that was distributed with this source code.
  */
 
-import BibRange from '@/bib/BibRange';
-
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
-export interface ListFilter {
-    editionId: number;
-    ranges?: Array<number|BibRange>;
-    competitionIds?: number[];
-    registrationStatus?: boolean[];
+export default class RegistrationStatusItem {
+    public readonly value: boolean;
+
+    public readonly label: string;
+
+    constructor(value: boolean, label: string) {
+        this.value = value;
+        this.label = label;
+    }
 }

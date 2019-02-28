@@ -52,6 +52,22 @@ file that was distributed with this source code.
                   <template slot="item" slot-scope="data">{{ data.item.label }}</template>
                 </v-select>
 
+                <v-select
+                        :items="registrationStatusItems"
+                        v-model="selectedRegistrationStatus"
+                        item-value="value"
+                        item-text="label"
+                        :label="$t('forms.registration-status.all')"
+                        :menu-props="{closeOnContentClick: true}"
+                        multiple
+                        chips
+                        deletable-chips
+                        single-line
+                        clearable
+                        outline>
+                  <template slot="item" slot-scope="data">{{ data.item.label }}</template>
+                </v-select>
+
                 <v-text-field
                         type="text"
                         :readonly="building"
@@ -149,6 +165,7 @@ file that was distributed with this source code.
   import ErrorMessage from '@/components/ErrorMessage.vue';
   import {ICompetition} from '@/db/tables/ICompetition';
   import CompetitionItem from '@/forms/CompetitionItem';
+  import RegistrationStatusItem from '@/forms/RegistrationStatusItem';
   import {AjaxContent} from '@/mixins/AjaxContent';
   import {Bib} from '@/mixins/Bib';
   import {Printerable} from '@/mixins/Printerable';
@@ -170,6 +187,8 @@ file that was distributed with this source code.
 
     public competitions: CompetitionItem[] = [];
 
+    public selectedRegistrationStatus: boolean[] = [];
+
     public bibs: BibItem[]|null = null;
 
     public building: boolean = false;
@@ -189,6 +208,13 @@ file that was distributed with this source code.
         'bib-label-wrapper': true,
         'hidden': !this.isPrintable,
       };
+    }
+
+    public get registrationStatusItems(): RegistrationStatusItem[] {
+      return [
+        new RegistrationStatusItem(true, this.$t('views.participants.choices.registered.true') as string),
+        new RegistrationStatusItem(false, this.$t('views.participants.choices.registered.false') as string),
+      ];
     }
 
     public beforeMount(): void {
@@ -249,6 +275,7 @@ file that was distributed with this source code.
         editionId,
         ranges,
         competitionIds: this.selectedCompetition ? [this.selectedCompetition.id] : [],
+        registrationStatus: this.selectedRegistrationStatus,
       });
       this.bibs = await this.convertRegistrationsToBibs(registrations);
       this.building = this.updateBibNumbers();

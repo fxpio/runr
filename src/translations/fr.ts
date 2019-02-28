@@ -37,6 +37,7 @@ export default {
     'menu.bibs': 'Dossards',
     'menu.configuration': 'Configuration',
     'forms.competitions.all': 'Toutes les competitions',
+    'forms.registration-status.all': 'Tous les statuts d\'inscription',
     'views.home.title': 'Accueil',
     'views.login.title': 'Connexion',
     'views.login.login-with-my-credentials': 'Se connecter avec mes identifiants',
