@@ -94,6 +94,7 @@ file that was distributed with this source code.
     </v-layout>
 
     <v-dialog v-model="isPrintable"
+              ref="printerDialog"
               fullscreen
               dark
               scrollable
@@ -122,7 +123,7 @@ file that was distributed with this source code.
 
         <v-container fluid fill-height>
           <v-layout row align-start justify-center>
-            <div :class="bibWrapperClasses">
+            <div :class="bibWrapperClasses" v-if="showBibLabels">
               <bib-label v-for="bib in bibs"
                          :key="bib.registrationId"
                          :distance="bib.distance"
@@ -154,7 +155,7 @@ file that was distributed with this source code.
   import {EditionModuleState} from '@/stores/edition/EditionModuleState';
   import SyncPending from '@/views/BibLabels/components/SyncPending.vue';
   import {mixins} from 'vue-class-component';
-  import {Component, Watch} from 'vue-property-decorator';
+  import {Component, Vue, Watch} from 'vue-property-decorator';
 
   /**
    * @author François Pluchino <francois.pluchino@gmail.com>
@@ -172,6 +173,10 @@ file that was distributed with this source code.
     public bibs: BibItem[]|null = null;
 
     public building: boolean = false;
+
+    public showBibLabels: boolean = false;
+
+    private dialog!: HTMLElement;
 
     private stateUnwatch?: () => void;
 
@@ -192,9 +197,25 @@ file that was distributed with this source code.
               this.watchEditionCompetitions);
     }
 
+    public mounted(): void {
+      this.dialog = (this.$refs.printerDialog as Vue).$refs.dialog as HTMLElement;
+    }
+
     public destroyed(): void {
       if (this.stateUnwatch) {
         this.stateUnwatch();
+      }
+
+      this.dialog.removeEventListener('transitionend', this.delayShowBibLabels);
+    }
+
+    @Watch('isPrintable')
+    public watchIsPrintable(opened: boolean): void {
+      if (opened) {
+        this.dialog.addEventListener('transitionend', this.delayShowBibLabels);
+      } else {
+        this.dialog.removeEventListener('transitionend', this.delayShowBibLabels);
+        this.showBibLabels = false;
       }
     }
 
@@ -237,6 +258,11 @@ file that was distributed with this source code.
       if (this.isPrintable) {
         this.printer.print([...document.querySelectorAll('.bib-label-wrapper .bib-label').values()]);
       }
+    }
+
+    public delayShowBibLabels(): void {
+      this.dialog.removeEventListener('transitionend', this.delayShowBibLabels);
+      this.showBibLabels = true;
     }
 
     private updateBibNumbers(): boolean {
