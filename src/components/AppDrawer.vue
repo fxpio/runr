@@ -8,7 +8,7 @@ file that was distributed with this source code.
 -->
 
 <template>
-  <v-navigation-drawer v-model="drawer" fixed clipped app width="250">
+  <v-navigation-drawer v-model="drawer" fixed clipped app>
     <v-list>
       <template v-for="(item, i) in items">
         <v-layout
