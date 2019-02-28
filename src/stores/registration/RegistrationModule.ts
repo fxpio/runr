@@ -101,6 +101,10 @@ export class RegistrationModule<R extends RegistrationModuleState> implements Mo
 
                                     valid = valueFound;
                                 }
+
+                                if (valid && filter.status && filter.status.length > 0) {
+                                    valid = -1 !== filter.status.indexOf(registration.status);
+                                }
                             }
 
                             return valid;

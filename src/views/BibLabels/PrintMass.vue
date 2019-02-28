@@ -68,6 +68,22 @@ file that was distributed with this source code.
                   <template slot="item" slot-scope="data">{{ data.item.label }}</template>
                 </v-select>
 
+                <v-select
+                        :items="statusItems"
+                        v-model="selectedStatus"
+                        item-value="value"
+                        item-text="label"
+                        :label="$t('forms.status.all')"
+                        :menu-props="{closeOnContentClick: true}"
+                        multiple
+                        chips
+                        deletable-chips
+                        single-line
+                        clearable
+                        outline>
+                  <template slot="item" slot-scope="data">{{ data.item.label }}</template>
+                </v-select>
+
                 <v-text-field
                         type="text"
                         :readonly="building"
@@ -166,6 +182,7 @@ file that was distributed with this source code.
   import {ICompetition} from '@/db/tables/ICompetition';
   import CompetitionItem from '@/forms/CompetitionItem';
   import RegistrationStatusItem from '@/forms/RegistrationStatusItem';
+  import StatusItem from '@/forms/StatusItem';
   import {AjaxContent} from '@/mixins/AjaxContent';
   import {Bib} from '@/mixins/Bib';
   import {Printerable} from '@/mixins/Printerable';
@@ -188,6 +205,8 @@ file that was distributed with this source code.
     public competitions: CompetitionItem[] = [];
 
     public selectedRegistrationStatus: boolean[] = [];
+
+    public selectedStatus: number[] = [];
 
     public bibs: BibItem[]|null = null;
 
@@ -214,6 +233,14 @@ file that was distributed with this source code.
       return [
         new RegistrationStatusItem(true, this.$t('views.participants.choices.registered.true') as string),
         new RegistrationStatusItem(false, this.$t('views.participants.choices.registered.false') as string),
+      ];
+    }
+
+    public get statusItems(): StatusItem[] {
+      return [
+        new StatusItem(0, this.$t('views.participants.choices.status.0') as string),
+        new StatusItem(1, this.$t('views.participants.choices.status.1') as string),
+        new StatusItem(2, this.$t('views.participants.choices.status.2') as string),
       ];
     }
 
@@ -276,6 +303,7 @@ file that was distributed with this source code.
         ranges,
         competitionIds: this.selectedCompetition ? [this.selectedCompetition.id] : [],
         registrationStatus: this.selectedRegistrationStatus,
+        status: this.selectedStatus,
       });
       this.bibs = await this.convertRegistrationsToBibs(registrations);
       this.building = this.updateBibNumbers();
