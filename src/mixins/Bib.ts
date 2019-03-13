@@ -82,13 +82,15 @@ export class Bib extends Vue {
                 if ('PhoneNumber' === sField.type) {
                     field = sField;
 
-                    for (const answer of reg.answers.reverse()) {
-                        if (answer.field_id === sField.id) {
+                    for (let answer of reg.answers.reverse()) {
+                        answer = answer as (RegistrationAnswerResponse|IRegistrationAnswer);
+
+                        if (answer.field_id === sField.id && answer.value) {
                             bib.phoneUrgency = answer.value as string;
 
-                            if ((answer as (RegistrationAnswerResponse|IRegistrationAnswer)).country) {
+                            if (answer.country && answer.country) {
                                 bib.phoneUrgency = '+'
-                                    + (answer as RegistrationAnswerResponse|IRegistrationAnswer).country
+                                    + answer.country
                                     + bib.phoneUrgency;
                             }
                             break;
