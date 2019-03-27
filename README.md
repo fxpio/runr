@@ -1,7 +1,31 @@
-Fxp BibScan for Njuko
-=====================
+<p align="center">
+  <a href="https://runr.pro" target="_blank">
+    <img width="200" height="54" src="src/assets/img/logo.svg">
+  </a>
+</p>
 
-The application BibScan for [Njuko](https://njuko.com) allow you to scan and check the bibs or print the bib labels,
+Supporting Runr
+===============
+
+Runr is an open source MIT application that was originally created to meet the needs of the organizers of the
+sporting event [Course du bord de Saône](https://courseduborddesaone.fr). The support, maintenance and
+improvements are possible due to the contributions by community backers. If you are interested in supporting
+this project, please consider:
+
+<ul>
+  <li>
+    <a href="https://paypal.me/francoispluchino">
+      Make a one-time donation with
+      <img width="100" height="25" src="src/assets/img/logo-paypal.svg">
+    </a>
+    <strong><small>(supports François)</small></strong>
+  </li>
+</ul>
+
+Introduction
+============
+
+The application Runr allow you to scan and check the bibs of [Njuko](https://njuko.com) or print the bib labels,
 one to one or in mass.
 
 **Features include:**
@@ -16,11 +40,6 @@ one to one or in mass.
 - Install this application on your device's home screen without the need for an app store
   (it's a Progressive Web Application)
 - Direct connection with the Njuko APIs, so it is not necessary to use the local server *La box Njuko*
-
-> **Note:**
->
-> This application was created to meet the needs of the organizers of the
-> [Course du bord de Saône](https://courseduborddesaone.fr).
 
 Installation
 ------------
@@ -53,7 +72,7 @@ yarn run lint
 Deployment
 ----------
 
-This [Progressive Web Application](https://bibscan.fxp.io) is deployed on the Github Pages services.
+This [Progressive Web Application](https://app.runr.pro) is deployed on the Github Pages services.
 
 ### Deploy the application in your own Github repository
 
@@ -80,10 +99,10 @@ This application is under the MIT license. See the complete license in the bundl
 About
 -----
 
-Fxp BibScan for Njuko is a [François Pluchino](https://github.com/francoispluchino) initiative.
-See also the list of [contributors](https://github.com/fxpio/fxp-bibscan-njuko/graphs/contributors).
+Runr is a [François Pluchino](https://github.com/francoispluchino) initiative.
+See also the list of [contributors](https://github.com/fxpio/runr/graphs/contributors).
 
 Reporting an issue or a feature request
 ---------------------------------------
 
-Issues and feature requests are tracked in the [Github issue tracker](https://github.com/fxpio/fxp-bibscan-njuko/issues).
+Issues and feature requests are tracked in the [Github issue tracker](https://github.com/fxpio/runr/issues).

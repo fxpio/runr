@@ -1,5 +1,5 @@
 <!--
-This file is part of the BibScan for Njuko package.
+This file is part of the Runr package.
 
 (c) François Pluchino <francois.pluchino@gmail.com>
 
@@ -10,8 +10,7 @@ file that was distributed with this source code.
 <template>
   <v-container fill-height v-if="$store.state.edition.all.length === 0">
     <v-layout column align-center justify-center>
-      <v-icon size="14em" color="blue">directions_run</v-icon>
-      <h1 class="blue--text">{{ $t('app.name') }}</h1>
+      <img :src="require('@/assets/logo.svg')" class="mb-5" style="width: 70%; max-width: 300px;">
       <h3>{{ $t('app.description') }}</h3>
       <v-btn color="accent" ripple class="mt-3" :to="{name: 'editions-add'}">{{ $t('views.editions.add-first') }}</v-btn>
     </v-layout>

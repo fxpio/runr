@@ -1,5 +1,5 @@
 /*
- * This file is part of the BibScan for Njuko package.
+ * This file is part of the Runr package.
  *
  * (c) François Pluchino <francois.pluchino@gmail.com>
  *
@@ -11,7 +11,7 @@
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
 export default {
-    'app.name': 'BibScan pour Njuko',
+    'app.name': 'Runr',
     'app.description': 'L\'application pour scanner et vérifier les dossards ou imprimer les étiquettes des dossards',
     'sw.app.updated': 'Une nouvelle version de l\'application est disponible. Relancez l\'application pour l\'utiliser',
     'next.count': 'Suivant ({count})',

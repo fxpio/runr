@@ -1,6 +1,6 @@
 {
-  "name": "BibScan for Njuko",
-  "short_name": "BibScan",
+  "name": "Runr",
+  "short_name": "Runr",
   "icons": [
     {
       "src": "./img/icons/android-chrome-192x192.png",
@@ -16,5 +16,5 @@
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#fafafa",
-  "theme_color": "#00a58c"
+  "theme_color": "#43748d"
 }

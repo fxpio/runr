@@ -1,5 +1,5 @@
 <!--
-This file is part of the BibScan for Njuko package.
+This file is part of the Runr package.
 
 (c) François Pluchino <francois.pluchino@gmail.com>
 

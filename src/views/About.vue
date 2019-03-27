@@ -1,5 +1,5 @@
 <!--
-This file is part of the BibScan for Njuko package.
+This file is part of the Runr package.
 
 (c) François Pluchino <francois.pluchino@gmail.com>
 
@@ -32,7 +32,7 @@ file that was distributed with this source code.
               </v-list-tile-content>
             </v-list-tile>
 
-            <v-list-tile target="_blank" href="https://github.com/fxpio/fxp-bibscan-njuko/issues">
+            <v-list-tile target="_blank" href="https://github.com/fxpio/runr/issues">
               <v-list-tile-avatar>
                 <v-icon color="accent">bug_report</v-icon>
               </v-list-tile-avatar>
@@ -47,7 +47,7 @@ file that was distributed with this source code.
               </v-list-tile-content>
             </v-list-tile>
 
-            <v-list-tile target="_blank" href="https://github.com/fxpio/fxp-bibscan-njuko/releases">
+            <v-list-tile target="_blank" href="https://github.com/fxpio/runr/releases">
               <v-list-tile-avatar>
                 <v-icon color="accent">track_changes</v-icon>
               </v-list-tile-avatar>
@@ -82,7 +82,7 @@ file that was distributed with this source code.
               </v-list-tile-content>
             </v-list-tile>
 
-            <v-list-tile target="_blank" href="https://github.com/fxpio/fxp-bibscan-njuko">
+            <v-list-tile target="_blank" href="https://github.com/fxpio/runr">
               <v-list-tile-avatar>
                 <v-icon color="accent">fab fa-github</v-icon>
               </v-list-tile-avatar>

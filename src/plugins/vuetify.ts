@@ -1,5 +1,5 @@
 /*
- * This file is part of the BibScan for Njuko package.
+ * This file is part of the Runr package.
  *
  * (c) François Pluchino <francois.pluchino@gmail.com>
  *
@@ -17,12 +17,12 @@ import vuetifyTranslationFr from '@/translations/vuetify/fr';
 Vue.use(Vuetify, {
   iconfont: 'md',
   theme: {
-    primary: '#00a58c',
-    secondary: '#00b2a5',
-    accent: '#1E88E5',
+    primary: '#43748d',
+    secondary: '#4d89a0',
+    accent: '#1e88e5',
     error: '#f44336',
-    warning: '#F9A825',
-    info: '#4FC3F7',
+    warning: '#f9a825',
+    info: '#4fc3f7',
     success: '#4caf50',
   },
   lang: {

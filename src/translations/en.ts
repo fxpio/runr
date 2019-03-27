@@ -1,5 +1,5 @@
 /*
- * This file is part of the BibScan for Njuko package.
+ * This file is part of the Runr package.
  *
  * (c) François Pluchino <francois.pluchino@gmail.com>
  *
@@ -11,7 +11,7 @@
  * @author François Pluchino <francois.pluchino@gmail.com>
  */
 export default {
-    'app.name': 'BibScan for Njuko',
+    'app.name': 'Runr',
     'app.description': 'The application to scan and check the bibs or print the bib labels',
     'sw.app.updated': 'A new version of the application is available. Restart the application to use it',
     'next.count': 'Next ({count})',

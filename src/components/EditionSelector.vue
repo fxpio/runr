@@ -1,5 +1,5 @@
 <!--
-This file is part of the BibScan for Njuko package.
+This file is part of the Runr package.
 
 (c) François Pluchino <francois.pluchino@gmail.com>
 
@@ -12,7 +12,9 @@ file that was distributed with this source code.
     <v-toolbar-title slot="activator">
       <v-fade-transition mode="out-in">
         <div v-if="!$store.state.edition.serverPending">
-          <span :class="titleClasses">{{ title }}</span>
+          <img v-if="!$store.state.edition.current" :src="require('@/assets/logo.svg')"
+               height="24" style="vertical-align: middle;">
+          <span v-else :class="titleClasses">{{ title }}</span>
           <v-icon :color="$store.state.darkMode.enabled ? null : color">arrow_drop_down</v-icon>
         </div>
         <v-progress-circular indeterminate
