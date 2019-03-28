@@ -19,19 +19,24 @@ file that was distributed with this source code.
       </v-scale-transition>
 
       <edition-selector color="primary"></edition-selector>
+
+      <v-spacer></v-spacer>
+
+      <online-status></online-status>
     </v-toolbar>
   </v-fade-transition>
 </template>
 
 <script lang="ts">
   import EditionSelector from '@/components/EditionSelector.vue';
+  import OnlineStatus from '@/components/OnlineStatus.vue';
   import {Component, Vue} from 'vue-property-decorator';
 
   /**
    * @author François Pluchino <francois.pluchino@gmail.com>
    */
   @Component({
-    components: {EditionSelector},
+    components: {OnlineStatus, EditionSelector},
   })
   export default class Toolbar extends Vue {
     public showPreviousButton: boolean = false;

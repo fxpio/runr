@@ -27,6 +27,7 @@ export default {
     'retry': 'Retry',
     'print': 'Print',
     'stop': 'Stop',
+    'offline': 'Offline',
     'scanner.scan-bib-withdrawal-card': 'Scan the bib withdrawal card',
     'scanner.permission-camera-required': 'Oops ! You must allow the app to access the camera to scan QR codes',
     'scanner.camera.front': 'Front camera',
