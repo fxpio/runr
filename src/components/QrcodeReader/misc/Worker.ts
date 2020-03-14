@@ -19,7 +19,7 @@ ctx.onmessage = (event: MessageEvent): void => {
     const imageData = event.data as ImageData|null;
     let content = null;
     let location = null;
-    let imageBuffer;
+    let imageBuffer: Transferable[]|null = null;
 
     try {
         if (imageData) {
@@ -41,5 +41,9 @@ ctx.onmessage = (event: MessageEvent): void => {
         imageData,
     } as WorkerScanMessage;
 
-    ctx.postMessage(message, imageBuffer);
+    if (null === imageBuffer) {
+        ctx.postMessage(message);
+    } else {
+        ctx.postMessage(message, imageBuffer);
+    }
 };

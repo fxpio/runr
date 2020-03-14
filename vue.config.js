@@ -41,7 +41,6 @@ module.exports = {
     plugins: webpackPlugin,
   },
 
-  baseUrl: undefined,
   outputDir: undefined,
   assetsDir: undefined,
   runtimeCompiler: undefined,

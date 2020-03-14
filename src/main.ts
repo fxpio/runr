@@ -7,7 +7,8 @@
  * file that was distributed with this source code.
  */
 
-import '@babel/polyfill';
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
 import '@/registerHooks';
 import ApiInterceptors from '@/api/ApiInterceptors';
 import {useVueRouterBackPlugin} from '@/plugins/vueRouterBack';

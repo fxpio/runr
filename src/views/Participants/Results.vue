@@ -208,7 +208,7 @@ file that was distributed with this source code.
     public async watchPagination(config: PaginationConfig): Promise<void> {
       if (null !== this.cacheResults && this.searchConfig.startPagination !== config.page) {
         this.$router.replace({
-          name: this.$route.name,
+          name: this.$route.name as string,
           params: this.$route.params,
           query: Object.assign({}, this.$route.query, {p: config.page}),
         });
@@ -260,7 +260,7 @@ file that was distributed with this source code.
       if (isNaN(value)) {
         value = 1;
         this.$router.replace({
-          name: this.$route.name,
+          name: this.$route.name as string,
           params: this.$route.params,
           query: Object.assign({}, this.$route.query, {p: value}),
         });
