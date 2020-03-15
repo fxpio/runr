@@ -9,40 +9,31 @@ file that was distributed with this source code.
 
 <template>
   <v-navigation-drawer v-model="drawer" fixed clipped app>
-    <v-list>
+    <v-list shaped>
       <template v-for="(item, i) in items">
-        <v-layout
-                v-if="item.heading"
-                :key="i"
-                row
-                align-center
-        >
-          <v-flex xs6>
-            <v-subheader v-if="item.heading">
-              {{ $t(item.heading) }}
-            </v-subheader>
-          </v-flex>
-        </v-layout>
+        <v-subheader v-if="item.heading" :key="i">
+          {{ $t(item.heading) }}
+        </v-subheader>
         <v-divider
                 v-else-if="item.divider"
                 :key="i"
                 dark
                 class="my-3"
         ></v-divider>
-        <v-list-tile
+        <v-list-item
                 v-else
                 :key="i"
                 :to="item.route"
         >
-          <v-list-tile-action>
+          <v-list-item-action>
             <v-icon :color="item.color">{{ item.icon }}</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>
               {{ $t(item.text) }}
-            </v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </template>
     </v-list>
   </v-navigation-drawer>

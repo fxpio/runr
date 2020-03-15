@@ -11,14 +11,13 @@ file that was distributed with this source code.
   <v-snackbar v-model="show"
               bottom
               right
-              auto-height
               :multi-line="multiLine"
               :timeout="timeout"
               :color="color">
     <span>{{ message }}</span>
 
     <v-btn v-if="showCloseButton"
-           flat
+           text
            dark
            ripple
            @click.native="show = false">

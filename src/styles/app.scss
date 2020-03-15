@@ -7,17 +7,19 @@
  * file that was distributed with this source code.
  */
 
-@import 'transitions.scss';
-@import 'typography.scss';
-@import 'buttons.scss';
-@import 'drawer.scss';
-@import 'toolbar.scss';
-@import 'tooltips.scss';
-@import 'cards.scss';
-@import 'icons.scss';
-@import 'scanner.scss';
-@import 'printer.scss';
+@import '~vuetify/src/styles/styles';
+@import 'variables';
 
-html {
-  overflow-y: scroll !important;
-}
+@import 'elements/global';
+@import 'elements/transitions';
+@import 'elements/typography';
+@import 'elements/scanner';
+@import 'elements/printer';
+@import 'elements/menu';
+
+@import 'vuetify/components/VBtn';
+@import 'vuetify/components/VNavigationDrawer';
+@import 'vuetify/components/VToolbar';
+@import 'vuetify/components/VTooltip';
+@import 'vuetify/components/VCard';
+@import 'vuetify/components/VIcon';

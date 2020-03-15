@@ -9,51 +9,54 @@ file that was distributed with this source code.
 
 <template>
   <v-dialog v-model="$store.state.scanner.opened"
+            eager
             fullscreen
             dark
             content-class="scanner-dialog"
             transition="dialog-bottom-transition"
             ref="scannerDialog"
             hide-overlay>
-    <v-card flat class="scanner-card">
+    <v-card shaped class="scanner-card fill-height">
       <v-toolbar dark flat>
         <v-btn icon dark @click.prevent="$store.commit('scanner/close')">
           <v-icon>close</v-icon>
         </v-btn>
 
         <v-fade-transition>
-          <v-menu v-if="availableCameras.length >= camerasShowSize">
-            <v-toolbar-title slot="activator">
-              <v-fade-transition mode="out-in">
-                <div v-if="!!selectedCamera">
-                  <span>{{ selectedCamera.label }}</span>
-                  <v-icon dark>arrow_drop_down</v-icon>
-                </div>
-              </v-fade-transition>
-            </v-toolbar-title>
+          <v-menu v-if="availableCameras.length >= camerasShowSize" eager>
+            <template v-slot:activator="{on}">
+              <v-toolbar-title v-on="on">
+                <v-fade-transition mode="out-in">
+                  <div v-if="!!selectedCamera">
+                    <span>{{ selectedCamera.label }}</span>
+                    <v-icon dark>arrow_drop_down</v-icon>
+                  </div>
+                </v-fade-transition>
+              </v-toolbar-title>
+            </template>
 
             <v-list>
-              <v-list-tile
+              <v-list-item
                       v-for="camera in availableCameras"
                       :key="camera.id"
                       @click="changeCamera(camera)"
               >
-                <v-list-tile-content>
-                  <v-list-tile-title v-text="camera.label"></v-list-tile-title>
-                </v-list-tile-content>
-                <v-list-tile-action>
-                  <v-scale-transition>
+                <v-list-item-content>
+                  <v-list-item-title v-text="camera.label"></v-list-item-title>
+                </v-list-item-content>
+                <v-list-item-action>
+                  <v-scale-transition origin="center center">
                     <v-icon v-if="selectedCamera && selectedCamera.id === camera.id" color="pink">star</v-icon>
                   </v-scale-transition>
-                </v-list-tile-action>
-              </v-list-tile>
+                </v-list-item-action>
+              </v-list-item>
             </v-list>
           </v-menu>
         </v-fade-transition>
       </v-toolbar>
 
       <v-container fluid fill-height class="pt-0 pb-0 pl-0 pr-0" ref="scanContainer">
-        <v-layout column align-center justify-center>
+        <v-row no-gutters class="flex-column" align="center" justify="center">
           <qrcode-reader ref="qrcodeReader"
                          :wrapperRef="$refs.scanContainer"
                          :cameraId="selectedCameraId"
@@ -61,13 +64,15 @@ file that was distributed with this source code.
                          @initialized="onInitialized"
                          @decode="onDecode">
             <v-container fluid fill-height slot="error-message">
-              <v-layout column align-center justify-center>
-                <v-icon size="14em">videocam_off</v-icon>
-                <h3>{{ $t('scanner.permission-camera-required') }}</h3>
-              </v-layout>
+              <v-row no-gutters class="flex-column" align="center" justify="center">
+                <v-col class="text-align-center">
+                  <v-icon size="14em">videocam_off</v-icon>
+                  <h3>{{ $t('scanner.permission-camera-required') }}</h3>
+                </v-col>
+              </v-row>
             </v-container>
           </qrcode-reader>
-        </v-layout>
+        </v-row>
       </v-container>
     </v-card>
   </v-dialog>

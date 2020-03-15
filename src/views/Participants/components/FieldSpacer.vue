@@ -9,7 +9,7 @@ file that was distributed with this source code.
 
 <template>
   <tr>
-    <td colspan="2" class="pt-0 pb-0"></td>
+    <td colspan="2" class="pa-5"></td>
   </tr>
 </template>
 

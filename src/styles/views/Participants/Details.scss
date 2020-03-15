@@ -9,11 +9,17 @@
 
 .participant-detail {
   &.v-table {
+    width: 100%;
+
     td {
       word-break: break-word;
       padding-left: 10px !important;
       padding-right: 10px !important;
       font-size: inherit;
+    }
+
+    .v-icon {
+      vertical-align: baseline;
     }
   }
 }

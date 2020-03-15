@@ -9,14 +9,14 @@ file that was distributed with this source code.
 
 <template>
   <v-dialog v-model="value"
-            lazy
+            eager
             fullscreen
             dark
             transition="dialog-bottom-transition"
             ref="printDialog"
             hide-overlay>
 
-    <v-card flat>
+    <v-card shaped flat>
       <v-toolbar dark flat>
         <v-btn icon dark @click.prevent="$emit('input', false)">
           <v-icon>close</v-icon>
@@ -28,10 +28,12 @@ file that was distributed with this source code.
 
         <v-spacer></v-spacer>
 
-        <v-tooltip left>
-          <v-btn slot="activator" icon ripple @click.prevent="print">
-            <v-icon>print</v-icon>
-          </v-btn>
+        <v-tooltip left eager>
+          <template v-slot:activator="{on}">
+            <v-btn v-on="on" icon ripple @click.prevent="print">
+              <v-icon>print</v-icon>
+            </v-btn>
+          </template>
           <span>{{ $t('print') }}</span>
         </v-tooltip>
       </v-toolbar>

@@ -40,9 +40,9 @@ export class Bib extends Vue {
     public async convertRegistrationsToBibs(registrations: RegistrationResponse[]|IRegistration[]): Promise<BibItem[]> {
         const bibs: BibItem[] = [];
 
-        registrations.forEach(async (reg) => {
+        for (const reg of registrations) {
             bibs.push(await this.convertRegistrationToBib(reg));
-        });
+        }
 
         return bibs;
     }

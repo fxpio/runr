@@ -10,7 +10,7 @@ file that was distributed with this source code.
 <template>
   <transition name="fade" mode="out-in">
     <error-message :message="previousError.message" v-if="!loading && !!previousError">
-      <v-btn class="mt-3" @click.prevent="requestContent">{{ $t('retry') }}</v-btn>
+      <v-btn outlined color="accent" class="mt-3" @click.prevent="requestContent">{{ $t('retry') }}</v-btn>
     </error-message>
 
     <v-card flat v-else-if="!loading">
@@ -23,51 +23,57 @@ file that was distributed with this source code.
       <v-data-table
               :headers="headers"
               :items="cacheResults ? cacheResults.results : []"
-              :total-items="cacheResults ? cacheResults.total : 0"
-              :pagination.sync="pagination"
+              :server-items-length="cacheResults ? cacheResults.total : 0"
+              :options.sync="tableOptions"
               :no-data-text="$t('views.participants.search-not-found')"
-              :rows-per-page-items="[$store.state.participant.pageSize]"
+              :footer-props.sync="tableFooterProps"
               item-key="id"
               class="d-block">
-        <template slot="items" slot-scope="props">
-          <td class="participant-item pt-2 pb-2" @click="itemSelection(props.index)">
-            <div>
-              <span class="primary--text">
-                {{ $store.getters['edition/getCompetitionName'](props.item.competition_id) }}
-              </span>
-            </div>
-            <div class="subheading">
-              <span>{{ props.item.firstname }}</span>
-              &nbsp;
-              <strong class="text-uppercase">{{ props.item.lastname }}</strong>
-            </div>
-            <div>
-              <span>{{ $t('views.participants.bib-label') }}</span>
-              &nbsp;
-              <span v-if="props.item.bib && props.item.bib.code">{{ props.item.bib.code }}</span>
-              <span v-else class="warning--text">{{ $t('views.participants.no-bib') }}</span>
-            </div>
-            <div>
-              <v-chip small :color="props.item.isRegistered ? 'teal' : 'red'" text-color="white">
-                {{ $t('views.participants.choices.registered.' + props.item.isRegistered) }}
-              </v-chip>
+        <template v-slot:item="{index, item}">
+          <tr>
+            <td class="participant-item pt-2 pb-2" @click="itemSelection(index)">
+              <div>
+                <span class="primary--text">
+                  {{ $store.getters['edition/getCompetitionName'](item.competition_id) }}
+                </span>
+              </div>
+              <div class="subtitle-1">
+                <span>{{ item.firstname }}</span>
+                &nbsp;
+                <strong class="text-uppercase">{{ item.lastname }}</strong>
+              </div>
+              <div>
+                <span>{{ $t('views.participants.bib-label') }}</span>
+                &nbsp;
+                <span v-if="item.bib && item.bib.code">{{ item.bib.code }}</span>
+                <span v-else class="warning--text">{{ $t('views.participants.no-bib') }}</span>
+              </div>
+              <div>
+                <v-chip small :color="item.isRegistered ? 'teal' : 'red'" text-color="white" class="ma-1">
+                  {{ $t('views.participants.choices.registered.' + item.isRegistered) }}
+                </v-chip>
 
-              <v-chip small :color="0 === props.item.status ? 'teal' : 'red'" text-color="white">
-                {{ $t('views.participants.choices.status.' + props.item.status) }}
-              </v-chip>
-            </div>
-          </td>
-          <td class="participant-item" @click="itemSelection(props.index)">
-            <v-tooltip left v-if="props.item.bib && props.item.bib.code && props.item.bibRetrieved">
-              <v-icon color="green" slot="activator">directions_run</v-icon>
-              <span>{{ $t('views.participants.bib-retrieved') }}</span>
-            </v-tooltip>
+                <v-chip small :color="0 === item.status ? 'teal' : 'red'" text-color="white" class="ma-1">
+                  {{ $t('views.participants.choices.status.' + item.status) }}
+                </v-chip>
+              </div>
+            </td>
+            <td class="participant-item" @click="itemSelection(item.index)">
+              <v-tooltip left v-if="item.bib && item.bib.code && item.bibRetrieved" eager>
+                <template v-slot:activator="{on}">
+                  <v-icon color="green" v-on="on">directions_run</v-icon>
+                </template>
+                <span>{{ $t('views.participants.bib-retrieved') }}</span>
+              </v-tooltip>
 
-            <v-tooltip left v-else-if="props.item.bib && props.item.bib.code">
-              <v-icon color="grey" slot="activator">inbox</v-icon>
-              <span>{{ $t('views.participants.bib-not-retrieved') }}</span>
-            </v-tooltip>
-          </td>
+              <v-tooltip left v-else-if="item.bib && item.bib.code" eager>
+                <template v-slot:activator="{on}">
+                  <v-icon color="grey" v-on="on">inbox</v-icon>
+                </template>
+                <span>{{ $t('views.participants.bib-not-retrieved') }}</span>
+              </v-tooltip>
+            </td>
+          </tr>
         </template>
       </v-data-table>
 
@@ -95,11 +101,11 @@ file that was distributed with this source code.
   import {EditionModuleState} from '@/stores/edition/EditionModuleState';
   import {CacheResults} from '@/stores/participant/CacheResults';
   import '@/styles/views/Participants/Results.scss';
-  import PaginationConfig from '@/vuetify/datatable/PaginationConfig';
   import {mixins} from 'vue-class-component';
   import {MetaInfo} from 'vue-meta';
   import {Component, Vue, Watch} from 'vue-property-decorator';
   import {Route} from 'vue-router';
+  import {DataOptions} from 'vuetify';
 
   /**
    * @author François Pluchino <francois.pluchino@gmail.com>
@@ -110,18 +116,29 @@ file that was distributed with this source code.
   export default class Results extends mixins(AjaxContent) {
     public headers: object[] = [];
 
-    public pagination: PaginationConfig = {
-      page: this.getSearchStartPage(),
-      descending: false,
-      rowsPerPage: this.$store.state.participant.pageSize,
-      sortBy: null,
-      totalItems: 0,
+    public tableOptions: DataOptions = {
+        page: this.getSearchStartPage(),
+        itemsPerPage: this.$store.state.participant.pageSize,
+        sortBy: [],
+        sortDesc: [],
+        groupBy: [],
+        groupDesc: [],
+        multiSort: false,
+        mustSort: false,
+    };
+
+    public tableFooterProps: any  = {
+        'items-per-page-options': [],
+        'items-per-page-text': null,
+        'disable-items-per-page': true,
+        'show-current-page': true,
+        'show-first-last-page': true,
     };
 
     public searchConfig: SearchConfig = new SearchConfig(
             this.getSearchValue(),
             this.getSearchCompetitionIds(),
-            this.pagination.page,
+            this.tableOptions.page,
     );
 
     public cacheResults: CacheResults|null = null;
@@ -147,7 +164,7 @@ file that was distributed with this source code.
     public async beforeRouteUpdate(to: Route, from: Route, next: () => void): Promise<void> {
       const toPage = Number(decodeURIComponent(String((to.query as any).p)));
 
-      if (undefined !== (from.query as any).p && !isNaN(toPage)) {
+      if (!isNaN(toPage)) {
         this.searchConfig = new SearchConfig(
                 this.getSearchValue(),
                 this.getSearchCompetitionIds(),
@@ -204,13 +221,13 @@ file that was distributed with this source code.
       }
     }
 
-    @Watch('pagination')
-    public async watchPagination(config: PaginationConfig): Promise<void> {
-      if (null !== this.cacheResults && this.searchConfig.startPagination !== config.page) {
-        this.$router.replace({
+    @Watch('tableOptions')
+    public async watchTableOptions(opts: DataOptions): Promise<void> {
+      if (null !== this.cacheResults && this.searchConfig.startPagination !== opts.page) {
+        await this.$router.replace({
           name: this.$route.name as string,
           params: this.$route.params,
-          query: Object.assign({}, this.$route.query, {p: config.page}),
+          query: Object.assign({}, this.$route.query, {p: opts.page}),
         });
       }
     }
@@ -259,11 +276,6 @@ file that was distributed with this source code.
 
       if (isNaN(value)) {
         value = 1;
-        this.$router.replace({
-          name: this.$route.name as string,
-          params: this.$route.params,
-          query: Object.assign({}, this.$route.query, {p: value}),
-        });
       }
 
       return value;
@@ -306,7 +318,7 @@ file that was distributed with this source code.
 
       this.$store.commit('participant/setResults', cacheResults);
       this.cacheResults = cacheResults;
-      this.pagination.page = this.searchConfig.startPagination;
+      this.tableOptions.page = this.searchConfig.startPagination;
 
       if (1 === this.cacheResults.total) {
         this.itemSelection(0, true);

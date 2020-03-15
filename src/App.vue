@@ -8,7 +8,7 @@ file that was distributed with this source code.
 -->
 
 <template>
-  <v-app v-if="$store.state.edition.initialized" :dark="$store.state.darkMode.enabled">
+  <v-app v-if="$store.state.edition.initialized">
     <scanner></scanner>
     <snackbar></snackbar>
 
@@ -32,7 +32,7 @@ file that was distributed with this source code.
   import Snackbar from '@/components/Snackbar.vue';
   import Vue from 'vue';
   import {MetaInfo} from 'vue-meta';
-  import {Component} from 'vue-property-decorator';
+  import {Component, Watch} from 'vue-property-decorator';
 
   /**
    * @author François Pluchino <francois.pluchino@gmail.com>
@@ -69,7 +69,17 @@ file that was distributed with this source code.
       };
     }
 
+    public get darkModeEnabled(): boolean {
+      return this.$store.state.darkMode.enabled;
+    }
+
+    @Watch('darkModeEnabled')
+    public watchDarkMode(enabled: boolean): void {
+      this.$vuetify.theme.dark = enabled;
+    }
+
     public created(): void {
+      this.watchDarkMode(this.darkModeEnabled);
       this.$router.beforeEach((to, from, next) => {
         let transitionName = to.meta.transitionName || from.meta.transitionName;
 

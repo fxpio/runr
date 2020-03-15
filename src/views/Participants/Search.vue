@@ -36,7 +36,7 @@ file that was distributed with this source code.
                 v-validate=""
                 :error-messages="errors.collect('searchValue')"
                 @keydown.enter="search()"
-                outline
+                outlined
                 clearable
                 required>
         </v-text-field>
@@ -52,7 +52,7 @@ file that was distributed with this source code.
                 chips
                 single-line
                 clearable
-                outline>
+                outlined>
           <template slot="item" slot-scope="data">{{ data.item.label }}</template>
         </v-select>
       </v-form>
@@ -122,14 +122,14 @@ file that was distributed with this source code.
 
       if (registrationId && !isNaN(Number(registrationId))) {
         this.$store.commit('participant/setSearchConfig', null);
-        this.$router.push({name: 'participants-details', params: {id: registrationId}});
+        await this.$router.push({name: 'participants-details', params: {id: registrationId}});
       } else {
         const competitionIds = this.selectedCompetition ? [this.selectedCompetition.id] : [];
         const searchValue = '' === this.searchValue ? encodeURIComponent('*') : this.searchValue;
         const searchConfig = new SearchConfig(searchValue, competitionIds);
 
         this.$store.commit('participant/setSearchConfig', searchConfig);
-        this.$router.push({name: 'participants-results', query: {
+        await this.$router.push({name: 'participants-results', query: {
           s: encodeURIComponent(searchConfig.searchValue),
           cids: encodeURIComponent(searchConfig.selectedCompetitions.join(',')),
         }});

@@ -32,7 +32,7 @@ export class AnswerConverter {
 
     public static convert(field: IField,
                           answer: RegistrationAnswerResponse|RegistrationAnswerChoiceResponse): Answer {
-        let value: string|string[]|null = null;
+        let value: string|string[]|null;
 
         switch (field.type) {
             case 'PhoneNumber':

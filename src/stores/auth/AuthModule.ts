@@ -127,9 +127,9 @@ export class AuthModule<R extends AuthModuleState & EditionModuleState> implemen
                     }
 
                     if (typeof redirect === 'string') {
-                        self.router.replace(redirect);
-                    } else if (false !== redirect) {
-                        self.router.replace({name: 'home'});
+                        await self.router.replace(redirect);
+                    } else if (redirect) {
+                        await self.router.replace({name: 'home'});
                     }
 
                     commit('loginSuccessEnd');
@@ -153,7 +153,7 @@ export class AuthModule<R extends AuthModuleState & EditionModuleState> implemen
                     redirect = {name: 'home'};
                 }
 
-                self.router.replace(redirect);
+                await self.router.replace(redirect);
             },
 
             async cancel(): Promise<void> {

@@ -8,56 +8,56 @@ file that was distributed with this source code.
 -->
 
 <template>
-  <v-container fill-height>
-    <v-layout justify-space-between row fill-height wrap>
-      <v-flex xs12 sm10 offset-sm1 md8 offset-md2 xl6 offset-xl3>
+  <v-container>
+    <v-row no-gutters justify="center">
+      <v-col cols="12" sm="10" md="8" xl="6">
         <v-subheader class="mt-4 primary--text">
           {{ $t('views.about.title') }}
         </v-subheader>
 
         <v-card flat>
           <v-list two-line>
-            <v-list-tile>
-              <v-list-tile-avatar>
+            <v-list-item>
+              <v-list-item-avatar>
                 <v-icon color="accent">history</v-icon>
-              </v-list-tile-avatar>
+              </v-list-item-avatar>
 
-              <v-list-tile-content>
-                <v-list-tile-title>
+              <v-list-item-content>
+                <v-list-item-title>
                   {{ $t('views.about.fields.version') }}
-                </v-list-tile-title>
-                <v-list-tile-sub-title>
+                </v-list-item-title>
+                <v-list-item-subtitle>
                   {{ version }}
-                </v-list-tile-sub-title>
-              </v-list-tile-content>
-            </v-list-tile>
+                </v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
 
-            <v-list-tile target="_blank" href="https://github.com/fxpio/runr/issues">
-              <v-list-tile-avatar>
+            <v-list-item target="_blank" href="https://github.com/fxpio/runr/issues">
+              <v-list-item-avatar>
                 <v-icon color="accent">bug_report</v-icon>
-              </v-list-tile-avatar>
+              </v-list-item-avatar>
 
-              <v-list-tile-content>
-                <v-list-tile-title>
+              <v-list-item-content>
+                <v-list-item-title>
                   {{ $t('views.about.fields.bug-report') }}
-                </v-list-tile-title>
-                <v-list-tile-sub-title>
+                </v-list-item-title>
+                <v-list-item-subtitle>
                   {{ $t('views.about.fields.bug-report-description') }}
-                </v-list-tile-sub-title>
-              </v-list-tile-content>
-            </v-list-tile>
+                </v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
 
-            <v-list-tile target="_blank" href="https://github.com/fxpio/runr/releases">
-              <v-list-tile-avatar>
+            <v-list-item target="_blank" href="https://github.com/fxpio/runr/releases">
+              <v-list-item-avatar>
                 <v-icon color="accent">track_changes</v-icon>
-              </v-list-tile-avatar>
+              </v-list-item-avatar>
 
-              <v-list-tile-content>
-                <v-list-tile-title>
+              <v-list-item-content>
+                <v-list-item-title>
                   {{ $t('views.about.fields.changelog') }}
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
           </v-list>
         </v-card>
 
@@ -67,51 +67,51 @@ file that was distributed with this source code.
 
         <v-card flat>
           <v-list two-line>
-            <v-list-tile target="_blank" :href="authorGithubUrl">
-              <v-list-tile-avatar>
+            <v-list-item target="_blank" :href="authorGithubUrl">
+              <v-list-item-avatar>
                 <v-icon color="accent">person</v-icon>
-              </v-list-tile-avatar>
+              </v-list-item-avatar>
 
-              <v-list-tile-content>
-                <v-list-tile-title>
+              <v-list-item-content>
+                <v-list-item-title>
                   {{ authorFullName }}
-                </v-list-tile-title>
-                <v-list-tile-sub-title>
+                </v-list-item-title>
+                <v-list-item-subtitle>
                   {{ authorGithubName }}
-                </v-list-tile-sub-title>
-              </v-list-tile-content>
-            </v-list-tile>
+                </v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
 
-            <v-list-tile target="_blank" href="https://github.com/fxpio/runr">
-              <v-list-tile-avatar>
+            <v-list-item target="_blank" href="https://github.com/fxpio/runr">
+              <v-list-item-avatar>
                 <v-icon color="accent">fab fa-github</v-icon>
-              </v-list-tile-avatar>
+              </v-list-item-avatar>
 
-              <v-list-tile-content>
-                <v-list-tile-title>
+              <v-list-item-content>
+                <v-list-item-title>
                   {{ $t('views.about.fields.fork-on-github') }}
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
 
-            <v-list-tile :href="'mailto:' + authorEmail">
-              <v-list-tile-avatar>
+            <v-list-item :href="'mailto:' + authorEmail">
+              <v-list-item-avatar>
                 <v-icon color="accent">email</v-icon>
-              </v-list-tile-avatar>
+              </v-list-item-avatar>
 
-              <v-list-tile-content>
-                <v-list-tile-title>
+              <v-list-item-content>
+                <v-list-item-title>
                   {{ $t('views.about.fields.send-an-email') }}
-                </v-list-tile-title>
-                <v-list-tile-sub-title>
+                </v-list-item-title>
+                <v-list-item-subtitle>
                   {{ authorEmail }}
-                </v-list-tile-sub-title>
-              </v-list-tile-content>
-            </v-list-tile>
+                </v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
           </v-list>
         </v-card>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

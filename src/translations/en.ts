@@ -78,10 +78,10 @@ export default {
     'views.about.sections.author': 'Author',
     'views.about.fields.fork-on-github': 'Fork on Github',
     'views.about.fields.send-an-email': 'Send an email',
-    'views.bib-labels-print-one.title': 'Print a label',
+    'views.bib-labels-print-one.title': 'Unique label',
     'views.bib-labels-print-one.description': 'Print a bib label from the bib number ' +
                                               'or by scanning the bib withdrawal card',
-    'views.bib-labels-print-mass.title': 'Print labels',
+    'views.bib-labels-print-mass.title': 'Mass labels',
     'views.bib-labels-print-mass.bib-number-range': 'Bib numbers or range',
     'views.bib-labels-print-mass.bib-number-range-description': 'Numbers separated by comma and ranges by hyphens',
     'views.bib-labels-print-mass.print-labels': '1 label | {count} labels',

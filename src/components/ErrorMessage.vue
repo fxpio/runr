@@ -8,11 +8,13 @@ file that was distributed with this source code.
 -->
 
 <template>
-  <v-layout column align-center justify-center>
-    <v-icon :size="iconSize" :color="iconColor">{{ icon }}</v-icon>
-    <h2 :class="$store.state.darkMode.enabled ? null : 'grey--text'">{{ message }}</h2>
-    <slot></slot>
-  </v-layout>
+  <v-row align="center" justify="center">
+    <v-col class="text-align-center">
+      <v-icon :size="iconSize" :color="iconColor">{{ icon }}</v-icon>
+      <h2 :class="$store.state.darkMode.enabled ? null : 'grey--text'">{{ message }}</h2>
+      <slot></slot>
+    </v-col>
+  </v-row>
 </template>
 
 <script lang="ts">

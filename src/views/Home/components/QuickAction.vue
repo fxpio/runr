@@ -15,23 +15,27 @@ file that was distributed with this source code.
           class="white--text text-align-left"
           height="100%"
           :to="to">
-    <v-card-title>
-      <v-layout row wrap>
-        <v-flex xs12>
+    <v-container>
+      <v-row no-gutters>
+        <v-col>
           <v-icon size="64" center :color="color + ' lighten-3'">
             {{ icon }}
           </v-icon>
-        </v-flex>
+        </v-col>
+      </v-row>
 
-        <v-flex xs12>
-          <div class="headline mt-2 mb-4">
-            {{ label }}
-          </div>
-        </v-flex>
-      </v-layout>
+      <v-row no-gutters>
+        <v-col class="headline mt-2 mb-4">
+          {{ label }}
+        </v-col>
+      </v-row>
 
-      <slot></slot>
-    </v-card-title>
+      <v-row no-gutters>
+        <v-col>
+          <slot></slot>
+        </v-col>
+      </v-row>
+    </v-container>
   </v-card>
 </template>
 

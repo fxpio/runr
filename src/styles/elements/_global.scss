@@ -7,12 +7,6 @@
  * file that was distributed with this source code.
  */
 
-@import '~vuetify/src/stylus/theme.styl';
-
-$material-light = merge($material-light, {
-  app-bar: #fafafa,
-});
-
-$material-dark = merge($material-dark, {
-  app-bar: #303030,
-});
+html {
+  overflow-y: scroll !important;
+}

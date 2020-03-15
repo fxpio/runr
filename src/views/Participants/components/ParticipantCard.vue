@@ -23,29 +23,36 @@ file that was distributed with this source code.
       <!-- Chips of registration -->
       <tr>
         <td colspan="2">
-          <v-tooltip bottom>
-            <v-chip slot="activator" color="indigo" text-color="white">
-              <v-icon dark left>directions</v-icon>
-              {{ $store.getters['edition/getCompetitionName'](registration.competition_id) }}
-            </v-chip>
+          <v-tooltip bottom eager>
+
+            <template v-slot:activator="{on}">
+              <v-chip v-on="on" color="indigo" text-color="white" class="ma-1">
+                <v-icon dark left>directions</v-icon>
+                {{ $store.getters['edition/getCompetitionName'](registration.competition_id) }}
+              </v-chip>
+            </template>
             <span>{{ $t('views.participants.fields.competition') }}</span>
           </v-tooltip>
 
-          <v-tooltip bottom>
-            <v-chip slot="activator" color="indigo" text-color="white">
-              <v-icon dark small left class="ml-1">fas fa-birthday-cake</v-icon>
-              {{ $fd(registration.birthdate) }}
-            </v-chip>
+          <v-tooltip bottom eager>
+            <template v-slot:activator="{on}">
+              <v-chip v-on="on" color="indigo" text-color="white" class="ma-1">
+                <v-icon dark small left class="ml-1">fas fa-birthday-cake</v-icon>
+                {{ $fd(registration.birthdate) }}
+              </v-chip>
+            </template>
             <span>{{ $t('views.participants.fields.birthday') }}</span>
           </v-tooltip>
 
-          <v-tooltip bottom>
-            <v-chip slot="activator" :color="'male' === registration.gender ? 'light-blue' : 'pink lighten-2'"
-                    text-color="white">
-              <v-icon dark>
-                fas fa-{{ 'male' === registration.gender ? 'mars' : 'venus' }}
-              </v-icon>
-            </v-chip>
+          <v-tooltip bottom eager>
+            <template v-slot:activator="{on}">
+              <v-chip v-on="on" :color="'male' === registration.gender ? 'light-blue' : 'pink lighten-2'"
+                      text-color="white" class="ma-1">
+                <v-icon dark>
+                  fas fa-{{ 'male' === registration.gender ? 'mars' : 'venus' }}
+                </v-icon>
+              </v-chip>
+            </template>
             <span>{{ $t('views.participants.choices.gender.' + registration.gender) }}</span>
           </v-tooltip>
         </td>
@@ -53,20 +60,20 @@ file that was distributed with this source code.
 
       <tr>
         <td colspan="2">
-          <v-chip small :color="registration.isRegistered ? 'teal' : 'red'" text-color="white">
+          <v-chip small :color="registration.isRegistered ? 'teal' : 'red'" text-color="white" class="ma-1">
             {{ $t('views.participants.choices.registered.' + registration.isRegistered) }}
           </v-chip>
 
-          <v-chip small :color="0 === registration.status ? 'teal' : 'red'" text-color="white">
+          <v-chip small :color="0 === registration.status ? 'teal' : 'red'" text-color="white" class="ma-1">
             {{ $t('views.participants.choices.status.' + registration.status) }}
           </v-chip>
 
-          <v-chip small :color="0 === registration.paymentStatus ? 'teal' : 'red'" text-color="white">
+          <v-chip small :color="0 === registration.paymentStatus ? 'teal' : 'red'" text-color="white" class="ma-1">
             {{ $t('views.participants.choices.payment-status.' + registration.paymentStatus) }}
           </v-chip>
 
           <v-chip small :color="[0, '0'].indexOf(registration.permissionSlipStatus) > -1 ? 'teal' : 'warning'"
-                  text-color="white">
+                  text-color="white" class="ma-1">
             {{ $t('views.participants.choices.permission-slip-status.' + registration.permissionSlipStatus) }}
           </v-chip>
         </td>
@@ -76,23 +83,27 @@ file that was distributed with this source code.
       <field-spacer></field-spacer>
 
       <tr>
-        <td colspan="2" class="text-xs-center pt-3 pb-3" v-if="registration.bib && registration.bib.code">
+        <td colspan="2" class="text-center pt-3 pb-3" v-if="registration.bib && registration.bib.code">
           <span class="font-weight-bold accent--text display-2">
             {{ $t('views.participants.fields.short-number') }}&nbsp;{{ registration.bib.code }}
           </span>
           &nbsp;
           <v-fade-transition mode="out-in">
-            <v-tooltip key="bib-retrieved" left v-if="registration.bibRetrieved">
-              <v-icon large color="green" slot="activator">directions_run</v-icon>
+            <v-tooltip key="bib-retrieved" left v-if="registration.bibRetrieved" eager>
+              <template v-slot:activator="{on}">
+                <v-icon large color="green" v-on="on">directions_run</v-icon>
+              </template>
               <span>{{ $t('views.participants.bib-retrieved') }}</span>
             </v-tooltip>
-            <v-tooltip key="bib-collect" left v-else>
-              <v-icon large color="warning" slot="activator">inbox</v-icon>
+            <v-tooltip key="bib-collect" left eager v-else>
+              <template v-slot:activator="{on}">
+                <v-icon large color="warning" v-on="on">inbox</v-icon>
+              </template>
               <span>{{ $t('views.participants.bib-not-retrieved') }}</span>
             </v-tooltip>
           </v-fade-transition>
         </td>
-        <td colspan="2" class="text-xs-center pt-3 pb-3" v-else>
+        <td colspan="2" class="text-center pt-3 pb-3" v-else>
           <span class="font-weight-bold warning--text display-2 text-uppercase">
             {{ $t('views.participants.not-has-bib') }}
           </span>
@@ -100,20 +111,20 @@ file that was distributed with this source code.
       </tr>
 
       <tr>
-        <td colspan="2" class="text-align-center">
-          <v-scale-transition mode="out-in">
-            <v-btn round ripple depressed dark color="light-green" :loading="loading"
+        <td colspan="2" class="text-center">
+          <v-scale-transition origin="center center" mode="out-in">
+            <v-btn rounded ripple depressed dark color="light-green" :loading="loading"
                    @click.prevent="assignBib"
                    v-if="!registration.bib || !registration.bib.code">
               {{ $t('views.participants.assign-bib') }}
             </v-btn>
 
-            <v-btn key="btn-retrieve-bib" round ripple depressed dark color="light-green" :loading="loading"
+            <v-btn key="btn-retrieve-bib" rounded ripple depressed dark color="light-green" :loading="loading"
                    @click.prevent="updateBibRetrieved(true)"
                    v-else-if="!registration.bibRetrieved">
               {{ $t('views.participants.give-bib') }}
             </v-btn>
-            <v-btn key="btn-collect-bib" round ripple depressed dark color="blue-grey" :loading="loading"
+            <v-btn key="btn-collect-bib" rounded ripple depressed dark color="blue-grey" :loading="loading"
                    @click.prevent="updateBibRetrieved(false)"
                    v-else>
               {{ $t('views.participants.collect-bib') }}
@@ -123,20 +134,21 @@ file that was distributed with this source code.
       </tr>
 
       <tr>
-        <td colspan="2" class="text-align-center">
-          <div class="btn-wrapper">
-          <v-scale-transition>
+        <td colspan="2" class="text-center pa-2">
+          <v-scale-transition origin="center center">
             <v-tooltip left
+                       eager
                        v-if="registration.bib && registration.bib.code && !registration.bibRetrieved">
-              <v-btn slot="activator" fab small ripple depressed dark color="light-green"
-                     :loading="loading"
-                     @click.prevent="openPrintBibLabel = true">
-                <v-icon>print</v-icon>
-              </v-btn>
+              <template v-slot:activator="{on}">
+                <v-btn v-on="on" fab small ripple depressed dark color="light-green"
+                       :loading="loading"
+                       @click.prevent="openPrintBibLabel = true">
+                  <v-icon>print</v-icon>
+                </v-btn>
+              </template>
               <span>{{ $t('views.bib-labels-print-one.title') }}</span>
             </v-tooltip>
           </v-scale-transition>
-          </div>
         </td>
       </tr>
 
@@ -310,7 +322,7 @@ file that was distributed with this source code.
       </v-slide-y-transition>
     </table>
 
-    <v-dialog v-model="showAssignForm" persistent max-width="500px">
+    <v-dialog v-model="showAssignForm" eager persistent max-width="500px">
       <v-card>
         <v-card-title>
           <span class="headline">{{ $t('views.participants.assign-bib') }}</span>
@@ -327,7 +339,7 @@ file that was distributed with this source code.
                   :error-messages="errors.collect('assignBibNumber')"
                   :disabled="loading"
                   @keydown.enter="doAssignBib"
-                  outline
+                  outlined
                   clearable
                   required>
           </v-text-field>
@@ -335,7 +347,7 @@ file that was distributed with this source code.
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn flat @click="showAssignForm = false" :disabled="loading">
+          <v-btn text @click="showAssignForm = false" :disabled="loading">
             {{ $t('cancel') }}
           </v-btn>
           <v-btn color="accent" depressed :loading="loading" @click="doAssignBib">

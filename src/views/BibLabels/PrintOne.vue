@@ -8,84 +8,84 @@ file that was distributed with this source code.
 -->
 
 <template>
-  <v-container fill-height>
-    <v-layout justify-center row>
-      <transition name="fade" mode="out-in" @after-enter="onAfterEnter">
-        <v-flex sm10 md8 lg6 xl4 v-if="!loading">
-          <v-card flat>
-            <v-card-title primary-title>
-              <div class="headline primary--text">
-                {{ $t('views.bib-labels-print-one.title') }}
-              </div>
-            </v-card-title>
+  <div class="fill-height">
+    <transition name="fade" mode="out-in" @after-enter="onAfterEnter">
+      <v-container v-if="!loading">
+        <v-row no-gutters justify="center">
+          <v-col sm="10" md="8" lg="6" xl="4">
+            <v-card flat>
+              <v-card-title primary-title>
+                <div class="headline primary--text">
+                  {{ $t('views.bib-labels-print-one.title') }}
+                </div>
+              </v-card-title>
 
-            <v-card-text class="pb-0">
-              <v-form ref="form" @submit.prevent>
-                <v-text-field
-                        type="number"
-                        :label="$i18n.t('views.bib-labels-print.bib-number')"
-                        v-model="searchBibNumber"
-                        data-vv-name="searchBibNumber"
-                        :data-vv-as="$i18n.t('views.bib-labels-print.bib-number')"
-                        v-validate="'required'"
-                        :error-messages="errors.collect('searchBibNumber')"
-                        @keydown.enter.prevent="search"
-                        outline
-                        clearable
-                        required>
-                </v-text-field>
+              <v-card-text class="pb-0">
+                <v-form ref="form" @submit.prevent>
+                  <v-text-field
+                          type="number"
+                          :label="$i18n.t('views.bib-labels-print.bib-number')"
+                          v-model="searchBibNumber"
+                          data-vv-name="searchBibNumber"
+                          :data-vv-as="$i18n.t('views.bib-labels-print.bib-number')"
+                          v-validate="'required'"
+                          :error-messages="errors.collect('searchBibNumber')"
+                          @keydown.enter.prevent="search"
+                          outlined
+                          clearable
+                          required>
+                  </v-text-field>
 
-                <v-switch v-model="startPrintingImmediately"
-                          :label="$t('views.settings.start-printing-immediately')">
-                </v-switch>
-              </v-form>
-            </v-card-text>
+                  <v-switch v-model="startPrintingImmediately"
+                            :label="$t('views.settings.start-printing-immediately')">
+                  </v-switch>
+                </v-form>
+              </v-card-text>
 
-            <v-card-actions>
-              <v-list-tile class="grow">
-                <v-layout align-center justify-center>
-                  <v-tooltip top class="v-btn v-btn--block" v-if="!!$store.state.scanner.enabled">
-                    <v-btn slot="activator" depressed ripple dark color="blue-grey"
+              <v-card-actions>
+                <v-tooltip top class="v-btn v-btn--block" v-if="!!$store.state.scanner.enabled" eager>
+                  <template v-slot:activator="{on}">
+                    <v-btn v-on="on" depressed ripple dark color="blue-grey"
                            @click="$store.commit('scanner/open')">
                       <v-icon>fas fa-qrcode</v-icon>
                     </v-btn>
-                    <span>{{ $t('scanner.scan-bib-withdrawal-card') }}</span>
-                  </v-tooltip>
-                  <v-btn depressed block ripple color="accent" v-on:click="search">
-                    <v-icon>search</v-icon>
-                  </v-btn>
-                  <v-btn depressed block ripple color="success" v-on:click="print" :disabled="!isPrintable">
-                    <v-icon>print</v-icon>
-                  </v-btn>
-                </v-layout>
-              </v-list-tile>
-            </v-card-actions>
-          </v-card>
+                  </template>
+                  <span>{{ $t('scanner.scan-bib-withdrawal-card') }}</span>
+                </v-tooltip>
+                <v-btn depressed ripple color="accent" v-on:click="search" class="flex-grow-1">
+                  <v-icon>search</v-icon>
+                </v-btn>
+                <v-btn depressed ripple color="success" v-on:click="print" :disabled="!isPrintable" class="flex-grow-1">
+                  <v-icon>print</v-icon>
+                </v-btn>
+              </v-card-actions>
+            </v-card>
 
-          <div :class="bibWrapperClasses" v-if="bibResult">
-            <bib-label :key="bibResult.bibNumber"
-                       :distance="bibResult.distance"
-                       :unit="bibResult.unit"
-                       :firstName="bibResult.firstName"
-                       :bibNumber="bibResult.bibNumber"
-                       :phoneUrgency="bibResult.phoneUrgency"
-                       :startBirthDate="bibResult.startBirthDate"
-                       :endBirthDate="bibResult.endBirthDate"
-            ></bib-label>
-          </div>
+            <div :class="bibWrapperClasses" v-if="bibResult">
+              <bib-label :key="bibResult.bibNumber"
+                         :distance="bibResult.distance"
+                         :unit="bibResult.unit"
+                         :firstName="bibResult.firstName"
+                         :bibNumber="bibResult.bibNumber"
+                         :phoneUrgency="bibResult.phoneUrgency"
+                         :startBirthDate="bibResult.startBirthDate"
+                         :endBirthDate="bibResult.endBirthDate"
+              ></bib-label>
+            </div>
 
-          <error-message v-else-if="bibResult === false"
-                         icon-size="12em"
-                         :icon="previousError ? 'error' : 'search'"
-                         :icon-color="previousError ? 'red' : 'info'"
-                         :message="previousError ? previousError.message : $t('views.bib-labels-print.bib-not-found')">
-          </error-message>
-        </v-flex>
+            <error-message v-else-if="bibResult === false"
+                           icon-size="12em"
+                           :icon="previousError ? 'error' : 'search'"
+                           :icon-color="previousError ? 'red' : 'info'"
+                           :message="previousError ? previousError.message : $t('views.bib-labels-print.bib-not-found')">
+            </error-message>
+          </v-col>
+        </v-row>
+      </v-container>
 
-        <loading v-if="loading"></loading>
-      </transition>
-    </v-layout>
-  </v-container>
+      <loading v-else></loading>
+    </transition>
+  </div>
 </template>
 
 <script lang="ts">

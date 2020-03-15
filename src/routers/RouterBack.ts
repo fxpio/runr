@@ -35,7 +35,7 @@ export class RouterBack {
         return this.rootPath === this.router.currentRoute.fullPath;
     }
 
-    public back(): void {
+    public async back(): Promise<void> {
         if (this.useBackAction) {
             this.router.back();
 
@@ -60,7 +60,7 @@ export class RouterBack {
             }
         }
 
-        this.router.replace(parentPath);
+        await this.router.replace(parentPath);
     }
 
     private getRoute(path: string): Route|null {

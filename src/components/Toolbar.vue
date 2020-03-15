@@ -9,9 +9,11 @@ file that was distributed with this source code.
 
 <template>
   <v-fade-transition>
-    <v-toolbar app clipped-left flat>
-      <v-scale-transition mode="out-in">
-        <v-toolbar-side-icon v-if="!showPreviousButton" @click.prevent="drawerButtonAction" key="menu-btn"></v-toolbar-side-icon>
+    <v-app-bar app clipped-left elevate-on-scroll>
+      <v-scale-transition origin="center center" mode="out-in">
+        <v-app-bar-nav-icon v-if="!showPreviousButton" @click.prevent="drawerButtonAction" key="menu-btn">
+          <v-icon>menu</v-icon>
+        </v-app-bar-nav-icon>
 
         <v-btn icon v-else @click.prevent="previousButtonAction" @long-click="drawerButtonAction" key="previous-btn">
           <v-icon>arrow_back</v-icon>
@@ -23,7 +25,7 @@ file that was distributed with this source code.
       <v-spacer></v-spacer>
 
       <online-status></online-status>
-    </v-toolbar>
+    </v-app-bar>
   </v-fade-transition>
 </template>
 
@@ -65,8 +67,8 @@ file that was distributed with this source code.
       this.$store.commit('drawer/toggle');
     }
 
-    public previousButtonAction(): void {
-      this.$routerBack.back();
+    public async previousButtonAction(): Promise<void> {
+      await this.$routerBack.back();
     }
   }
 </script>

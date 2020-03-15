@@ -59,7 +59,7 @@ export class Themeable extends Vue {
         }
 
         // Inherit from v-app
-        return this.$vuetify.dark;
+        return this.$vuetify.theme.dark;
     }
 
     public get rootThemeClasses(): Record<string, boolean> {

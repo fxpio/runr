@@ -9,8 +9,8 @@ file that was distributed with this source code.
 
 <template>
   <tr>
-    <td class="font-weight-bold">{{ label }}</td>
-    <td>
+    <td class="font-weight-bold pa-2">{{ label }}</td>
+    <td class="pa-2">
       <slot></slot>
     </td>
   </tr>

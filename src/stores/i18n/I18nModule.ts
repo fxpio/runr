@@ -11,9 +11,9 @@ import {I18nModuleState} from '@/stores/i18n/I18nModuleState';
 import {I18nState} from '@/stores/i18n/I18nState';
 import moment from 'moment';
 import {Validator} from 'vee-validate';
-import Vue from 'vue';
 import VueI18n from 'vue-i18n';
 import {GetterTree, Module, MutationTree} from 'vuex';
+import vuetify from '@/plugins/vuetify';
 
 /**
  * @author François Pluchino <francois.pluchino@gmail.com>
@@ -129,7 +129,7 @@ export class I18nModule<R extends I18nModuleState> implements Module<I18nState, 
         this.storage.setItem('i18n:locale', locale);
         this.i18n.locale = locale;
         Validator.localize(locale);
-        Vue.prototype.$vuetify.lang.current = locale;
+        vuetify.framework.lang.current = locale;
         moment.locale(locale);
 
         return locale;

@@ -82,11 +82,11 @@ export default {
     'views.about.sections.author': 'Auteur',
     'views.about.fields.fork-on-github': 'Cloner sur Github',
     'views.about.fields.send-an-email': 'Envoyer un email',
-    'views.bib-labels-print-one.title': 'Imprimer une étiquette',
+    'views.bib-labels-print-one.title': 'Étiquette unique',
     'views.bib-labels-print-one.description': 'Imprimer une étiquette de dossard depuis ' +
                                               'le numéro de dossard ou en scannant la carte de retrait ' +
                                               'du dossard',
-    'views.bib-labels-print-mass.title': 'Imprimer des étiquettes',
+    'views.bib-labels-print-mass.title': 'Étiquettes en masse',
     'views.bib-labels-print-mass.bib-number-range': 'Numéros de dossard ou plage',
     'views.bib-labels-print-mass.bib-number-range-description': 'Numéros séparés par des virgules ' +
                                                                 'et les plages par des tirets',

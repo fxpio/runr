@@ -10,13 +10,17 @@ file that was distributed with this source code.
 <template>
   <tbody>
   <tr @click.prevent="$emit('input', !value)">
-    <td :colspan="showButton ? 1 : 2" class="font-weight-bold subheading text-uppercase primary--text">
-      <slot></slot>
-    </td>
-    <td v-if="showButton" class="text-align-right">
-      <v-btn depressed fab icon ripple small flat right class="mr-0">
-        <v-icon>{{ value ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
-      </v-btn>
+    <td colspan="2" class="font-weight-bold subheading text-uppercase primary--text pt-2" style="word-break: normal;">
+      <v-row no-gutters align="center" align-content="space-between">
+        <v-col>
+          <slot></slot>
+        </v-col>
+        <v-col class="text-right">
+          <v-btn depressed fab icon ripple small text right class="mr-0">
+            <v-icon>{{ value ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
+          </v-btn>
+        </v-col>
+      </v-row>
     </td>
   </tr>
   </tbody>

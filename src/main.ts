@@ -17,7 +17,7 @@ import {RootState} from '@/stores/RootState';
 import Vue from 'vue';
 import '@/plugins/veeValidate';
 import '@/plugins/vueMeta';
-import '@/plugins/vuetify';
+import vuetify from '@/plugins/vuetify';
 import '@/plugins/vueLongClick';
 import i18n from '@/plugins/vueI18n';
 import apiClient from '@/plugins/vueApi';
@@ -28,7 +28,6 @@ import router from '@/router';
 import {createStore} from '@/store';
 import '@/registerServiceWorker';
 import '@/styles/fonts.scss';
-import '@/styles/vuetify.styl';
 import '@/styles/app.scss';
 
 /**
@@ -47,5 +46,6 @@ new Vue({
     i18n,
     router,
     store,
+    vuetify,
     render: (h) => h(App),
 }).$mount('#app');

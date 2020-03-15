@@ -9,8 +9,10 @@ file that was distributed with this source code.
 
 <template>
   <v-fade-transition>
-    <v-tooltip left v-if="!online">
-      <v-icon slot="activator" color="warning">cloud_off</v-icon>
+    <v-tooltip left v-if="!online" eager>
+      <template v-slot:activator="{on}">
+        <v-icon v-on="on" color="warning">cloud_off</v-icon>
+      </template>
       <span>{{ $t('offline') }}</span>
     </v-tooltip>
   </v-fade-transition>

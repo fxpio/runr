@@ -8,21 +8,23 @@ file that was distributed with this source code.
 -->
 
 <template>
-  <v-layout row justify-center v-if="fullscreen">
-    <v-dialog v-model="value" persistent fullscreen hide-overlay transition="fade-transition">
-      <v-card height="100%">
-        <v-layout align-center justify-center column fill-height>
+  <v-dialog v-model="value" eager persistent fullscreen hide-overlay transition="fade-transition" v-if="fullscreen">
+    <v-card class="fill-height">
+      <v-container fluid fill-height>
+        <v-row no-gutters align="center" justify="center">
           <v-progress-circular indeterminate :size="46" :color="progressColor"></v-progress-circular>
           <h1 v-if="message != null">{{message}}</h1>
-        </v-layout>
-      </v-card>
-    </v-dialog>
-  </v-layout>
+        </v-row>
+      </v-container>
+    </v-card>
+  </v-dialog>
 
-  <v-layout align-center justify-center column fill-height v-else>
-    <v-progress-circular indeterminate :size="46" :color="progressColor"></v-progress-circular>
-    <h1 v-if="message != null">{{message}}</h1>
-  </v-layout>
+  <v-container fill-height v-else>
+    <v-row no-gutters align="center" justify="center" >
+      <v-progress-circular indeterminate :size="46" :color="progressColor"></v-progress-circular>
+      <h1 v-if="message != null">{{message}}</h1>
+    </v-row>
+  </v-container>
 </template>
 
 <script lang="ts">

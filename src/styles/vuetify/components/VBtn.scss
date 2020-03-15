@@ -19,29 +19,14 @@
   }
 
   &.btn-content {
-    height: auto;
-    padding-top: 15px;
-    padding-bottom: 15px;
+    height: auto !important;
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
 
     .v-btn__content {
       white-space: normal;
       flex-direction: column;
+      max-width: 100%;
     }
-  }
-}
-
-.btn-wrapper {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  vertical-align: middle;
-  flex: 0 0 auto;
-  outline: 0;
-  min-width: 36px;
-  min-height: 36px;
-
-  &:empty {
-    margin: 8px;
   }
 }

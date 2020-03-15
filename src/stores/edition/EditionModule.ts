@@ -346,12 +346,12 @@ export class EditionModule<R extends EditionModuleState> implements Module<Editi
                         commit('selectCurrent', edition);
                         commit('setCurrentCompetitions', competitions);
                         commit('setCurrentFields', fields);
-                        self.router.push(redirect);
-                    } else if (false !== redirect) {
+                        await self.router.push(redirect);
+                    } else if (redirect) {
                         commit('selectCurrent', edition);
                         commit('setCurrentCompetitions', competitions);
                         commit('setCurrentFields', fields);
-                        self.router.push({name: 'editions'});
+                        await self.router.push({name: 'editions'});
                     }
 
                     commit('pingSuccess');

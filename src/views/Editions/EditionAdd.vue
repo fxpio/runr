@@ -8,10 +8,10 @@ file that was distributed with this source code.
 -->
 
 <template>
-  <v-container fill-height>
-    <v-layout justify-center row>
-      <v-fade-transition mode="out-in">
-        <v-flex sm10 md8 lg6 xl4 v-if="!pending">
+  <v-fade-transition mode="out-in">
+    <v-container v-if="!pending">
+      <v-row no-gutters justify="center">
+        <v-col sm="10" md="8" lg="6" xl="4">
           <v-subheader class="primary--text">
             {{ $t('views.editions-add.title') }}
           </v-subheader>
@@ -35,7 +35,7 @@ file that was distributed with this source code.
               <v-tab-item key="apiKey">
 
                 <v-card-text>
-                  <v-alert type="error" class="mt-3 mb-4" transition="scale-transition" :value="formAlertApiKey">
+                  <v-alert type="error" class="mt-3 mb-4" transition="scale-transition" :value="null !== formAlertApiKey">
                     {{ formAlertApiKey }}
                   </v-alert>
 
@@ -49,7 +49,7 @@ file that was distributed with this source code.
                             :error-messages="errors.collect('identifier')"
                             @keydown.enter="pingEdition"
                             autofocus
-                            outline
+                            outlined
                             clearable
                             required>
                     </v-text-field>
@@ -65,7 +65,7 @@ file that was distributed with this source code.
                             :type="showPassword ? 'text' : 'password'"
                             @click:append="showPassword = !showPassword"
                             @keydown.enter="pingEdition"
-                            outline
+                            outlined
                             clearable
                             required>
                     </v-text-field>
@@ -73,16 +73,13 @@ file that was distributed with this source code.
                 </v-card-text>
 
                 <v-card-actions>
-                  <v-list-tile class="grow">
-                    <v-layout align-center justify-end>
-                      <v-btn flat ripple active-class="" @click.stop="$routerBack.back">{{$t('cancel')}}</v-btn>
-                      <v-btn color="accent" depressed raised ripple @click="pingEdition">{{$t('add')}}</v-btn>
-                    </v-layout>
-                  </v-list-tile>
+                  <v-spacer></v-spacer>
+                  <v-btn text ripple active-class="" @click.stop="$routerBack.back">{{$t('cancel')}}</v-btn>
+                  <v-btn color="accent" depressed raised ripple @click="pingEdition">{{$t('add')}}</v-btn>
                 </v-card-actions>
 
-                <v-card-text>
-                  <v-alert outline type="info" icon="help_outline" class="mt-3" value="true">
+                <v-card-text class="pt-0 pb-0">
+                  <v-alert outlined type="info" icon="help_outline" class="mt-3" :value="true">
                     <p>{{ $t('views.editions-add.help.into') }}</p>
                     <ol>
                       <li>{{ $t('views.editions-add.help.step-1') }}</li>
@@ -95,7 +92,7 @@ file that was distributed with this source code.
 
               <v-tab-item key="credentials">
                 <v-card-text>
-                  <v-alert type="error" class="mt-3 mb-4" transition="scale-transition" :value="formAlertCredentials">
+                  <v-alert type="error" class="mt-3 mb-4" transition="scale-transition" :value="null !== formAlertCredentials">
                     {{ formAlertCredentials }}
                   </v-alert>
 
@@ -108,7 +105,7 @@ file that was distributed with this source code.
                             v-validate="{rules: {required: 1 === tabActive, email: 1 === tabActive}}"
                             :error-messages="errors.collect('email')"
                             @keydown.enter="login"
-                            outline
+                            outlined
                             clearable
                             required>
                     </v-text-field>
@@ -124,7 +121,7 @@ file that was distributed with this source code.
                             :type="showPassword ? 'text' : 'password'"
                             @click:append="showPassword = !showPassword"
                             @keydown.enter="login"
-                            outline
+                            outlined
                             clearable
                             required>
                     </v-text-field>
@@ -138,22 +135,19 @@ file that was distributed with this source code.
                 </v-card-text>
 
                 <v-card-actions>
-                  <v-list-tile class="grow">
-                    <v-layout align-center justify-end>
-                      <v-btn flat ripple active-class="" @click.stop="$routerBack.back">{{$t('cancel')}}</v-btn>
-                      <v-btn color="accent" depressed raised ripple @click="login">{{$t('views.login.title')}}</v-btn>
-                    </v-layout>
-                  </v-list-tile>
+                  <v-spacer></v-spacer>
+                  <v-btn text ripple active-class="" @click.stop="$routerBack.back">{{$t('cancel')}}</v-btn>
+                  <v-btn color="accent" depressed raised ripple @click="login">{{$t('views.login.title')}}</v-btn>
                 </v-card-actions>
               </v-tab-item>
             </v-tabs>
           </v-card>
-        </v-flex>
+        </v-col>
+      </v-row>
+    </v-container>
 
-        <loading v-if="pending"></loading>
-      </v-fade-transition>
-    </v-layout>
-  </v-container>
+    <loading v-else></loading>
+  </v-fade-transition>
 </template>
 
 <script lang="ts">

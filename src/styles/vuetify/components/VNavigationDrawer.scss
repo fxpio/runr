@@ -7,8 +7,8 @@
  * file that was distributed with this source code.
  */
 
-.application {
-  > .application--wrap {
+.v-application {
+  > .v-application--wrap {
     > .v-navigation-drawer {
       > .v-navigation-drawer__border {
         display: none;
@@ -18,8 +18,8 @@
 }
 
 @media (min-width: 1264px) {
-  .application {
-    > .application--wrap {
+  .v-application {
+    > .v-application--wrap {
       > .v-navigation-drawer {
         background-color: transparent;
       }

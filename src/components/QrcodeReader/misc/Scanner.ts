@@ -56,7 +56,11 @@ export default class Scanner {
                     workerBusy = true;
                     const imageData = camera.captureFrame();
 
-                    worker.postMessage(imageData, imageData ? [imageData.data.buffer] : undefined);
+                    if (imageData) {
+                        worker.postMessage(imageData, [imageData.data.buffer]);
+                    } else {
+                        worker.postMessage(imageData);
+                    }
                 }
             }
         };

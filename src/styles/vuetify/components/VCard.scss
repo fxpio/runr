@@ -7,26 +7,15 @@
  * file that was distributed with this source code.
  */
 
-@import 'mixins/theme.scss';
-@import 'variables.scss';
-@import 'theme.scss';
-@import 'mixins/utils.scss';
-
 .v-card {
   &:not([class*="elevation-"]) {
     border: 1px solid transparent;
   }
 }
 
-@include theme-light('v-card') {
+@include theme('v-card') using ($material) {
   &:not([class*="elevation-"]) {
-    border-color: map-deep-get($material-light, 'card-border-color');
-  }
-}
-
-@include theme-dark('v-card') {
-  &:not([class*="elevation-"]) {
-    border-color: map-deep-get($material-dark, 'card-border-color');
+    border-color: map-deep-get($material, 'card-border-color');
   }
 }
 

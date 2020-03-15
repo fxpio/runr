@@ -8,39 +8,41 @@ file that was distributed with this source code.
 -->
 
 <template>
-  <v-menu>
-    <v-toolbar-title slot="activator">
-      <v-fade-transition mode="out-in">
-        <div v-if="!$store.state.edition.serverPending">
-          <img v-if="!$store.state.edition.current" :src="require('@/assets/img/logo.svg')"
-               height="24" style="vertical-align: middle;">
-          <span v-else :class="titleClasses">{{ title }}</span>
-          <v-icon :color="$store.state.darkMode.enabled ? null : color">arrow_drop_down</v-icon>
-        </div>
-        <v-progress-circular indeterminate
-                             :color="$store.state.darkMode.enabled ? null : color"
-                             v-if="$store.state.edition.serverPending">
-        </v-progress-circular>
-      </v-fade-transition>
-    </v-toolbar-title>
+  <v-menu eager>
+    <template v-slot:activator="{on}">
+      <v-toolbar-title v-on="on">
+        <v-fade-transition mode="out-in">
+          <div class="menu-activator" v-if="!$store.state.edition.serverPending">
+            <img v-if="!$store.state.edition.current" :src="require('@/assets/img/logo.svg')"
+                 height="24" style="vertical-align: middle;">
+            <span v-else :class="titleClasses">{{ title }}</span>
+            <v-icon :color="$store.state.darkMode.enabled ? null : color">arrow_drop_down</v-icon>
+          </div>
+          <v-progress-circular indeterminate
+                               :color="$store.state.darkMode.enabled ? null : color"
+                               v-if="$store.state.edition.serverPending">
+          </v-progress-circular>
+        </v-fade-transition>
+      </v-toolbar-title>
+    </template>
 
     <v-list>
-      <v-list-tile
+      <v-list-item
               v-for="edition in $store.state.edition.all"
               :key="edition.id"
               @click="$store.dispatch('edition/select', edition.id)"
       >
-        <v-list-tile-content>
-          <v-list-tile-title v-text="edition.name"></v-list-tile-title>
-        </v-list-tile-content>
-        <v-list-tile-action>
-          <v-scale-transition>
+        <v-list-item-content>
+          <v-list-item-title v-text="edition.name"></v-list-item-title>
+        </v-list-item-content>
+        <v-list-item-action>
+          <v-scale-transition origin="center center">
             <v-icon v-if="$store.getters['edition/isSelected'](edition.id)" color="pink">star</v-icon>
           </v-scale-transition>
-        </v-list-tile-action>
-      </v-list-tile>
+        </v-list-item-action>
+      </v-list-item>
 
-      <v-list-tile key="add" :to="{name: 'editions-add', query: {redirect: $router.currentRoute.fullPath}}">{{ $t('add.edition') }}</v-list-tile>
+      <v-list-item key="add" :to="{name: 'editions-add', query: {redirect: $router.currentRoute.fullPath}}">{{ $t('add.edition') }}</v-list-item>
     </v-list>
   </v-menu>
 </template>

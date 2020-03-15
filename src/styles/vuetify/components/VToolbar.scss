@@ -7,10 +7,10 @@
  * file that was distributed with this source code.
  */
 
-@import 'mixins/theme.scss';
-@import 'variables.scss';
-@import 'theme.scss';
-@import 'mixins/utils.scss';
+.v-toolbar {
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+}
 
 .v-toolbar__title {
   max-width: 65vw;
@@ -26,14 +26,9 @@
   }
 }
 
-@include theme-light('v-toolbar') {
-  &.elevation-0 {
-    border-color: map-deep-get($material-light, 'toolbar-border-color');
-  }
-}
-
-@include theme-dark('v-toolbar') {
-  &.elevation-0 {
-    border-color: map-deep-get($material-dark, 'toolbar-border-color');
+@include theme('v-toolbar') using ($material) {
+  &.v-app-bar--elevate-on-scroll,
+  &.v-app-bar--flat {
+    border-color: map-deep-get($material, 'toolbar-border-color');
   }
 }

@@ -9,13 +9,13 @@ file that was distributed with this source code.
 
 <template>
   <v-container fill-height>
-    <v-layout justify-center row>
-        <v-flex sm10 md8 lg6 xl4>
-          <v-slide-x-reverse-transition mode="out-in">
-            <router-view></router-view>
-          </v-slide-x-reverse-transition>
-        </v-flex>
-    </v-layout>
+    <v-row no-gutters justify="center" class="fill-height">
+      <v-col cols="12" sm="10" md="8" lg="6" xl="4">
+        <v-slide-x-reverse-transition mode="out-in">
+          <router-view></router-view>
+        </v-slide-x-reverse-transition>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

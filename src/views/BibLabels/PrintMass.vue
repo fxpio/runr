@@ -8,7 +8,7 @@ file that was distributed with this source code.
 -->
 
 <template>
-  <v-container>
+  <div class="fill-height">
     <v-fab-transition>
       <v-btn v-if="!$store.state.registration.pending"
              key="sync"
@@ -23,118 +23,120 @@ file that was distributed with this source code.
       </v-btn>
     </v-fab-transition>
 
-    <v-layout row justify-center>
-      <transition name="fade" mode="out-in">
-        <sync-pending key="pending" v-if="$store.state.registration.pending"></sync-pending>
+    <transition name="fade" mode="out-in">
+      <sync-pending key="pending" v-if="$store.state.registration.pending"></sync-pending>
 
-        <v-flex key="search" sm10 md8 lg6 xl4 v-else>
-          <v-card flat>
-            <v-card-title primary-title>
-              <div class="headline primary--text">
-                {{ $t('views.bib-labels-print-mass.title') }}
-              </div>
-            </v-card-title>
+      <v-container key="search" v-else>
+        <v-row justify="center">
+          <v-col cols="12" sm="10" md="8" lg="6" xl="4">
+            <v-card flat>
+              <v-card-title primary-title>
+                <div class="headline primary--text">
+                  {{ $t('views.bib-labels-print-mass.title') }}
+                </div>
+              </v-card-title>
 
-            <v-card-text class="pb-0">
-              <v-form ref="form" @submit.prevent>
-                <v-select
-                        :items="competitions"
-                        :loading="0 === competitions.length"
-                        v-model="selectedCompetition"
-                        item-value="id"
-                        item-text="label"
-                        :label="$t('forms.competitions.all')"
-                        return-object
-                        chips
-                        single-line
-                        clearable
-                        outline>
-                  <template slot="item" slot-scope="data">{{ data.item.label }}</template>
-                </v-select>
+              <v-card-text class="pb-0">
+                <v-form ref="form" @submit.prevent>
+                  <v-select
+                          :items="competitions"
+                          :loading="0 === competitions.length"
+                          v-model="selectedCompetition"
+                          item-value="id"
+                          item-text="label"
+                          :label="$t('forms.competitions.all')"
+                          return-object
+                          chips
+                          single-line
+                          clearable
+                          outlined>
+                    <template slot="item" slot-scope="data">{{ data.item.label }}</template>
+                  </v-select>
 
-                <v-select
-                        :items="registrationStatusItems"
-                        v-model="selectedRegistrationStatus"
-                        item-value="value"
-                        item-text="label"
-                        :label="$t('forms.registration-status.all')"
-                        :menu-props="{closeOnContentClick: true}"
-                        multiple
-                        chips
-                        deletable-chips
-                        single-line
-                        clearable
-                        outline>
-                  <template slot="item" slot-scope="data">{{ data.item.label }}</template>
-                </v-select>
+                  <v-select
+                          :items="registrationStatusItems"
+                          v-model="selectedRegistrationStatus"
+                          item-value="value"
+                          item-text="label"
+                          :label="$t('forms.registration-status.all')"
+                          :menu-props="{closeOnContentClick: true}"
+                          multiple
+                          chips
+                          deletable-chips
+                          single-line
+                          clearable
+                          outlined>
+                    <template slot="item" slot-scope="data">{{ data.item.label }}</template>
+                  </v-select>
 
-                <v-select
-                        :items="statusItems"
-                        v-model="selectedStatus"
-                        item-value="value"
-                        item-text="label"
-                        :label="$t('forms.status.all')"
-                        :menu-props="{closeOnContentClick: true}"
-                        multiple
-                        chips
-                        deletable-chips
-                        single-line
-                        clearable
-                        outline>
-                  <template slot="item" slot-scope="data">{{ data.item.label }}</template>
-                </v-select>
+                  <v-select
+                          :items="statusItems"
+                          v-model="selectedStatus"
+                          item-value="value"
+                          item-text="label"
+                          :label="$t('forms.status.all')"
+                          :menu-props="{closeOnContentClick: true}"
+                          multiple
+                          chips
+                          deletable-chips
+                          single-line
+                          clearable
+                          outlined>
+                    <template slot="item" slot-scope="data">{{ data.item.label }}</template>
+                  </v-select>
 
-                <v-text-field
-                        type="text"
-                        :readonly="building"
-                        :label="$i18n.t('views.bib-labels-print-mass.bib-number-range')"
-                        :hint="$i18n.t('views.bib-labels-print-mass.bib-number-range-description')"
-                        v-model="bibNumbers"
-                        data-vv-name="bibNumbers"
-                        :data-vv-as="$i18n.t('views.bib-labels-print-mass.bib-number-range')"
-                        v-validate="{regex: /^[0-9,\- ]+$/}"
-                        :error-messages="errors.collect('bibNumbers')"
-                        @keydown.enter.prevent="search"
-                        outline
-                        clearable
-                        required>
-                </v-text-field>
-              </v-form>
-            </v-card-text>
+                  <v-text-field
+                          type="text"
+                          :readonly="building"
+                          :label="$i18n.t('views.bib-labels-print-mass.bib-number-range')"
+                          :hint="$i18n.t('views.bib-labels-print-mass.bib-number-range-description')"
+                          v-model="bibNumbers"
+                          data-vv-name="bibNumbers"
+                          :data-vv-as="$i18n.t('views.bib-labels-print-mass.bib-number-range')"
+                          v-validate="{regex: /^[0-9,\- ]+$/}"
+                          :error-messages="errors.collect('bibNumbers')"
+                          @keydown.enter.prevent="search"
+                          outlined
+                          clearable
+                          required>
+                  </v-text-field>
+                </v-form>
+              </v-card-text>
 
-            <v-card-actions class="pl-3 pr-3">
-              <v-fade-transition mode="out-in">
-                <v-btn depressed block ripple color="accent"
-                       :loading="building"
-                       @click.prevent="search">
-                  <v-icon>search</v-icon>
-                </v-btn>
-              </v-fade-transition>
-            </v-card-actions>
-          </v-card>
+              <v-card-actions class="pl-3 pr-3">
+                <v-fade-transition mode="out-in">
+                  <v-btn depressed block ripple color="accent"
+                         :loading="building"
+                         @click.prevent="search">
+                    <v-icon>search</v-icon>
+                  </v-btn>
+                </v-fade-transition>
+              </v-card-actions>
+            </v-card>
 
-          <transition name="fade" mode="out-in">
-            <error-message icon-size="12em"
-                           icon="error"
-                           icon-color="info"
-                           :message="$t('views.bib-labels-print.bib-not-found')"
-                           v-if="!isPrintable && null !== bibs">
-            </error-message>
-          </transition>
-        </v-flex>
-      </transition>
-    </v-layout>
+            <transition name="fade" mode="out-in">
+              <error-message icon-size="12em"
+                             icon="error"
+                             icon-color="info"
+                             :message="$t('views.bib-labels-print.bib-not-found')"
+                             v-if="!isPrintable && null !== bibs">
+              </error-message>
+            </transition>
+          </v-col>
+        </v-row>
+      </v-container>
+    </transition>
 
     <v-dialog v-model="isPrintable"
+              eager
               ref="printerDialog"
               fullscreen
               dark
               scrollable
-              lazy
               content-class="printer-dialog"
               transition="dialog-bottom-transition"
               hide-overlay>
-      <v-card flat class="printer-card">
+      <v-card shaped class="printer-card">
         <v-toolbar dark flat>
           <v-btn icon dark @click.prevent="reset">
             <v-icon>close</v-icon>
@@ -146,7 +148,7 @@ file that was distributed with this source code.
 
           <v-spacer></v-spacer>
 
-          <v-btn depressed ripple icon color="accent"
+          <v-btn depressed ripple icon
                  :loading="building"
                  @click.prevent="print">
             <v-icon>print</v-icon>
@@ -154,7 +156,7 @@ file that was distributed with this source code.
         </v-toolbar>
 
         <v-container fluid fill-height>
-          <v-layout row align-start justify-center>
+          <v-row align="start" justify="center">
             <div :class="bibWrapperClasses" v-if="showBibLabels">
               <bib-label v-for="bib in bibs"
                          :key="bib.registrationId"
@@ -167,11 +169,11 @@ file that was distributed with this source code.
                          :endBirthDate="bib.endBirthDate"
               ></bib-label>
             </div>
-          </v-layout>
+          </v-row>
         </v-container>
       </v-card>
     </v-dialog>
-  </v-container>
+  </div>
 </template>
 
 <script lang="ts">

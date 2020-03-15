@@ -7,10 +7,9 @@
  * file that was distributed with this source code.
  */
 
-@import '../mixins/theme.scss';
-@import '../variables.scss';
-@import '../theme.scss';
-@import '../mixins/utils.scss';
+@import '~vuetify/src/styles/tools/functions';
+@import '~vuetify/src/styles/tools/theme';
+@import '../variables';
 
 .swipe-item {
   display: flex;
@@ -62,14 +61,8 @@
   }
 }
 
-@include theme-light('swipe-item') {
+@include theme('swipe-item') using ($material) {
   .swipe-item-content {
-    background-color: map-deep-get($material-light, 'cards');
-  }
-}
-
-@include theme-dark('swipe-item') {
-  .swipe-item-content {
-    background-color: map-deep-get($material-dark, 'cards');
+    background-color: map-deep-get($material, 'cards');
   }
 }
