@@ -12,7 +12,7 @@ file that was distributed with this source code.
     <transition name="fade" mode="out-in" @after-enter="onAfterEnter">
       <v-container v-if="!loading">
         <v-row no-gutters justify="center">
-          <v-col sm="10" md="8" lg="6" xl="4">
+          <v-col cols="12" sm="10" md="8" lg="6" xl="4">
             <v-card flat>
               <v-card-title primary-title>
                 <div class="headline primary--text">

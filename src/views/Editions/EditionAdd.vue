@@ -11,7 +11,7 @@ file that was distributed with this source code.
   <v-fade-transition mode="out-in">
     <v-container v-if="!pending">
       <v-row no-gutters justify="center">
-        <v-col sm="10" md="8" lg="6" xl="4">
+        <v-col cols="12" sm="10" md="8" lg="6" xl="4">
           <v-subheader class="primary--text">
             {{ $t('views.editions-add.title') }}
           </v-subheader>
