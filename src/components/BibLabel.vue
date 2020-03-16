@@ -63,7 +63,7 @@ file that was distributed with this source code.
     }
 
     public unitFormatted(): string {
-      return this.getFormattedDistance() + ' ' + this.unit;
+      return this.unit ? this.getFormattedDistance() + ' ' + this.unit : '';
     }
 
     public datesFormatted(): string {

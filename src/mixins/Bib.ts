@@ -61,8 +61,12 @@ export class Bib extends Vue {
         const competition = competitions[reg.competition_id] as ICompetition;
 
         if (competition) {
-            bib.distance = competition.sportsAndDistances[0].distance;
-            bib.unit = competition.sportsAndDistances[0].unit as string;
+            if (competition.sportsAndDistances.length > 0) {
+                bib.distance = competition.sportsAndDistances[0].distance;
+                bib.unit = competition.sportsAndDistances[0].unit as string;
+            } else {
+                bib.distance = competition.name;
+            }
 
             if (competition.startBirthDate) {
                 bib.startBirthDate = new Date(competition.startBirthDate);
