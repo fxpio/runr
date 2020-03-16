@@ -8,24 +8,30 @@ file that was distributed with this source code.
 -->
 
 <template>
-  <transition name="fade" mode="out-in">
-    <error-message :message="previousError.message" v-if="!loading && !!previousError">
-      <v-btn depressed ripple color="accent" class="mt-3" @click.prevent="requestContent">
-        {{ $t('retry') }}
-      </v-btn>
-    </error-message>
+  <v-container fill-height>
+    <v-row no-gutters justify="center" class="fill-height">
+      <v-col cols="12" sm="10" md="8" lg="6" xl="4">
+        <transition name="fade" mode="out-in">
+          <error-message :message="previousError.message" v-if="!loading && !!previousError">
+            <v-btn depressed ripple color="accent" class="mt-3" @click.prevent="requestContent">
+              {{ $t('retry') }}
+            </v-btn>
+          </error-message>
 
-    <participant-card :registration="registration" v-else-if="!loading && !!registration">
-    </participant-card>
+          <participant-card :registration="registration" v-else-if="!loading && !!registration">
+          </participant-card>
 
-    <error-message :message="$t('error.404-page-not-found')" v-else-if="!loading && !previousError">
-      <v-btn depressed ripple color="accent" class="mt-3" @click.prevent="$routerBack.back()">
-        {{ $t('views.participants.retry-search') }}
-      </v-btn>
-    </error-message>
+          <error-message :message="$t('error.404-page-not-found')" v-else-if="!loading && !previousError">
+            <v-btn depressed ripple color="accent" class="mt-3" @click.prevent="$routerBack.back()">
+              {{ $t('views.participants.retry-search') }}
+            </v-btn>
+          </error-message>
 
-    <loading v-else-if="loading"></loading>
-  </transition>
+          <loading v-else-if="loading"></loading>
+        </transition>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script lang="ts">

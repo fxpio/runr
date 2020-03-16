@@ -18,7 +18,7 @@ file that was distributed with this source code.
 
     <v-content>
       <transition :name="transitionName" mode="out-in">
-        <router-view></router-view>
+        <router-view :key="$route.fullPath"></router-view>
       </transition>
     </v-content>
 

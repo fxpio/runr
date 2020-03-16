@@ -48,69 +48,49 @@ export default new Router({
       },
     },
     {
-      path: '/bib-labels',
+      path: '/bib-labels/print-one',
+      name: 'bib-labels-print-one',
       meta: {requiresAuth: true},
       components: {
-        default: () => import(/* webpackChunkName: "bib-labels" */ '@/views/BibLabels/BibLabels.vue'),
+        default: () => import(/* webpackChunkName: "bib-labels" */ '@/views/BibLabels/PrintOne.vue'),
         toolbar: () => import(/* webpackChunkName: "bib-labels" */'@/components/Toolbar.vue'),
       },
-      children: [
-        {
-          path: 'print-one',
-          name: 'bib-labels-print-one',
-          meta: {requiresAuth: true},
-          components: {
-            default: () => import(/* webpackChunkName: "bib-labels" */ '@/views/BibLabels/PrintOne.vue'),
-            toolbar: () => import(/* webpackChunkName: "bib-labels" */'@/components/Toolbar.vue'),
-          },
-        },
-        {
-          path: 'print-mass',
-          name: 'bib-labels-print-mass',
-          meta: {requiresAuth: true},
-          components: {
-            default: () => import(/* webpackChunkName: "bib-labels" */ '@/views/BibLabels/PrintMass.vue'),
-            toolbar: () => import(/* webpackChunkName: "bib-labels" */'@/components/Toolbar.vue'),
-          },
-        },
-      ],
+    },
+    {
+      path: '/bib-labels/print-mass',
+      name: 'bib-labels-print-mass',
+      meta: {requiresAuth: true},
+      components: {
+        default: () => import(/* webpackChunkName: "bib-labels" */ '@/views/BibLabels/PrintMass.vue'),
+        toolbar: () => import(/* webpackChunkName: "bib-labels" */'@/components/Toolbar.vue'),
+      },
+    },
+    {
+      path: '/participants/results',
+      name: 'participants-results',
+      meta: {requiresAuth: true, transitionName: 'slide'},
+      components: {
+        default: () => import(/* webpackChunkName: "participants" */ '@/views/Participants/Results.vue'),
+        toolbar: () => import(/* webpackChunkName: "participants" */'@/components/Toolbar.vue'),
+      },
+    },
+    {
+      path: '/participants/:id',
+      name: 'participants-details',
+      meta: {requiresAuth: true, transitionName: 'slide'},
+      components: {
+        default: () => import(/* webpackChunkName: "participants" */ '@/views/Participants/Details.vue'),
+        toolbar: () => import(/* webpackChunkName: "participants" */'@/components/Toolbar.vue'),
+      },
     },
     {
       path: '/participants',
+      name: 'participants',
       meta: {requiresAuth: true},
       components: {
-        default: () => import(/* webpackChunkName: "participants" */ '@/views/Participants/Participants.vue'),
+        default: () => import(/* webpackChunkName: "participants" */ '@/views/Participants/Search.vue'),
         toolbar: () => import(/* webpackChunkName: "participants" */'@/components/Toolbar.vue'),
       },
-      children: [
-        {
-          path: 'results',
-          name: 'participants-results',
-          meta: {requiresAuth: true},
-          components: {
-            default: () => import(/* webpackChunkName: "participants" */ '@/views/Participants/Results.vue'),
-            toolbar: () => import(/* webpackChunkName: "participants" */'@/components/Toolbar.vue'),
-          },
-        },
-        {
-          path: ':id',
-          name: 'participants-details',
-          meta: {requiresAuth: true},
-          components: {
-            default: () => import(/* webpackChunkName: "participants" */ '@/views/Participants/Details.vue'),
-            toolbar: () => import(/* webpackChunkName: "participants" */'@/components/Toolbar.vue'),
-          },
-        },
-        {
-          path: '',
-          name: 'participants',
-          meta: {requiresAuth: true},
-          components: {
-            default: () => import(/* webpackChunkName: "participants" */ '@/views/Participants/Search.vue'),
-            toolbar: () => import(/* webpackChunkName: "participants" */'@/components/Toolbar.vue'),
-          },
-        },
-      ],
     },
     {
       path: '/settings',

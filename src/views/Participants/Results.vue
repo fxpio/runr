@@ -8,83 +8,89 @@ file that was distributed with this source code.
 -->
 
 <template>
-  <transition name="fade" mode="out-in">
-    <error-message :message="previousError.message" v-if="!loading && !!previousError">
-      <v-btn outlined color="accent" class="mt-3" @click.prevent="requestContent">{{ $t('retry') }}</v-btn>
-    </error-message>
+  <v-container fill-height>
+    <v-row no-gutters justify="center" class="fill-height">
+      <v-col cols="12" sm="10" md="8" lg="6" xl="4">
+        <transition name="fade" mode="out-in">
+          <error-message :message="previousError.message" v-if="!loading && !!previousError">
+            <v-btn outlined color="accent" class="mt-3" @click.prevent="requestContent">{{ $t('retry') }}</v-btn>
+          </error-message>
 
-    <v-card flat v-else-if="!loading">
-      <v-card-title primary-title>
-        <div :class="$store.state.darkMode.enabled ? 'headline' : 'headline primary--text'">
-          {{ $t('views.participants.title') }}
-        </div>
-      </v-card-title>
-
-      <v-data-table
-              :headers="headers"
-              :items="cacheResults ? cacheResults.results : []"
-              :server-items-length="cacheResults ? cacheResults.total : 0"
-              :options.sync="tableOptions"
-              :no-data-text="$t('views.participants.search-not-found')"
-              :footer-props.sync="tableFooterProps"
-              item-key="id"
-              class="d-block">
-        <template v-slot:item="{index, item}">
-          <tr>
-            <td class="participant-item pt-2 pb-2" @click="itemSelection(index)">
-              <div>
-                <span class="primary--text">
-                  {{ $store.getters['edition/getCompetitionName'](item.competition_id) }}
-                </span>
+          <v-card flat v-else-if="!loading">
+            <v-card-title primary-title>
+              <div :class="$store.state.darkMode.enabled ? 'headline' : 'headline primary--text'">
+                {{ $t('views.participants.title') }}
               </div>
-              <div class="subtitle-1">
-                <span>{{ item.firstname }}</span>
-                &nbsp;
-                <strong class="text-uppercase">{{ item.lastname }}</strong>
-              </div>
-              <div>
-                <span>{{ $t('views.participants.bib-label') }}</span>
-                &nbsp;
-                <span v-if="item.bib && item.bib.code">{{ item.bib.code }}</span>
-                <span v-else class="warning--text">{{ $t('views.participants.no-bib') }}</span>
-              </div>
-              <div>
-                <v-chip small :color="item.isRegistered ? 'teal' : 'red'" text-color="white" class="ma-1">
-                  {{ $t('views.participants.choices.registered.' + item.isRegistered) }}
-                </v-chip>
+            </v-card-title>
 
-                <v-chip small :color="0 === item.status ? 'teal' : 'red'" text-color="white" class="ma-1">
-                  {{ $t('views.participants.choices.status.' + item.status) }}
-                </v-chip>
-              </div>
-            </td>
-            <td class="participant-item" @click="itemSelection(item.index)">
-              <v-tooltip left v-if="item.bib && item.bib.code && item.bibRetrieved" eager>
-                <template v-slot:activator="{on}">
-                  <v-icon color="green" v-on="on">directions_run</v-icon>
-                </template>
-                <span>{{ $t('views.participants.bib-retrieved') }}</span>
-              </v-tooltip>
+            <v-data-table
+                    :headers="headers"
+                    :items="cacheResults ? cacheResults.results : []"
+                    :server-items-length="cacheResults ? cacheResults.total : 0"
+                    :options.sync="tableOptions"
+                    :no-data-text="$t('views.participants.search-not-found')"
+                    :footer-props.sync="tableFooterProps"
+                    item-key="id"
+                    class="d-block">
+              <template v-slot:item="{index, item}">
+                <tr>
+                  <td class="participant-item pt-2 pb-2" @click="itemSelection(index)">
+                    <div>
+                      <span class="primary--text">
+                        {{ $store.getters['edition/getCompetitionName'](item.competition_id) }}
+                      </span>
+                    </div>
+                    <div class="subtitle-1">
+                      <span>{{ item.firstname }}</span>
+                      &nbsp;
+                      <strong class="text-uppercase">{{ item.lastname }}</strong>
+                    </div>
+                    <div>
+                      <span>{{ $t('views.participants.bib-label') }}</span>
+                      &nbsp;
+                      <span v-if="item.bib && item.bib.code">{{ item.bib.code }}</span>
+                      <span v-else class="warning--text">{{ $t('views.participants.no-bib') }}</span>
+                    </div>
+                    <div>
+                      <v-chip small :color="item.isRegistered ? 'teal' : 'red'" text-color="white" class="ma-1">
+                        {{ $t('views.participants.choices.registered.' + item.isRegistered) }}
+                      </v-chip>
 
-              <v-tooltip left v-else-if="item.bib && item.bib.code" eager>
-                <template v-slot:activator="{on}">
-                  <v-icon color="grey" v-on="on">inbox</v-icon>
-                </template>
-                <span>{{ $t('views.participants.bib-not-retrieved') }}</span>
-              </v-tooltip>
-            </td>
-          </tr>
-        </template>
-      </v-data-table>
+                      <v-chip small :color="0 === item.status ? 'teal' : 'red'" text-color="white" class="ma-1">
+                        {{ $t('views.participants.choices.status.' + item.status) }}
+                      </v-chip>
+                    </div>
+                  </td>
+                  <td class="participant-item" @click="itemSelection(item.index)">
+                    <v-tooltip left v-if="item.bib && item.bib.code && item.bibRetrieved" eager>
+                      <template v-slot:activator="{on}">
+                        <v-icon color="green" v-on="on">directions_run</v-icon>
+                      </template>
+                      <span>{{ $t('views.participants.bib-retrieved') }}</span>
+                    </v-tooltip>
 
-      <v-card-actions v-if="0 === cacheResults.total">
-        <v-btn depressed block ripple color="accent" @click.prevent="$routerBack.back()">
-          {{ $t('views.participants.retry-search') }}
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-    <loading v-if="loading"></loading>
-  </transition>
+                    <v-tooltip left v-else-if="item.bib && item.bib.code" eager>
+                      <template v-slot:activator="{on}">
+                        <v-icon color="grey" v-on="on">inbox</v-icon>
+                      </template>
+                      <span>{{ $t('views.participants.bib-not-retrieved') }}</span>
+                    </v-tooltip>
+                  </td>
+                </tr>
+              </template>
+            </v-data-table>
+
+            <v-card-actions v-if="0 === cacheResults.total">
+              <v-btn depressed block ripple color="accent" @click.prevent="$routerBack.back()">
+                {{ $t('views.participants.retry-search') }}
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+          <loading v-if="loading"></loading>
+        </transition>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script lang="ts">

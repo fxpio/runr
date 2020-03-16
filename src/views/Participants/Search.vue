@@ -8,62 +8,68 @@ file that was distributed with this source code.
 -->
 
 <template>
-  <v-card flat>
-    <v-btn depressed
-           block
-           ripple
-           color="accent"
-           class="btn-content no-bottom-radius mt-0"
-           :disabled="!$store.state.scanner.enabled"
-           @click="$store.commit('scanner/open')">
-      <v-icon x-large>fas fa-qrcode</v-icon>
-      <div class="mt-3">{{ $t('scanner.scan-bib-withdrawal-card') }}</div>
-    </v-btn>
+  <v-container fill-height>
+    <v-row no-gutters justify="center" class="fill-height">
+      <v-col cols="12" sm="10" md="8" lg="6" xl="4">
+        <v-card flat>
+          <v-btn depressed
+                 block
+                 ripple
+                 color="accent"
+                 class="btn-content no-bottom-radius mt-0"
+                 :disabled="!$store.state.scanner.enabled"
+                 @click="$store.commit('scanner/open')">
+            <v-icon x-large>fas fa-qrcode</v-icon>
+            <div class="mt-3">{{ $t('scanner.scan-bib-withdrawal-card') }}</div>
+          </v-btn>
 
-    <v-card-title primary-title>
-      <div :class="$store.state.darkMode.enabled ? 'headline' : 'headline primary--text'">
-        {{ $t('views.participants.title') }}
-      </div>
-    </v-card-title>
+          <v-card-title primary-title>
+            <div :class="$store.state.darkMode.enabled ? 'headline' : 'headline primary--text'">
+              {{ $t('views.participants.title') }}
+            </div>
+          </v-card-title>
 
-    <v-card-text class="pb-0">
-      <v-form ref="form" @submit.prevent>
-        <v-text-field
-                :label="$i18n.t('views.participants.search-field-label')"
-                v-model="searchValue"
-                data-vv-name="searchValue"
-                :data-vv-as="$i18n.t('views.participants.search-field-label')"
-                v-validate=""
-                :error-messages="errors.collect('searchValue')"
-                @keydown.enter="search()"
-                outlined
-                clearable
-                required>
-        </v-text-field>
+          <v-card-text class="pb-0">
+            <v-form ref="form" @submit.prevent>
+              <v-text-field
+                      :label="$i18n.t('views.participants.search-field-label')"
+                      v-model="searchValue"
+                      data-vv-name="searchValue"
+                      :data-vv-as="$i18n.t('views.participants.search-field-label')"
+                      v-validate=""
+                      :error-messages="errors.collect('searchValue')"
+                      @keydown.enter="search()"
+                      outlined
+                      clearable
+                      required>
+              </v-text-field>
 
-        <v-select
-                :items="competitions"
-                :loading="0 === competitions.length"
-                v-model="selectedCompetition"
-                item-value="id"
-                item-text="label"
-                :label="$t('forms.competitions.all')"
-                return-object
-                chips
-                single-line
-                clearable
-                outlined>
-          <template slot="item" slot-scope="data">{{ data.item.label }}</template>
-        </v-select>
-      </v-form>
-    </v-card-text>
+              <v-select
+                      :items="competitions"
+                      :loading="0 === competitions.length"
+                      v-model="selectedCompetition"
+                      item-value="id"
+                      item-text="label"
+                      :label="$t('forms.competitions.all')"
+                      return-object
+                      chips
+                      single-line
+                      clearable
+                      outlined>
+                <template slot="item" slot-scope="data">{{ data.item.label }}</template>
+              </v-select>
+            </v-form>
+          </v-card-text>
 
-    <v-card-actions>
-      <v-btn depressed block ripple color="accent" v-on:click="search()">
-        <v-icon>search</v-icon>
-      </v-btn>
-    </v-card-actions>
-  </v-card>
+          <v-card-actions>
+            <v-btn depressed block ripple color="accent" v-on:click="search()">
+              <v-icon>search</v-icon>
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script lang="ts">
