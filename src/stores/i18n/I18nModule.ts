@@ -38,7 +38,7 @@ export class I18nModule<R extends I18nModuleState> implements Module<I18nState, 
     public get state(): I18nState {
         return {
             locale: this.findLocale(),
-            fallback: this.i18n.fallbackLocale,
+            fallback: this.i18n.fallbackLocale as string,
         };
     }
 
